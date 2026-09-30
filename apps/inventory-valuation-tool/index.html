@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Valuation Tool — Free FIFO & Weighted Average Stock Valuation | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free inventory valuation tool for Indian SMEs: purchase lots + sales → closing stock valued by FIFO and weighted-average side-by-side, COGS both ways, method comparison. इन्वेंटरी वैल्यूएशन फ्री।">
+  <meta name="keywords" content="inventory valuation, इन्वेंटरी वैल्यूएशन, FIFO valuation, weighted average cost, FIFO method India, COGS calculator, stock valuation method, closing stock valuation, स्टॉक मूल्यांकन">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-info { background: #e3f0ff; color: #1d4ed8; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .cmp { grid-template-columns: 1fr; } }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="inventory-valuation-tool">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Inventory Valuation Tool</h1>
+    <p class="lede">इन्वेंटरी वैल्यूएशन — <strong>purchase lots</strong> (date, qty, rate) aur <strong>sales</strong> darj karein. <strong>Closing stock FIFO aur weighted-average dono tariko se side-by-side</strong>, COGS dono ways, aur method comparison note. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add purchase lot</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="l-item">Item *</label><input id="l-item" type="text" placeholder="e.g. Wheat Flour 10kg"></div>
+        <div class="vq-field"><label for="l-date">Date *</label><input id="l-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="l-qty">Quantity *</label><input id="l-qty" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 100"></div>
+        <div class="vq-field"><label for="l-rate">Rate (₹) *</label><input id="l-rate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 380"></div>
+      </div>
+      <button class="vq-btn go" id="addLotBtn" type="button">Add lot</button>
+      <p class="err" id="l-error" role="alert"></p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add sale</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="s-item">Item *</label><input id="s-item" type="text" placeholder="Item name (lot wale item se match kare)"></div>
+        <div class="vq-field"><label for="s-date">Date *</label><input id="s-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="s-qty">Quantity sold *</label><input id="s-qty" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 120"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary" id="addSaleBtn" type="button">Add sale</button>
+        </div>
+      </div>
+      <p class="err" id="s-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <div class="vq-field no-print" style="max-width:320px"><label for="itemSel">Valuation for item</label><select id="itemSel"></select></div>
+      <h2>Valuation — <span id="valItem"></span></h2>
+      <div class="cmp">
+        <div>
+          <h2 class="vq-section-title">FIFO <span class="pill p-info">first-in-first-out</span></h2>
+          <p>Sold qty: <strong id="fifoSold"></strong> · COGS: <strong id="fifoCogs"></strong></p>
+          <p>Closing: <strong id="fifoClose"></strong> · Value: <strong id="fifoVal"></strong></p>
+          <div class="vq-table-wrap"><table class="vq-table">
+            <thead><tr><th>Lot</th><th class="r">Qty left</th><th class="r">Rate</th><th class="r">Value</th></tr></thead>
+            <tbody id="fifoBody"></tbody>
+          </table></div>
+        </div>
+        <div>
+          <h2 class="vq-section-title">Weighted Average <span class="pill p-warn">WAV</span></h2>
+          <p>Sold qty: <strong id="wavgSold"></strong> · COGS: <strong id="wavgCogs"></strong></p>
+          <p>Avg rate: <strong id="wavgRate"></strong> · Closing: <strong id="wavgClose"></strong> · Value: <strong id="wavgVal"></strong></p>
+          <div class="vq-table-wrap"><table class="vq-table">
+            <thead><tr><th>Lot</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Cost</th></tr></thead>
+            <tbody id="wavgBody"></tbody>
+          </table></div>
+        </div>
+      </div>
+      <div class="card" style="margin:1rem 0 0;background:#f8fafc">
+        <h2>Method comparison</h2>
+        <p id="cmpNote"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Formula — गणना कैसे होती है</h2>
+      <div class="formula">
+        <p><strong>FIFO:</strong> <code>COGS = Σ (earliest lots consumed first)</code> — jo lot sabse pehle khareeda, sale me wahi pehle ghatta hai. <code>Closing value = remaining lots × unke rates</code></p>
+        <p><strong>Weighted average:</strong> <code>Avg rate = Σ(Qty×Rate) ÷ ΣQty</code> · <code>COGS = Sold qty × Avg rate</code> · <code>Closing value = Closing qty × Avg rate</code></p>
+        <p>Example: buy 100@₹10, buy 100@₹12, sell 120 → FIFO COGS ₹1,240, closing 80@₹12 = ₹960; WAVG avg ₹11, COGS ₹1,320, closing ₹880.</p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>FIFO aur weighted average me kya farak hai?</summary>
+        <p>FIFO me sabse purana lot pehle becha maana jaata hai (closing stock latest rates par), jabki weighted average me sabhi lots ka ausat rate lagta hai. Dono Companies Act / Income Tax me accepted methods hain.</p>
+      </details>
+      <details>
+        <summary>COGS kya hota hai?</summary>
+        <p>COGS (Cost of Goods Sold) = beche gaye maal ki khareed laagat. Profit = Sales − COGS.</p>
+      </details>
+      <details>
+        <summary>Kaun sa method chunna chahiye?</summary>
+        <p>Rising prices me FIFO closing stock zyada dikhata hai; weighted average price fluctuations ko smooth karta hai. Ek baar chuna method har saal consistent rakhein.</p>
+      </details>
+      <details>
+        <summary>इन्वेंटरी वैल्यूएशन क्यों ज़रूरी है?</summary>
+        <p>Balance sheet me stock ki sahi value aur profit ki sahi ganana ke liye valuation method zaroori hai — galat method se tax aur audit dono me dikkat hoti hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

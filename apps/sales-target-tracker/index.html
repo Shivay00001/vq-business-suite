@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Target Tracker — सेल्स टार्गेट | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free sales target tracker for Indian SMEs: monthly targets per salesperson vs achieved, % complete, gap, month-end projection at current run-rate, <70% alerts. सेल्स टार्गेट मुफ्त में ट्रैक करें।">
+  <meta name="keywords" content="sales target tracker, सेल्स टार्गेट, sales target vs achievement India, monthly sales target, salesperson target, run rate projection, सेल्स टारगेट कैलकुलेटर">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-good { background: #e6f6ec; color: #1a7f37; }
+    .p-warn { background: #fde8e8; color: #b42318; }
+    .p-mid { background: #fff7e0; color: #946200; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    .row-actions { white-space: nowrap; }
+    .progress { background: #eef2f7; border-radius: 999px; height: 10px; overflow: hidden; min-width: 90px; }
+    .progress > span { display: block; height: 100%; background: var(--brand); border-radius: 999px; }
+    .progress.low > span { background: #b42318; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem; font-size: .9rem; }
+    .formula code { background: #eef2ff; padding: .1rem .4rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="sales-target-tracker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Sales Target Tracker</h1>
+    <p class="lede">सेल्स टार्गेट — har salesperson ka <strong>monthly target vs achieved</strong>, <strong>% complete</strong>, <strong>gap</strong>, <strong>run-rate se month-end projection</strong> aur <strong>&lt;70% alerts</strong>. <strong>Save report: 20/day free · snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Month settings</h2>
+      <div class="grid3">
+        <div class="vq-field"><label for="m-days">Days in month</label><input id="m-days" type="number" min="1" max="31" step="1"></div>
+        <div class="vq-field"><label for="m-elapsed">Days elapsed (aaj tak)</label><input id="m-elapsed" type="number" min="1" max="31" step="1"></div>
+        <div class="vq-field"><label for="m-label">Month label</label><input id="m-label" type="text" placeholder="e.g. September 2026"></div>
+      </div>
+      <p class="vq-hint">Run-rate = achieved ÷ days elapsed. Projection = run-rate × days in month.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add salesperson / सेल्सपर्सन जोड़ें</h2>
+      <div class="grid3">
+        <div class="vq-field"><label for="s-name">Name *</label><input id="s-name" type="text" placeholder="e.g. Rahul Verma"></div>
+        <div class="vq-field"><label for="s-target">Monthly target (₹) *</label><input id="s-target" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 500000"></div>
+        <div class="vq-field"><label for="s-achieved">Achieved so far (₹) *</label><input id="s-achieved" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 275000"></div>
+      </div>
+      <button class="vq-btn go" id="addSalesBtn" type="button">Add salesperson</button>
+      <p class="err" id="s-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <h2>Target vs achievement — <span id="monthTitle"></span></h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Salesperson</th><th class="r">Target</th><th class="r">Achieved</th><th>Progress</th><th class="r">% Complete</th><th class="r">Gap</th><th class="r">Projected month-end</th><th class="no-print">Actions</th></tr></thead>
+        <tbody id="salesBody"></tbody>
+        <tfoot id="salesFoot"></tfoot>
+      </table></div>
+      <div class="formula" style="margin-top:.8rem">
+        <strong>Formulas (on-screen):</strong><br>
+        <code>% complete = (achieved ÷ target) × 100</code> · <code>gap = target − achieved</code><br>
+        <code>run-rate = achieved ÷ days elapsed</code> · <code>projected = run-rate × days in month</code><br>
+        Alert: <code>% complete &lt; 70</code> → ⚠️ Off-track alert.
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save team report</button>
+      <button class="vq-btn secondary" id="saveBtn" type="button">Save snapshot</button>
+      <button class="vq-btn ghost" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="st-saved"></p>
+    <p class="vq-hint no-print">Team report saves (20/day) aur snapshots (25/day) par limit hai; dekhna free hai.</p>
+    <div id="st-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>% complete aur gap kya hote hain?</summary>
+        <p><strong>% complete = (achieved ÷ target) × 100</strong> — target ka kitna hissa poora ho gaya. <strong>Gap = target − achieved</strong> — target poora karne ke liye abhi kitna aur chahiye.</p>
+      </details>
+      <details>
+        <summary>Month-end projection kaise nikalti hai?</summary>
+        <p><strong>Run-rate = achieved ÷ days elapsed</strong> (roz ka average). <strong>Projected = run-rate × days in month</strong> — agar isi speed se chale to month-end tak kitna hoga.</p>
+      </details>
+      <details>
+        <summary>&lt;70% alert ka matlab kya hai?</summary>
+        <p>Agar koi salesperson 70% se kam complete hai to us par <strong>⚠️ Off-track</strong> alert lagta hai — manager turant dekh sakta hai kisko push karna hai.</p>
+      </details>
+      <details>
+        <summary>सेल्स टार्गेट ट्रैकिंग क्यों ज़रूरी है?</summary>
+        <p>Month-end par surprise se bachne ke liye roz/beech me track karna zaroori hai. Projection se pehle hi pata chal jaata hai target miss hone wala hai ya nahi.</p>
+      </details>
+      <details>
+        <summary>Kya mera data safe hai?</summary>
+        <p>Haan — saara data sirf aapke browser ke vault me store hota hai. Passphrase se encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

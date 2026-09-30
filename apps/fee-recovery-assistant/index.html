@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Recovery Assistant – Aging Buckets, Priority Score & Follow-up Scripts | VisionQuantech</title>
+  <meta name="description" content="Free fee recovery assistant: overdue dues grouped into 30/60/90+ day aging buckets, recovery priority score (0–100), and Hindi/English follow-up scripts per stage. बकाया वसूली सहायक।">
+  <meta name="keywords" content="fee recovery, overdue fee collection, aging report fees, fee follow up script, बकाया वसूली, fee collection priority, dues aging buckets">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/fee-recovery-assistant/">
+  <meta property="og:title" content="Fee Recovery Assistant – Aging & Priority Scores | VisionQuantech">
+  <meta property="og:description" content="Aging buckets, recovery priority scores and follow-up scripts for overdue fees. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .bad { color:#b3261e; }
+    .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:.6rem; margin:1rem 0; }
+    @media (min-width:640px){ .stats{ grid-template-columns:repeat(3,1fr); } }
+    .stat { background:var(--paper-soft); border-radius:10px; padding:.7rem .9rem; }
+    .stat span { display:block; font-size:.8rem; color:var(--ink-soft); }
+    .stat strong { font-size:1.15rem; }
+    .rec-card { border:1px solid var(--line); border-radius:10px; padding:.8rem 1rem; margin-bottom:.8rem; background:var(--paper-soft); }
+    .r-text { white-space:pre-wrap; background:#fff; border:1px dashed var(--line); border-radius:8px; padding:.7rem .9rem; font-family:inherit; font-size:.92rem; }
+    .pill { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.8rem; font-weight:700; }
+    .pill.ok { background:#e6f4ea; color:#1d7a3f; } .pill.warn { background:#fef7e0; color:#8a6d00; } .pill.bad { background:#fdecea; color:#b3261e; }
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+  </style>
+</head>
+<body data-app="fee-recovery-assistant">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard top slot --></div>
+
+    <div class="vq-hero">
+      <h1>Fee Recovery Assistant — Aging, Priority Scores & Follow-up Scripts</h1>
+      <p>List overdue dues and get them grouped into 30/60/90+ day aging buckets, a 0–100 recovery priority score per student, and a stage-appropriate follow-up script in Hindi or English. <span lang="hi">बकाया वसूली सहायक — किससे पहले संपर्क करें, क्या कहें।</span></p>
+      <p class="vq-hint">Free: 20 priority sorts per day. Scripts are drafts for you to send yourself — this tool never sends messages.</p>
+    </div>
+
+    <div id="v-gate"></div>
+
+    <section class="card" aria-label="Settings">
+      <h2 class="vq-section-title" style="margin-top:0">Settings</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="v-inst">Institute name</label>
+          <input id="v-inst" type="text" maxlength="120" placeholder="e.g. Sharma Coaching Classes" value="Institute">
+        </div>
+        <div class="vq-field">
+          <label for="v-lang">Script language</label>
+          <select id="v-lang"><option value="en">English</option><option value="hi">हिंदी</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Add overdue due">
+      <h2 class="vq-section-title" style="margin-top:0">Add overdue due</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="v-name">Student name</label>
+          <input id="v-name" type="text" maxlength="120" placeholder="e.g. Aarav Patel">
+        </div>
+        <div class="vq-field">
+          <label for="v-cls">Class</label>
+          <input id="v-cls" type="text" maxlength="120" placeholder="e.g. Class 10">
+        </div>
+        <div class="vq-field">
+          <label for="v-due">Due amount (₹)</label>
+          <input id="v-due" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="v-duedate">Due date</label>
+          <input id="v-duedate" type="date">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-add-due" class="vq-btn" type="button">Add due</button>
+        <button id="f-score" class="vq-btn" type="button">Sort by recovery priority</button>
+      </div>
+      <p id="v-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Aging summary">
+      <h2 class="vq-section-title" style="margin-top:0">Aging summary</h2>
+      <div class="stats" id="v-aging"></div>
+    </section>
+
+    <section class="card" aria-label="Recovery list">
+      <h2 class="vq-section-title" style="margin-top:0">Recovery list — scripts</h2>
+      <div id="v-list"></div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard bottom slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Fee recovery assistant — FAQs</h2>
+      <details><summary>What are aging buckets?</summary><p>Overdue dues are grouped by how late they are: 1–30, 31–60, 61–90, and 90+ days. Older buckets get firmer follow-up scripts.</p></details>
+      <details><summary lang="hi">प्राथमिकता स्कोर कैसे तय होता है?</summary><p lang="hi">0–100 का स्कोर: बकाया दिनों का 60% वज़न (120 दिन पर अधिकतम) और राशि का 40% वज़न। 70+ = critical, 40+ = high, बाकी normal। सबसे पहले critical वालों से संपर्क करें।</p></details>
+      <details><summary>Does the tool send the follow-up messages?</summary><p>No — it only drafts Hindi/English scripts for you to copy. You send them yourself through your own channels.</p></details>
+      <details><summary>Where is the data stored?</summary><p>Only in this browser session — the list is kept in memory and is not uploaded anywhere.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

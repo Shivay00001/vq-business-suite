@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Expiry Manager — Track SaaS Renewals & Yearly Cost | VisionQuantech</title>
+  <meta name="description" content="Free subscription expiry manager: track software/SaaS subscriptions, renewal alerts at 30/15/7 days, and total yearly SaaS spend. On-device, nothing uploaded. सब्सक्रिप्शन रिन्यूअल ट्रैकर।">
+  <meta name="keywords" content="subscription expiry manager, saas subscription tracker, software renewal reminder, subscription cost tracker india, सब्सक्रिप्शन रिन्यूअल ट्रैकर, saas spend calculator, renewal alert app">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/subscription-expiry-manager/">
+  <meta property="og:title" content="Subscription Expiry Manager | VisionQuantech">
+  <meta property="og:description" content="Track all software & SaaS renewals with 30/15/7-day alerts and total yearly spend. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-overdue,.b-critical{ background:#fdeceb; color:#b3261e; }
+    .b-warning{ background:#fff4e0; color:#9a6200; }
+    .b-watch{ background:#eef4ff; color:#1f4fa3; }
+    .b-ok{ background:#e9f7ef; color:#1d7a3f; }
+    .ghost{ background:transparent; border:1px solid var(--line); padding:.3rem .7rem; font-size:.8rem; }
+  </style>
+</head>
+<body data-app="subscription-expiry-manager">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Subscription Expiry Manager — SaaS Renewal Tracker</h1>
+      <p>Track every software and SaaS subscription, get <strong>30 / 15 / 7-day renewal alerts</strong>, and see your total yearly SaaS spend in one place. <span lang="hi">सब्सक्रिप्शन रिन्यूअल ट्रैकर — कोई रिन्यूअल मिस न हो।</span></p>
+      <p class="vq-hint">Free: 20 tracker actions per day. Stored on this device only — nothing is uploaded.</p>
+    </div>
+
+    <div id="s-gate"></div>
+
+    <section class="card" aria-label="Add subscription">
+      <h2 class="vq-section-title" style="margin-top:0">Add a subscription</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="s-name">Subscription name</label>
+          <input id="s-name" type="text" maxlength="80" placeholder="e.g. Tally Prime" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="s-cat">Category</label>
+          <select id="s-cat">
+            <option value="accounting">Accounting</option>
+            <option value="productivity">Productivity</option>
+            <option value="marketing">Marketing</option>
+            <option value="security">Security</option>
+            <option value="hosting">Hosting / cloud</option>
+            <option value="other" selected>Other</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="s-cost">Cost per billing cycle (₹)</label>
+          <input id="s-cost" type="number" min="0" max="100000000" step="0.01" inputmode="decimal" placeholder="e.g. 18000">
+        </div>
+        <div class="vq-field">
+          <label for="s-cycle">Billing cycle</label>
+          <select id="s-cycle">
+            <option value="monthly" selected>Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="half-yearly">Half-yearly</option>
+            <option value="yearly">Yearly</option>
+            <option value="weekly">Weekly</option>
+            <option value="one-time">One-time purchase</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="s-date">Next renewal date</label>
+          <input id="s-date" type="date">
+        </div>
+      </div>
+      <button id="s-add" class="vq-btn" type="button">Add subscription</button>
+      <p id="s-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Subscriptions">
+      <h2 class="vq-section-title" style="margin-top:0">Your subscriptions</h2>
+      <div id="s-list"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Subscription tracker — FAQs</h2>
+      <details><summary>How do renewal alerts work?</summary><p>Enter each subscription with its renewal date. The app bands them: overdue, ≤7 days (critical), ≤15 days (warning), ≤30 days (watch), so nothing auto-renews unnoticed.</p></details>
+      <details><summary lang="hi">सब्सक्रिप्शन रिन्यूअल अलर्ट कैसे काम करता है?</summary><p lang="hi">हर सब्सक्रिप्शन की रिन्यूअल तारीख डालें। ऐप उन्हें बकाया, 7 दिन के अंदर, 15 दिन के अंदर और 30 दिन के अंदर के बैंड में दिखाता है।</p></details>
+      <details><summary>How is total yearly SaaS spend calculated?</summary><p>Weekly ×52, monthly ×12, quarterly ×4, half-yearly ×2 and yearly ×1. One-time purchases are excluded from the yearly total and shown separately.</p></details>
+      <details><summary>Is my subscription data uploaded anywhere?</summary><p>No. Everything is stored in your browser on this device via the on-device vault. Nothing is sent to any server.</p></details>
+      <details><summary>How many subscriptions can I track?</summary><p>Up to 25 subscriptions per device, free — 20 tracker actions per day.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubernetes YAML Generator — Free Deployment + Service Builder | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free Kubernetes manifest generator: Deployment + Service YAML with replicas, env vars, resource requests/limits. Built-in validator flags mistakes before generation. 100% in-browser.">
+  <meta name="keywords" content="kubernetes yaml generator, k8s deployment yaml generator, kubernetes manifest generator, k8s yaml kaise banaye, free k8s yaml builder">
+  <link rel="canonical" href="https://visionquantech.com/apps/k8s-yaml-generator/">
+  <meta property="og:title" content="Kubernetes YAML Generator — Free Online">
+  <meta property="og:description" content="Generate validated Deployment + Service manifests in your browser. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; line-height: 1.5; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    pre.code { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; overflow-x: auto; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-app="k8s-yaml-generator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Kubernetes YAML Generator</h1>
+    <p class="lede">App name, image, replicas, port aur resources bharein — validated <strong>Deployment + Service</strong> manifests turant payein. Galtiyaan generation se pehle hi pakdi jaati hain.</p>
+
+    <form id="k8s-form" onsubmit="return false;">
+      <div class="row2">
+        <div class="vq-field">
+          <label for="appName">App name (lowercase, e.g. my-api)</label>
+          <input id="appName" type="text" placeholder="my-api" autocapitalize="none">
+        </div>
+        <div class="vq-field">
+          <label for="image">Container image (with tag)</label>
+          <input id="image" type="text" placeholder="myregistry.io/team/api:1.2.0" autocapitalize="none">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="replicas">Replicas</label>
+          <input id="replicas" type="number" min="1" step="1" value="2" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="port">Container port</label>
+          <input id="port" type="number" min="1" max="65535" step="1" value="3000" inputmode="numeric">
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="serviceType">Service type</label>
+        <select id="serviceType">
+          <option>ClusterIP</option>
+          <option>NodePort</option>
+          <option>LoadBalancer</option>
+        </select>
+        <p class="vq-hint">ClusterIP = cluster ke andar hi · NodePort = har node par port · LoadBalancer = cloud LB.</p>
+      </div>
+      <div class="vq-field">
+        <label for="envVars">Environment variables (KEY=VALUE, one per line)</label>
+        <textarea id="envVars" rows="2" placeholder="NODE_ENV=production"></textarea>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="cpuRequest">CPU request (e.g. 250m)</label>
+          <input id="cpuRequest" type="text" placeholder="250m" autocapitalize="none">
+        </div>
+        <div class="vq-field">
+          <label for="cpuLimit">CPU limit (e.g. 1000m)</label>
+          <input id="cpuLimit" type="text" placeholder="1000m" autocapitalize="none">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="memRequest">Memory request (e.g. 256Mi)</label>
+          <input id="memRequest" type="text" placeholder="256Mi" autocapitalize="none">
+        </div>
+        <div class="vq-field">
+          <label for="memLimit">Memory limit (e.g. 512Mi)</label>
+          <input id="memLimit" type="text" placeholder="512Mi" autocapitalize="none">
+        </div>
+      </div>
+      <button class="vq-btn go" id="genBtn" type="button">Validate &amp; generate manifests</button>
+      <p class="vq-hint">Generation unlimited &amp; free.</p>
+      <p class="err" id="k8s-error" role="alert"></p>
+    </form>
+
+    <div id="k8s-upsell"></div>
+
+    <div class="vq-result" id="k8s-result" style="display:none">
+      <h2 class="vq-section-sub">Manifests (Deployment + Service)</h2>
+      <pre class="code" id="k8s-output"></pre>
+      <div class="btnrow">
+        <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy</button>
+        <button class="vq-btn secondary sm" id="dlBtn" type="button">Download .yaml</button>
+        <button class="vq-btn sm" id="saveBtn" type="button">Save to vault</button>
+      </div>
+      <p class="vq-hint">Free: 25 vault saves/day. Copy &amp; download always free.</p>
+      <p class="msg" id="k8s-msg" role="status"></p>
+      <h2 class="vq-section-sub">Saved manifests</h2>
+      <div id="k8s-saved"></div>
+    </div>
+
+    <div class="vq-notice">
+      <strong>Apply:</strong> file ko <code>app.yaml</code> naam se save karke <code>kubectl apply -f app.yaml</code> chalaiye. Status: <code>kubectl rollout status deployment/&lt;name&gt;</code>. Secrets ke liye env vars ki jagah Kubernetes Secrets use karein.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Kubernetes Deployment YAML kaise likhein?</summary>
+        <p>apiVersion: apps/v1, kind: Deployment, metadata.name, pod template se match karta selector, replicas, aur container spec (image, ports, env, resources) chahiye hota hai. Ye generator Deployment ke saath matching Service bhi banata hai.</p>
+      </details>
+      <details>
+        <summary>ClusterIP vs NodePort vs LoadBalancer me kya antar hai?</summary>
+        <p>ClusterIP app ko sirf cluster ke andar expose karta hai. NodePort har node par ek port kholta hai. LoadBalancer (AWS/GCP/Azure par) Service ke saamne cloud load balancer provision karta hai.</p>
+      </details>
+      <details>
+        <summary>Resource requests aur limits kya hote hain?</summary>
+        <p>Requests scheduler ko batate hain ki pod ko kitni CPU/memory chahiye; limits cap lagate hain ki wo usse zyada use na kare. Dono set karein taaki ek noisy pod poore node ko slow na kare.</p>
+      </details>
+      <details>
+        <summary>Generated YAML ko kaise apply karein?</summary>
+        <p>File ko app.yaml naam dekar "kubectl apply -f app.yaml" chalaiye, phir "kubectl rollout status deployment/&lt;name&gt;" se rollout check karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delayed Payment Interest Calculator — MSMED Act Sec 16 (3× Bank Rate) | VisionQuantech</title>
+  <meta name="description" content="Free MSMED Act Section 16 calculator: compound interest with monthly rests at 3× RBI bank rate on delayed payments to MSE suppliers, with day-wise breakup. एमएसएमई देर भुगतान ब्याज कैलकुलेटर।">
+  <meta name="keywords" content="msmed act section 16 interest calculator, delayed payment to msme interest rate, 3 times bank rate interest, msme samadhaan interest calculation, एमएसएमई ब्याज कैलकुलेटर, विलंबित भुगतान ब्याज">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/delayed-payment-interest-calculator/">
+  <meta property="og:title" content="Delayed Payment Interest Calculator — MSMED Sec 16 | VisionQuantech">
+  <meta property="og:description" content="Interest at 3× RBI bank rate, compounded monthly, on delayed MSE payments. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+    .tbl-wrap{overflow-x:auto;margin:1rem 0}
+    .tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+    .tbl th,.tbl td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left}
+    .tbl th{background:var(--paper-soft)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+  </style>
+</head>
+<body data-app="delayed-payment-interest-calculator">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Delayed Payment Interest Calculator — MSMED Act §16</h1>
+      <p>Where a buyer defaults on payment to a micro/small enterprise supplier, <strong>Section 16</strong> makes the buyer liable for <strong>compound interest with monthly rests at 3× the RBI bank rate</strong> — from the appointed day until paid. <span lang="hi">एमएसएमई देर भुगतान ब्याज कैलकुलेटर — 3 गुना बैंक दर पर मासिक चक्रवृद्धि।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="m-gate"></div>
+
+    <section class="card" aria-label="Interest inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Payment details</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="m-principal">Delayed principal amount (₹)</label>
+          <input id="m-principal" type="number" min="0" step="0.01" value="100000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="m-bankrate">RBI bank rate (% p.a.)</label>
+          <input id="m-bankrate" type="number" min="0" max="30" step="0.01" value="5.50" inputmode="decimal">
+          <p class="vq-hint">Default 5.50% — RBI Bank Rate verified Sep 2026 (repo 5.25%). Editable — re-check the latest RBI notification.</p>
+        </div>
+        <div class="vq-field">
+          <label for="m-accept">Goods/services acceptance date</label>
+          <input id="m-accept" type="date">
+          <p class="vq-hint">Optional helper: sets the due date to acceptance + 45 days (statutory maximum).</p>
+        </div>
+        <div class="vq-field">
+          <label for="m-due">Due date (interest starts after this date)</label>
+          <input id="m-due" type="date">
+        </div>
+        <div class="vq-field">
+          <label for="m-paid">Actual payment date</label>
+          <input id="m-paid" type="date">
+        </div>
+      </div>
+      <button id="m-fill-due" class="vq-btn" type="button" style="margin-right:.5rem">Set due = acceptance + 45 days</button>
+      <button id="m-calc" class="vq-btn" type="button">Calculate interest</button>
+      <p id="m-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="m-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Interest due</h2>
+      <p class="formula">Rate = 3 × RBI bank rate p.a. · Daily accrual = balance × rate ÷ 365 · Capitalised at each month-end (monthly rests)</p>
+      <div id="m-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Statute:</strong> MSMED Act, 2006 — §15: payment on/before the agreed date (in writing), never later than <strong>45 days</strong> from acceptance; §16: default triggers compound interest with monthly rests at <strong>3× the RBI bank rate</strong>, regardless of any contrary agreement.</li>
+        <li><strong>Rate used:</strong> 3 × 5.50% = <strong>16.50% p.a.</strong> (RBI Bank Rate verified Sep 2026; repo 5.25%). Rates change — always re-check the current RBI notification before filing.</li>
+        <li><strong>Day count:</strong> interest for days AFTER the due date up to and including the payment date, at rate/365 per day, capitalised at each calendar month-end.</li>
+        <li><strong>Scope:</strong> applies to micro &amp; small enterprise suppliers (Udyam-registered); not to foreign buyers. Delays over 3 years need counsel.</li>
+        <li><strong>Estimate only, not legal advice</strong> — confirm rate, dates and the Samadhaan/Council procedure with your CA/lawyer before filing.</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>MSMED Act, 2006 — §15 (45-day payment limit) &amp; §16 (compound interest, monthly rests, 3× bank rate) — <a href="https://finodha.in/msme-payment-rules/" rel="noopener">Finodha — MSME payment rules</a>; <a href="https://globallawexperts.com/msmed-act-payment-recovery-india/" rel="noopener">Global Law Experts</a></li>
+        <li>RBI Bank Rate 5.50% (repo 5.25%), Sep 2026 — <a href="https://www.businesstoday.in/latest/economy/story/rbi-repo-rate-hike-on-or-off-sp-sees-5-5-fitch-projects-5-75-in-2027-557373-2026-09-24" rel="noopener">Business Today</a></li>
+        <li>MSME Samadhaan portal for delayed-payment complaints — file with the Facilitation Council of the supplier's state.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Delayed payment interest — FAQs</h2>
+      <details><summary>What interest applies on delayed payments to MSME suppliers?</summary><p>Under MSMED Act Section 16, the buyer must pay compound interest with monthly rests at three times the RBI bank rate, from the appointed day until payment — regardless of any contrary agreement.</p></details>
+      <details><summary lang="hi">MSME को देर से भुगतान पर कितना ब्याज मिलता है?</summary><p lang="hi">MSMED एक्ट की धारा 16 के तहत खरीदार को RBI बैंक दर के तीन गुना पर मासिक चक्रवृद्धि ब्याज देना होता है — नियत तिथि से भुगतान तक।</p></details>
+      <details><summary>What is the current RBI bank rate used here?</summary><p>The default is 5.50% p.a., the RBI Bank Rate verified in September 2026 (repo 5.25%). That makes the Section 16 rate 16.50% p.a. The rate is editable — always re-check the latest RBI notification before filing a claim.</p></details>
+      <details><summary>Within how many days must a buyer pay an MSME supplier?</summary><p>Section 15: on or before the agreed date in writing, and in no case later than 45 days from acceptance of goods/services. Interest runs from the appointed day (15 days after acceptance) when no date is agreed.</p></details>
+      <details><summary>Can I claim interest even if the principal was paid late?</summary><p>Yes — interest can be claimed on its own even if the principal was eventually paid. File through the MSME Samadhaan portal / Facilitation Council of the supplier's state.</p></details>
+      <details><summary>Is this legal advice?</summary><p>No — this is a calculation aid. Confirm the rate, dates and claim procedure with your CA or lawyer before filing.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

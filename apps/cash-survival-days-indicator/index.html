@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash Survival Days Indicator — Runway Gauge for Your Business | VisionQuantech</title>
+  <meta name="description" content="Free cash runway calculator: cash in hand ÷ daily burn = survival days, with a runway gauge and urgency actions. कैश सर्वाइवल कैलकुलेटर — बिज़नेस कितने दिन चलेगा।">
+  <meta name="keywords" content="cash runway calculator, survival days calculator, business runway, cash burn calculator, कैश रनवे कैलकुलेटर, बिज़नेस कितने दिन चलेगा, daily burn rate">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/cash-survival-days-indicator/">
+  <meta property="og:title" content="Cash Survival Days Indicator | VisionQuantech">
+  <meta property="og:description" content="Cash ÷ daily burn = survival days. Runway gauge with urgency actions. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .bar { height:.9rem; background:#eef1f6; border-radius:99px; overflow:hidden; }
+    .fill { height:100%; border-radius:99px; transition:width .4s; }
+    .assump { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li { margin-bottom:.4rem; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+  </style>
+</head>
+<body data-app="cash-survival-days-indicator">
+  <main class="vq-main">
+    <!-- ADSENSE: --><div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Cash Survival Days Indicator — How Long Can You Last?</h1>
+      <p><strong>Cash in hand ÷ daily burn = survival days.</strong> See your runway on a gauge — critical, watch or safe — and get urgency actions for your band. <span lang="hi">कैश सर्वाइवल कैलकुलेटर — हाथ का कैश कितने दिन चलेगा।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="c-gate"></div>
+
+    <section class="card" aria-label="Runway inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your numbers</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="c-cash">Cash in hand (₹)</label>
+          <input id="c-cash" type="number" min="0" max="10000000000" step="0.01" value="500000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="c-burn">Burn (all monthly outflows, or daily)</label>
+          <input id="c-burn" type="number" min="0" max="100000000" step="0.01" value="300000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="c-burn-mode">Burn entered as</label>
+          <select id="c-burn-mode">
+            <option value="monthly" selected>Monthly total (÷ 30)</option>
+            <option value="daily">Daily burn</option>
+          </select>
+          <p class="vq-hint">Monthly burn = salaries + rent + EMIs + suppliers + taxes + drawings, all divided by 30.</p>
+        </div>
+      </div>
+      <button id="c-calc" class="vq-btn" type="button">Check my runway</button>
+      <p id="c-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="c-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your runway</h2>
+      <div id="c-result"></div>
+    </section>
+
+    <!-- ADSENSE: --><div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Cash runway — FAQs</h2>
+      <details><summary>How many days can my business survive on current cash?</summary><p>Divide cash in hand by daily burn (all outflows ÷ 30). Below 30 days is critical, 30–90 is watch, above 90 is safe.</p></details>
+      <details><summary lang="hi">मेरा बिज़नेस कितने दिन चल सकता है?</summary><p lang="hi">हाथ में कैश ÷ रोज़ाना खर्च = बचे हुए दिन। 30 दिन से कम क्रिटिकल, 30–90 वॉच, 90 से ऊपर सुरक्षित।</p></details>
+      <details><summary>What counts as daily burn?</summary><p>Everything leaving the account: salaries, rent, EMIs, supplier payments, taxes, owner drawings — total monthly outflow ÷ 30.</p></details>
+      <details><summary>My burn is zero — is my runway infinite?</summary><p>Mathematically yes, but keep a 3-month buffer anyway. A zero-burn month rarely repeats.</p></details>
+      <details><summary>Is this financial advice?</summary><p>No — a planning indicator. Talk to your CA before borrowing or restructuring payables.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker — खर्च ट्रैकर बजट अलर्ट | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free expense tracker for Indian SMEs: categorized expenses (rent, salaries, utilities, travel, other), monthly totals, category pie & bar charts, budget-vs-actual with overspend alerts. खर्च ट्रैकर फ्री।">
+  <meta name="keywords" content="expense tracker, खर्च ट्रैकर, business expense tracker India, budget vs actual, overspend alert, monthly expense report, kharcha hisab, small business expenses">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    tr.over td { background: #fef2f2; }
+    .chart-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .chart-wrap { grid-template-columns: 1fr; } }
+    .legend { font-size: .85rem; margin-top: .5rem; }
+    .legend span { display: inline-block; margin: 0 .8rem .3rem 0; }
+    .sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: .3rem; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+      #printArea { display: block !important; }
+    }
+  </style>
+</head>
+<body data-app="expense-tracker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Expense Tracker</h1>
+    <p class="lede">खर्च ट्रैकर — expenses <strong>category-wise</strong> (rent, salaries, utilities, travel, other) record karein, monthly totals, <strong>pie &amp; bar charts</strong>, aur har category ka <strong>budget-vs-actual with overspend alerts</strong>. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add expense / खर्च जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-cat">Category *</label><select id="e-cat"><option>Rent</option><option>Salaries</option><option>Utilities</option><option>Travel</option><option>Other</option></select></div>
+        <div class="vq-field"><label for="e-date">Date *</label><input id="e-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-amount">Amount (₹) *</label><input id="e-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 15000"></div>
+        <div class="vq-field"><label for="e-note">Note</label><input id="e-note" type="text" placeholder="e.g. October office rent"></div>
+      </div>
+      <button class="vq-btn go" id="addBtn" type="button">Add expense</button>
+      <p class="err" id="e-error" role="alert"></p>
+    </div>
+
+    <div id="printArea">
+      <div class="card">
+        <div class="vq-field no-print" style="max-width:240px"><label for="monthSel">Month</label><input id="monthSel" type="month"></div>
+        <h2>Monthly summary — <span id="exMonth"></span></h2>
+        <p>Total expenses: <strong id="exTotal"></strong></p>
+        <div class="chart-wrap">
+          <div><h2 class="vq-section-title">Category share (pie)</h2><div id="pieChart"></div><div class="legend" id="pieLegend"></div></div>
+          <div><h2 class="vq-section-title">Category totals (bar)</h2><div id="barChart"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Budget vs actual</h2>
+        <p class="vq-hint no-print">Har category ka monthly budget set karein — budget cross hote hi alert.</p>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Category</th><th class="r">Budget</th><th class="r">Actual</th><th class="r">Remaining</th><th>Status</th></tr></thead>
+          <tbody id="budgetBody"></tbody>
+        </table></div>
+      </div>
+
+      <div class="card">
+        <h2>Entries</h2>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Date</th><th>Category</th><th>Note</th><th class="r">Amount</th><th class="no-print"></th></tr></thead>
+          <tbody id="entriesBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="card no-print">
+      <h2>Set monthly budgets</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="b-cat">Category</label><select id="b-cat"><option>Rent</option><option>Salaries</option><option>Utilities</option><option>Travel</option><option>Other</option></select></div>
+        <div class="vq-field"><label for="b-amount">Monthly budget (₹)</label><input id="b-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 20000"></div>
+      </div>
+      <button class="vq-btn secondary mini" id="saveBudgetBtn" type="button">Save budget</button>
+      <p class="ok-msg" id="b-saved"></p>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="ex-saved"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="ex-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Expense tracker kaise use karein?</summary>
+        <p>Har kharcha category (rent, salaries, utilities, travel, other) ke saath darj karein. App monthly totals, pie/bar charts aur budget-vs-actual report automatic banata hai.</p>
+      </details>
+      <details>
+        <summary>Overspend alert kya hai?</summary>
+        <p>Agar kisi category ka kharcha uske monthly budget se zyada ho jaye to alert lagta hai — taaki samay par kharchon par lagam lag sake.</p>
+      </details>
+      <details>
+        <summary>Budget kaise set karein?</summary>
+        <p>Neeche "Set monthly budgets" me category chunein aur monthly budget amount darj karein. Budget har mahine same rehta hai jab tak badlein nahi.</p>
+      </details>
+      <details>
+        <summary>खर्च ट्रैकर क्या होता है?</summary>
+        <p>Expense tracker me business ke saare kharchon ka category-wise hisaab rehta hai — isse pata chalta hai paisa kahan ja raha hai aur budget se zyada to nahi kharch ho raha.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

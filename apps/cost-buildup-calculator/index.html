@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost Buildup Calculator – Landed Cost Per Unit India | VisionQuantech</title>
+  <meta name="description" content="Free landed cost calculator India: material + labour + overhead + freight + GST input treatment (ITC claimable or not), per-unit cost and suggested selling price. लैंडेड कॉस्ट कैलकुलेटर।">
+  <meta name="keywords" content="landed cost calculator, cost buildup calculator India, per unit cost calculator, लैंडेड कॉस्ट कैलकुलेटर, product costing, input tax credit cost treatment, selling price from cost">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/cost-buildup-calculator/">
+  <meta property="og:title" content="Cost Buildup Calculator – Landed Cost Per Unit | VisionQuantech">
+  <meta property="og:description" content="Build true per-unit cost with GST/ITC treatment and get a suggested selling price. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="cost-buildup-calculator">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Cost Buildup Calculator — True Landed Cost Per Unit</h1>
+      <p>Add up <strong>material + labour + overhead + freight</strong>, treat GST on inputs correctly (ITC claimable or not), and divide by units. Get a suggested selling price from your target margin. <span lang="hi">लैंडेड कॉस्ट कैलकुलेटर — प्रति यूनिट असली लागत निकालें।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Nothing leaves your browser.</p>
+    </div>
+
+    <div id="cb-gate"></div>
+
+    <section class="card" aria-label="Cost inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Cost heads (per batch / lot)</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="cb-material">Material / purchase cost (₹)</label>
+          <input id="cb-material" type="number" min="0" step="0.01" value="40000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="cb-labour">Labour cost (₹)</label>
+          <input id="cb-labour" type="number" min="0" step="0.01" value="15000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="cb-overhead">Overhead — rent, power, packing (₹)</label>
+          <input id="cb-overhead" type="number" min="0" step="0.01" value="5000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="cb-freight">Freight / inward transport (₹)</label>
+          <input id="cb-freight" type="number" min="0" step="0.01" value="2000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="cb-units">Units produced / purchased</label>
+          <input id="cb-units" type="number" min="1" step="1" value="1000" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="cb-gst">GST rate on inputs (%)</label>
+          <input id="cb-gst" type="number" min="0" max="100" step="0.01" value="18" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="cb-margin">Target margin on price % (optional)</label>
+          <input id="cb-margin" type="number" min="0" max="99.99" step="0.01" value="30" inputmode="decimal">
+          <p class="vq-hint">Margin on selling price, not markup on cost.</p>
+        </div>
+      </div>
+      <div class="check-row">
+        <input id="cb-itc" type="checkbox" checked>
+        <label for="cb-itc" style="margin:0">I can claim input tax credit (ITC) on these purchases — GST on inputs is <strong>not</strong> a cost. Untick for composition/exempt cases.</label>
+      </div>
+      <button id="cb-calc" class="vq-btn" type="button">Calculate landed cost</button>
+      <p id="cb-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="cb-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Landed cost breakup</h2>
+      <p class="formula">Landed total = material + labour + overhead + freight (+ input GST if ITC not claimable) · Per unit = landed total ÷ units</p>
+      <div id="cb-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>GST treatment:</strong> GST on inputs is excluded from cost when ITC is claimable (regular registered dealer). It is added to cost for composition dealers, exempt supplies, or blocked credits.</li>
+        <li><strong>Suggested price</strong> uses margin-on-price: price = landed cost ÷ (1 − margin). A 30% margin needs price = cost ÷ 0.70, not cost × 1.30.</li>
+        <li><strong>Not included:</strong> output GST on your sale, commissions, marketplace fees, wastage beyond your inputs — add them as overhead if they apply.</li>
+        <li><strong>Estimate only</strong> — confirm tax treatment with your CA.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Cost buildup calculator — FAQs</h2>
+      <details><summary>How do I calculate landed cost per unit?</summary><p>Add material + labour + overhead + freight to get total pre-GST cost. If input tax credit (ITC) is claimable, GST on inputs is not a cost; if not claimable, add it. Divide the landed total by the number of units.</p></details>
+      <details><summary lang="hi">लैंडेड कॉस्ट प्रति यूनिट कैसे निकालें?</summary><p lang="hi">मैटेरियल + लेबर + ओवरहेड + फ्रेट जोड़ें = प्री-GST लागत। ITC मिलता है तो GST लागत नहीं, नहीं मिलता तो जोड़ें। कुल को यूनिट्स से भाग दें।</p></details>
+      <details><summary>Is GST on inputs part of product cost?</summary><p>Only when you cannot claim input tax credit — e.g. composition dealers, exempt supplies, or personal-use inputs. Regular GST-registered businesses claim ITC, so GST is not a cost.</p></details>
+      <details><summary>How do I set a selling price from landed cost?</summary><p>Price = landed cost per unit ÷ (1 − target margin). For a 30% margin on price with ₹73.16 landed cost: 73.16 ÷ 0.70 = ₹104.51.</p></details>
+      <details><summary>What is usually missed in cost buildup?</summary><p>Inward freight, packaging, wastage, payment-gateway or marketplace commissions, and the GST-ITC treatment are the most commonly missed cost heads.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Cost Overrun Detector – EAC = BAC/CPI, CPI Variance India | VisionQuantech</title>
+  <meta name="description" content="Free project cost overrun detector India: budgeted vs actual per cost head, variance %, CPI, and projected final cost (EAC = BAC/CPI) with on-track/watch/overrun flags. कॉस्ट ओवररन डिटेक्टर।">
+  <meta name="keywords" content="project cost overrun detector, EAC BAC CPI, earned value management India, cost variance project, budget vs actual tracker, कॉस्ट ओवररन डिटेक्टर, EAC फॉर्मूला, प्रोजेक्ट बजट ट्रैकर">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/project-cost-overrun-detector/">
+  <meta property="og:title" content="Project Cost Overrun Detector | VisionQuantech">
+  <meta property="og:description" content="Spot overruns early: budgeted vs actual, CPI, projected final cost EAC = BAC/CPI. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sum-strip{ display:flex; flex-wrap:wrap; gap:.4rem 1rem; background:var(--paper-soft); border-radius:10px; padding:.7rem 1rem; margin-bottom:1rem; font-size:.92rem; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0; display:block; overflow-x:auto; }
+    .vq-table th,.vq-table td{ border:1px solid var(--line); padding:.45rem .55rem; text-align:left; white-space:nowrap; }
+    .vq-table th{ background:var(--paper-soft); }
+    .badge{ font-size:.8rem; font-weight:700; padding:.2rem .6rem; border-radius:999px; white-space:nowrap; }
+    .b-ok{ background:#e9f6ee; color:#1d7a3f; } .b-warn{ background:#fef1e6; color:#b3541e; } .b-bad{ background:#fdeceb; color:#b3261e; }
+    .neg{ color:#b3261e; font-weight:700; } .pos{ color:#1d7a3f; font-weight:700; }
+    .formula{ font-size:1.02rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+    .btn-row{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.8rem; }
+  </style>
+</head>
+<body data-app="project-cost-overrun-detector">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Project Cost Overrun Detector — EAC = BAC / CPI, India</h1>
+      <p>Enter <strong>budgeted vs actual</strong> per cost head with % complete — get variance %, <strong>CPI</strong>, and <strong>projected final cost (EAC = BAC/CPI)</strong> with on-track / watch / overrun flags. <span lang="hi">कॉस्ट ओवररन डिटेक्टर — बजट बनाम वास्तविक खर्च।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Stored only on this device — all math happens in your browser.</p>
+    </div>
+
+    <div id="o-gate"></div>
+
+    <section class="card" aria-label="Add cost head">
+      <h2 class="vq-section-title" style="margin-top:0">Add a cost head</h2>
+      <p class="formula">EV = Budget × % complete &nbsp;·&nbsp; CPI = EV ÷ Actual &nbsp;·&nbsp; EAC = Budget ÷ CPI</p>
+      <div class="form-grid">
+        <div class="vq-field"><label for="o-head">Cost head</label><input id="o-head" type="text" maxlength="80" placeholder="e.g. Civil work"></div>
+        <div class="vq-field"><label for="o-budget">Budget / BAC (₹)</label><input id="o-budget" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 500000"></div>
+        <div class="vq-field"><label for="o-actual">Actual spent till date (₹)</label><input id="o-actual" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 320000"></div>
+        <div class="vq-field"><label for="o-pct">% complete (0–100)</label><input id="o-pct" type="number" min="0" max="100" step="1" inputmode="numeric" placeholder="e.g. 55"></div>
+      </div>
+      <button id="o-add" class="vq-btn" type="button">Add cost head</button>
+      <p id="o-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Overrun analysis">
+      <h2 class="vq-section-title" style="margin-top:0">Overrun analysis</h2>
+      <div id="o-summary"></div>
+      <div id="o-list"><p class="vq-hint">No cost heads yet — add your first one above.</p></div>
+      <div class="btn-row">
+        <button id="o-save" class="vq-btn" type="button">Save snapshot (this device)</button>
+      </div>
+      <p class="vq-hint">Max 25 cost heads. Reading your saved data is never counted against the free limit.</p>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Earned-value math:</strong> EV = Budget × % complete; CV = EV − Actual; CPI = EV ÷ Actual; EAC = Budget ÷ CPI (assumes current cost efficiency continues); VAC = Budget − EAC.</li>
+        <li><strong>Status flags:</strong> CPI ≥ 1 on-track; 0.9–1.0 watch; &lt; 0.9 overrun.</li>
+        <li><strong>% complete must be honest</strong> — physical % complete, not % of budget spent. Garbage % in = garbage forecast out.</li>
+        <li><strong>Planning aid, not project accounting.</strong> Confirm with your project accountant/CA before contractual claims.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Cost overrun detector — FAQs</h2>
+      <details><summary>How do I detect cost overrun on a project early?</summary><p>Use earned value: EV = budget × % complete. If actual spent (AC) exceeds EV, you are over budget. CPI = EV ÷ AC below 1.0 confirms it; projected final cost EAC = budget ÷ CPI.</p></details>
+      <details><summary lang="hi">कॉस्ट ओवररन कैसे पहचानें?</summary><p lang="hi">अर्न्ड वैल्यू निकालें: EV = बजट × पूर्णता %। अगर वास्तविक खर्च (AC) EV से ज़्यादा है, तो आप बजट से ऊपर हैं। CPI = EV ÷ AC; 1 से कम मतलब ओवररन।</p></details>
+      <details><summary>What is EAC = BAC / CPI?</summary><p>Estimate at Completion: your total budget (BAC) divided by cost performance index (CPI). It assumes current cost efficiency continues — a standard, conservative forecast used worldwide.</p></details>
+      <details><summary lang="hi">CPI 0.9 से कम का क्या मतलब है?</summary><p lang="hi">हर ₹1 खर्च पर ₹0.90 से कम मूल्य मिल रहा है — गंभीर ओवररन। कारण खोजें (दर वृद्धि, स्कोप क्रीप, कम उत्पादकता) और सुधारात्मक कदम उठाएँ।</p></details>
+      <details><summary>Is this project accounting advice?</summary><p>No — a planning aid using standard earned-value math. Confirm with your project accountant/CA before contractual claims.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

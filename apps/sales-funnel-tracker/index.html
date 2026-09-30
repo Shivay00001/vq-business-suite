@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Funnel Tracker — सेल्स फ़नल | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free sales funnel tracker for Indian SMEs: deal values per stage → stage-to-stage conversion %, total pipeline value, weighted pipeline, pure-SVG funnel chart. सेल्स फ़नल मुफ्त में ट्रैक करें।">
+  <meta name="keywords" content="sales funnel, सेल्स फ़नल, sales pipeline tracker India, funnel conversion rate, weighted pipeline, सेल्स फ़नल क्या है, pipeline value, deal stage tracker">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr; } }
+    .kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; text-align: center; }
+    .kpi .num { font-weight: 800; font-size: 1.25rem; }
+    .kpi .lbl { font-size: .8rem; color: var(--ink-soft); }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem; font-size: .9rem; }
+    .formula code { background: #eef2ff; padding: .1rem .4rem; border-radius: 4px; }
+    #funnelChart svg { width: 100%; height: auto; display: block; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="sales-funnel-tracker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Sales Funnel Tracker</h1>
+    <p class="lede">सेल्स फ़नल — har stage ka <strong>deal count aur value</strong> daalein, app <strong>stage-to-stage conversion %</strong>, <strong>total pipeline value</strong>, <strong>weighted pipeline</strong> aur <strong>SVG funnel chart</strong> banayega. <strong>Save report: 20/day free · snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Funnel stages — deals aur value daalein</h2>
+      <p class="vq-hint">Har stage me abhi kitne deals hain aur unka total value (₹) kya hai — ye likhein. Funnel live update hoga.</p>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Stage</th><th>Win probability</th><th class="r">Deals (count)</th><th class="r">Value (₹)</th></tr></thead>
+        <tbody id="stageInputsBody"></tbody>
+      </table></div>
+      <p class="err" id="f-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <h2>Funnel chart</h2>
+      <div id="funnelChart"></div>
+    </div>
+
+    <div class="card">
+      <h2>Conversion % (stage-to-stage)</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>From → To</th><th class="r">Conversion %</th></tr></thead>
+        <tbody id="convBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Pipeline summary</h2>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="num" id="kpiTotal">—</div><div class="lbl">Total pipeline value</div></div>
+        <div class="kpi"><div class="num" id="kpiWeighted">—</div><div class="lbl">Weighted pipeline</div></div>
+        <div class="kpi"><div class="num" id="kpiDeals">—</div><div class="lbl">Open deals</div></div>
+      </div>
+      <div class="formula">
+        <strong>Formulas (on-screen):</strong><br>
+        <code>Conversion % (A → B) = (deals in B ÷ deals in A) × 100</code><br>
+        <code>Total pipeline = Σ value of all stages</code><br>
+        <code>Weighted pipeline = Σ (stage value × stage win-probability)</code>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save funnel report</button>
+      <button class="vq-btn secondary" id="saveBtn" type="button">Save snapshot</button>
+      <button class="vq-btn ghost" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="sf-saved"></p>
+    <p class="vq-hint no-print">Chart dekhna free hai — sirf report saves (20/day) aur snapshots (25/day) par limit hai.</p>
+    <div id="sf-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Sales funnel kya hota hai?</summary>
+        <p>Sales funnel leads ke safar ko dikhata hai — <strong>Lead → Qualified → Proposal → Negotiation → Won</strong>. Har stage me kitne deals hain aur kitna paisa hai, ye dekhkar pata chalta hai kahaan deals atak rahi hain.</p>
+      </details>
+      <details>
+        <summary>Conversion % kaise nikala jaata hai?</summary>
+        <p><strong>Conversion % = (agle stage ke deals ÷ is stage ke deals) × 100.</strong> Jaise 100 leads me se 40 qualified hue to conversion 40% hai.</p>
+      </details>
+      <details>
+        <summary>Weighted pipeline kya hoti hai?</summary>
+        <p>Har stage ke value ko us stage ki win-probability se multiply karke joda jaata hai. Ye realistic revenue forecast deta hai — sab deals close nahi hote, isliye probability lagayi jaati hai.</p>
+      </details>
+      <details>
+        <summary>सेल्स फ़नल क्यों ज़रूरी है?</summary>
+        <p>Funnel se pata chalta hai ki deals kis stage par atak rahi hain. Agar proposal se negotiation me conversion low hai, to pricing ya follow-up par kaam karna chahiye.</p>
+      </details>
+      <details>
+        <summary>Kya mera data safe hai?</summary>
+        <p>Haan — saara data sirf aapke browser ke vault me store hota hai. Passphrase se encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

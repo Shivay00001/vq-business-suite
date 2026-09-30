@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Margin Volatility Tracker – σ & ±2σ Outlier Flags | VisionQuantech</title>
+  <meta name="description" content="Free margin volatility tracker India: monthly margin % series, standard deviation, ±2σ outlier flags, trend and volatility rating. मार्जिन अस्थिरता ट्रैकर।">
+  <meta name="keywords" content="margin volatility, profit margin std dev, 2 sigma outlier detection, मार्जिन अस्थिरता ट्रैकर, margin stability analysis India">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/margin-volatility-tracker/">
+  <meta property="og:title" content="Margin Volatility Tracker – ±2σ Flags | VisionQuantech">
+  <meta property="og:description" content="Is your margin stable or swinging? σ, outlier flags and trend. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="margin-volatility-tracker">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Margin Volatility Tracker — Is Your Margin Stable or Swinging?</h1>
+      <p>Enter monthly <strong>revenue and cost</strong>. Get margin %, standard deviation σ, and <strong>±2σ outlier flags</strong> on the months that need investigation. <span lang="hi">मार्जिन अस्थिरता — कौन से महीने असामान्य थे।</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Data stays on your device (max 25 months).</p>
+    </div>
+
+    <div id="mv-gate"></div>
+
+    <section class="card" aria-label="Monthly entry">
+      <h2 class="vq-section-title" style="margin-top:0">Monthly data</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="mv-month">Month (YYYY-MM)</label>
+          <input id="mv-month" placeholder="2026-04" maxlength="7" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="mv-rev">Revenue (₹)</label>
+          <input id="mv-rev" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="mv-cost">Cost (₹)</label>
+          <input id="mv-cost" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+      <button id="mv-add" class="vq-btn vq-btn-secondary" type="button">Add month</button>
+      <div id="mv-list" style="margin-top:1rem"></div>
+      <p style="margin-top:1rem"><button id="mv-calc" class="vq-btn" type="button">Analyze volatility</button></p>
+      <p id="mv-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="mv-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Volatility report</h2>
+      <p class="formula">margin % = (revenue − cost) ÷ revenue × 100 · σ = sample std-dev · flag when |margin − mean| &gt; 2σ</p>
+      <div id="mv-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Sample σ (n−1)</strong> in margin-percentage points; flag band is ±2σ around the mean.</li>
+        <li><strong>Needs ≥ 2 months</strong> for σ; flagging is most meaningful with 6+ months.</li>
+        <li><strong>Outlier ≠ bad:</strong> an unusually <em>high</em> margin month is flagged too — find out why and repeat it.</li>
+        <li><strong>Trend</strong> compares the last-3-month average with the first-3-month average (needs ≥ 3 months).</li>
+        <li><strong>Descriptive statistics only</strong> — not a forecast.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Margin volatility tracker — FAQs</h2>
+      <details><summary>How do I know if my margins are too volatile?</summary><p>Track monthly margin % and compute the standard deviation σ. Months beyond ±2σ from the mean are statistical outliers worth investigating — a one-off cost spike, a deep discount month, or a mix shift.</p></details>
+      <details><summary lang="hi">मार्जिन अस्थिरता कैसे मापें?</summary><p lang="hi">मासिक मार्जिन % का माध्य और स्टैंडर्ड डेविएशन (σ) निकालें। माध्य से ±2σ से बाहर के महीने असामान्य हैं — जांचें कि कीमत, लागत या मिक्स में क्या बदला।</p></details>
+      <details><summary>Why ±2σ?</summary><p>Under a normal distribution only ~5% of observations fall outside ±2σ. Flagging those focuses attention on genuinely unusual months instead of everyday noise.</p></details>
+      <details><summary>What counts as a stable margin?</summary><p>Roughly: σ under 2 points = stable, 2–5 = moderate, 5–10 = volatile, above 10 = highly volatile. Context matters — seasonal businesses naturally run higher σ.</p></details>
+      <details><summary>Is my monthly data private?</summary><p>Yes — it is stored only on your device (max 25 months). Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

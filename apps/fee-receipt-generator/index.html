@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Receipt Generator – Printable Fee Receipts for Institutes (GST Optional) | VisionQuantech</title>
+  <meta name="description" content="Free fee receipt generator for coaching institutes & schools: printable receipts with institute header, optional discount, optional GST (CGST/SGST split), auto receipt numbering, amount in words. शुल्क रसीद बनाएं – हिंदी + English.">
+  <meta name="keywords" content="fee receipt generator, coaching fee receipt, school fee receipt format India, GST fee receipt, शुल्क रसीद, fee receipt with GST, printable fee receipt">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/fee-receipt-generator/">
+  <meta property="og:title" content="Fee Receipt Generator – Printable Fee Receipts | VisionQuantech">
+  <meta property="og:description" content="Generate and print fee receipts with optional GST, auto numbering and amount in words. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .item-row { display:grid; grid-template-columns:1fr 8rem 2.6rem; gap:.5rem; margin-bottom:.5rem; }
+    .item-row input { width:100%; }
+    .receipt { border:2px solid var(--ink); border-radius:8px; padding:1rem; max-width:640px; margin:0 auto; background:#fff; }
+    .receipt table { width:100%; border-collapse:collapse; margin:.6rem 0; }
+    .receipt td, .receipt th { border:1px solid #ccc; padding:.45rem .6rem; font-size:.95rem; }
+    .receipt .num { text-align:right; }
+    .receipt .totals td { border:none; border-top:1px solid #ccc; }
+    .receipt .grand td { font-weight:800; font-size:1.1rem; border-top:2px solid var(--ink); }
+    .sig { margin-top:2.2rem; text-align:right; }
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+    @media print { body * { visibility:hidden; } #f-print, #f-print * { visibility:visible; } #f-print { position:absolute; left:0; top:0; width:100%; } }
+  </style>
+</head>
+<body data-app="fee-receipt-generator">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard top slot --></div>
+
+    <div class="vq-hero">
+      <h1>Fee Receipt Generator — Printable Fee Receipts</h1>
+      <p>Make professional fee receipts for your coaching institute or school: institute header, itemised fees, optional discount, optional GST (CGST + SGST split), auto receipt numbering, and amount in words. Print straight from the browser. <span lang="hi">शुल्क रसीद बनाएं — GST के साथ या बिना, हिंदी + English में।</span></p>
+      <p class="vq-hint">Free: 20 receipts per day. Data stays in your browser (max 25 saved receipts). Nothing is uploaded.</p>
+    </div>
+
+    <div id="f-gate"></div>
+
+    <section class="card" aria-label="Receipt details">
+      <h2 class="vq-section-title" style="margin-top:0">Receipt details</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="f-inst">Institute name / संस्थान का नाम</label>
+          <input id="f-inst" type="text" maxlength="200" placeholder="e.g. Sharma Coaching Classes" inputmode="text">
+        </div>
+        <div class="vq-field">
+          <label for="f-student">Student name / छात्र का नाम</label>
+          <input id="f-student" type="text" maxlength="200" placeholder="e.g. Aarav Patel" inputmode="text">
+        </div>
+        <div class="vq-field">
+          <label for="f-class">Class / Batch</label>
+          <input id="f-class" type="text" maxlength="120" placeholder="e.g. Class 10 – Morning">
+        </div>
+        <div class="vq-field">
+          <label for="f-no">Receipt no.</label>
+          <input id="f-no" type="text" maxlength="60" placeholder="FEE-2026-001">
+        </div>
+        <div class="vq-field">
+          <label for="f-date">Date</label>
+          <input id="f-date" type="date">
+        </div>
+        <div class="vq-field">
+          <label for="f-mode">Payment mode</label>
+          <select id="f-mode">
+            <option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option><option>Card</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Fee items">
+      <h2 class="vq-section-title" style="margin-top:0">Fee items</h2>
+      <div id="f-items"></div>
+      <button id="f-add-item" class="vq-btn small" type="button">+ Add item</button>
+      <div class="form-grid" style="margin-top:1rem">
+        <div class="vq-field">
+          <label for="f-discount">Discount (₹) — optional</label>
+          <input id="f-discount" type="number" min="0" step="0.01" value="0" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="f-remarks">Remarks (optional)</label>
+          <input id="f-remarks" type="text" maxlength="200" placeholder="e.g. First instalment">
+        </div>
+      </div>
+      <div class="check-row" style="display:flex;align-items:center;gap:.6rem;margin:1rem 0">
+        <input id="f-gst-on" type="checkbox">
+        <label for="f-gst-on" style="margin:0">Add GST (coaching/training services typically 18% — confirm with your CA)</label>
+      </div>
+      <div class="vq-field" id="f-gst-rate-row" hidden>
+        <label for="f-gst-rate">GST rate %</label>
+        <input id="f-gst-rate" type="number" min="0" max="40" step="0.01" value="18" inputmode="decimal">
+      </div>
+      <div class="btn-row">
+        <button id="f-make" class="vq-btn" type="button">Generate receipt</button>
+        <button id="f-save" class="vq-btn" type="button">Save receipt</button>
+        <button id="f-print" class="vq-btn" type="button">Print</button>
+      </div>
+      <p id="f-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="f-result-card" aria-label="Receipt preview" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Receipt preview</h2>
+      <div id="f-result"></div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard bottom slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Fee receipt generator — FAQs</h2>
+      <details><summary>How do I make a fee receipt for my coaching institute?</summary><p>Enter the institute and student names, add fee items (tuition, admission, materials), optionally apply a discount and GST, then generate. You can print the receipt directly from the browser.</p></details>
+      <details><summary lang="hi">क्या कोचिंग की फीस रसीद पर GST लगाना ज़रूरी है?</summary><p lang="hi">शैक्षणिक संस्थानों की कुछ सेवाओं पर GST छूट है; कोचिंग/ट्रेनिंग सेवाओं पर आमतौर पर 18% GST लागू होता है। रसीद पर CGST/SGST बराबर-बराबर बँटता है। सटीक नियम के लिए अपने CA से पुष्टि करें।</p></details>
+      <details><summary>Can I number my receipts automatically?</summary><p>Yes — the tool suggests the next receipt number (e.g. FEE-2026-001) based on your last saved receipt. You can edit it before generating.</p></details>
+      <details><summary>Where is my receipt data stored?</summary><p>Only in your browser (localStorage), up to 25 saved receipts. Nothing is sent to any server.</p></details>
+      <details><summary>Is this an official tax document?</summary><p>It is a fee receipt printout. For GST-compliant tax invoices, follow the GST invoicing rules and confirm with your CA.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Forecast Tool — Free स्टॉक फोरकास्ट & Reorder Point Calculator | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free stock forecast tool for Indian SMEs: avg daily sales × supplier lead time + safety stock → reorder point & suggested order quantity per item. स्टॉक फोरकास्ट फ्री।">
+  <meta name="keywords" content="stock forecast, स्टॉक फोरकास्ट, reorder point calculator, reorder level formula, safety stock calculator, lead time demand, demand forecasting inventory, कब ऑर्डर करें, inventory planning India">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; } .p-in { background: #e6f6ec; color: #1a7f37; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    tr.order td { background: #fffbeb; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="stock-forecast-tool">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Stock Forecast Tool</h1>
+    <p class="lede">स्टॉक फोरकास्ट — <strong>avg daily sales</strong> (sales history se ya manual) × <strong>supplier lead time</strong> + <strong>safety stock</strong> → har item ka <strong>reorder point</strong> aur <strong>suggested order quantity</strong>. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add / edit item</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="f-name">Item name *</label><input id="f-name" type="text" placeholder="e.g. Toor Dal 1kg"></div>
+        <div class="vq-field"><label for="f-stock">Current stock *</label><input id="f-stock" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 40"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="f-avg">Avg daily sales (manual — history na ho to)</label><input id="f-avg" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 5"></div>
+        <div class="vq-field"><label for="f-lead">Supplier lead time (days) *</label><input id="f-lead" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 7"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="f-safety">Safety stock (qty) *</label><input id="f-safety" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 15"></div>
+        <div class="vq-field"><label for="f-unit">Unit</label><input id="f-unit" type="text" placeholder="e.g. pcs"></div>
+      </div>
+      <button class="vq-btn go" id="addItemBtn" type="button">Save item</button>
+      <p class="err" id="f-error" role="alert"></p>
+      <p class="vq-hint">Manual avg daily sales khaali chhodne par sales history se calculate hoga (neeche).</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add sales history (optional — avg daily sales ke liye)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="h-item">Item *</label><select id="h-item"></select></div>
+        <div class="vq-field"><label for="h-date">Date *</label><input id="h-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="h-qty">Qty sold *</label><input id="h-qty" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 6"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary" id="addHistBtn" type="button">Add sale</button>
+        </div>
+      </div>
+      <p class="err" id="h-error" role="alert"></p>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Date</th><th>Item</th><th class="r">Qty</th><th class="no-print"></th></tr></thead>
+        <tbody id="histBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Forecast — फोरकास्ट</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th class="r">Avg/day</th><th class="r">Lead (d)</th><th class="r">Safety</th><th class="r">Stock</th><th class="r">Reorder point</th><th class="r">Days left</th><th class="r">Suggested order</th><th class="no-print"></th></tr></thead>
+        <tbody id="fcBody"></tbody>
+      </table></div>
+      <p class="vq-hint">Suggested order = Reorder point − Current stock (0 se kam nahi). Isse naya order lead-time demand + safety buffer cover karta hai.</p>
+    </div>
+
+    <div class="card">
+      <h2>Formula — गणना कैसे होती है</h2>
+      <div class="formula">
+        <p><strong>Avg daily sales</strong> <code>= Total sold qty ÷ History ke din</code> (history na ho to manual value)</p>
+        <p><strong>Reorder point</strong> <code>= (Avg daily sales × Lead time days) + Safety stock</code></p>
+        <p><strong>Suggested order qty</strong> <code>= max(0, Reorder point − Current stock)</code> (round up)</p>
+        <p><strong>Days of stock left</strong> <code>= Current stock ÷ Avg daily sales</code></p>
+        <p>Example: avg 5/day, lead 7 days, safety 15, stock 20 → ROP = 5×7+15 = 50, suggested order = 50−20 = 30.</p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Reorder point kya hota hai?</summary>
+        <p>Woh stock level jahan pahunchte hi naya order kar dena chahiye — formula: (Avg daily sales × Lead time) + Safety stock.</p>
+      </details>
+      <details>
+        <summary>Safety stock kyun rakhein?</summary>
+        <p>Supplier delay ya achanak demand badhne par stockout se bachne ke liye extra buffer — bina iske har delay me sale rukti hai.</p>
+      </details>
+      <details>
+        <summary>Avg daily sales kaise nikle?</summary>
+        <p>Sales history darj karein — app total sold qty ko history ke dino se divide karke avg nikaalta hai. History na ho to manual value bhi daal sakte hain.</p>
+      </details>
+      <details>
+        <summary>स्टॉक फोरकास्ट से क्या फायदा है?</summary>
+        <p>Sahi time par sahi quantity ka order — na stockout ka nuksaan, na overstocking me fasa paisa. Chhote business ke liye ye sabse sasta planning tool hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

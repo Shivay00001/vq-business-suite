@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit & Loss Statement Generator — प्रॉफिट लॉस कैलकुलेटर | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free P&L generator for Indian small businesses: add income/expense entries with categories, get automatic profit & loss statement with gross/net margins, monthly chart, print/PDF. प्रॉफिट लॉस स्टेटमेंट बनाएं।">
+  <meta name="keywords" content="profit and loss statement, प्रॉफिट लॉस स्टेटमेंट, P&L generator India, income expense tracker, hisab kitab app, small business accounting free">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .etype-row { display: flex; gap: .6rem; margin-bottom: 1rem; }
+    .etype-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem 1rem; cursor: pointer; font-weight: 600; background: #fff; flex: 1; text-align: center; }
+    .etype-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; }
+    #plBody td.r, #entriesBody td.r { text-align: right; white-space: nowrap; }
+    #plBody tr.grand td { font-weight: 800; font-size: 1.05rem; border-top: 2px solid var(--line); }
+    #plBody .pct { color: var(--brand); font-weight: 700; font-size: .85rem; }
+    #plChart { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; margin: 1rem 0; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom,
+      #editorWrap, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+      #printArea { display: block !important; }
+    }
+  </style>
+</head>
+<body data-app="profit-loss-generator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Profit &amp; Loss Generator</h1>
+    <p class="lede">प्रॉफिट-लॉस स्टेटमेंट जनरेटर — income aur expense entries add karein, app automatic <strong>P&amp;L statement</strong> banayega: gross profit, operating expenses, net profit aur margins (%) ke saath, plus monthly chart. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div id="editorWrap">
+      <div class="card">
+        <h2>Add entry / एंट्री जोड़ें</h2>
+        <div class="etype-row">
+          <label><input type="radio" name="etype" value="income" checked> Income</label>
+          <label><input type="radio" name="etype" value="expense"> Expense</label>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="eCat">Category</label><select id="eCat"></select></div>
+          <div class="vq-field"><label for="eDate">Date</label><input id="eDate" type="date"></div>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="eDesc">Description</label><input id="eDesc" type="text" placeholder="e.g. Diwali sales / Shop rent"></div>
+          <div class="vq-field"><label for="eAmt">Amount (₹)</label><input id="eAmt" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 25000"></div>
+        </div>
+        <button class="vq-btn go" id="addBtn" type="button">Add entry</button>
+        <p class="err" id="pl-error" role="alert"></p>
+      </div>
+
+      <div class="card">
+        <div class="vq-field" style="max-width:280px">
+          <label for="fySel">Financial year</label><select id="fySel"></select>
+        </div>
+        <h2>Entries</h2>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th>Amount</th><th></th></tr></thead>
+          <tbody id="entriesBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div id="printArea">
+      <div class="card">
+        <h2>P&amp;L Statement — <span id="plFY"></span></h2>
+        <table class="vq-table"><tbody id="plBody"></tbody></table>
+        <p class="vq-hint" id="plNote"></p>
+      </div>
+      <h2 class="vq-section-title">Monthly income vs expense</h2>
+      <div id="plChart"></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg" id="pl-saved"></p>
+    <p class="vq-hint no-print">Entries padhna hamesha free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="pl-upsell"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Profit and loss statement kaise banaye?</summary>
+        <p>Upar apni income aur expense entries add karein (category aur date ke saath), financial year chunein — statement automatic ban jayega. Snapshot save karke print/PDF bhi le sakte hain.</p>
+      </details>
+      <details>
+        <summary>Gross profit aur net profit me kya farak hai?</summary>
+        <p>Gross profit = Revenue − COGS (maal ki seedhi lagat). Net profit = Gross profit − operating expenses (rent, salary, marketing aadi). Dono margins revenue ke percentage me dikhaye jate hain.</p>
+      </details>
+      <details>
+        <summary>Kya entries edit ya delete ho sakti hain?</summary>
+        <p>Haan — har row me Edit aur Delete button hai. Saari entries aapke browser me save rehti hain, koi account nahi chahiye.</p>
+      </details>
+      <details>
+        <summary>Kya mera financial data safe hai?</summary>
+        <p>Haan — data sirf aapke device par store hota hai, kahin upload nahi hota. Chahein to Vault passphrase se encrypt kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

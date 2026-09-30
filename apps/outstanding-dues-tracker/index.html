@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outstanding Dues Tracker — बकाया वसूली | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free outstanding dues tracker for Indian SMEs: invoice-wise dues with days-overdue, collection priority ranking, overdue highlighting, and a polite WhatsApp reminder draft you copy & send yourself. बकाया वसूली फ्री।">
+  <meta name="keywords" content="outstanding dues tracker, बकाया वसूली, payment collection app, overdue invoice tracker, days overdue calculator, collection priority, udhar vasuli, payment reminder whatsapp">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.overdue td { background: #fef2f2; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .kpi-row { grid-template-columns: 1fr; } }
+    .kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; text-align: center; }
+    .kpi .v { font-size: 1.3rem; font-weight: 800; }
+    .kpi .l { font-size: .8rem; color: var(--ink-soft); }
+    .wa-draft { background: #f0fdf4; border: 1px dashed #16a34a; border-radius: var(--radius); padding: .9rem; white-space: pre-wrap; font-size: .95rem; margin: .6rem 0; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+      #printArea { display: block !important; }
+    }
+  </style>
+</head>
+<body data-app="outstanding-dues-tracker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Outstanding Dues Tracker</h1>
+    <p class="lede">बकाया वसूली — invoice-wise dues: <strong>days-overdue</strong>, overdue highlighting, <strong>collection priority ranking</strong> (sabse pehle kisse vasool karein), aur ek polite <strong>WhatsApp reminder draft</strong> jo aap copy karke khud bhejte hain — <strong>app kuch auto-send nahi karta.</strong> <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add invoice / इनवॉइस जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="i-cust">Customer name *</label><input id="i-cust" type="text" placeholder="e.g. Sharma Traders"></div>
+        <div class="vq-field"><label for="i-no">Invoice no *</label><input id="i-no" type="text" placeholder="e.g. INV-102"></div>
+      </div>
+      <div class="grid3">
+        <div class="vq-field"><label for="i-date">Invoice date *</label><input id="i-date" type="date"></div>
+        <div class="vq-field"><label for="i-due">Due date *</label><input id="i-due" type="date"></div>
+        <div class="vq-field"><label for="i-amount">Amount (₹) *</label><input id="i-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 25000"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="i-received">Already received (₹)</label><input id="i-received" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
+        <div class="vq-field"><label for="i-phone">Customer phone (for reminder)</label><input id="i-phone" type="tel" placeholder="e.g. 98765 43210"></div>
+      </div>
+      <button class="vq-btn go" id="addBtn" type="button">Add invoice</button>
+      <p class="err" id="i-error" role="alert"></p>
+    </div>
+
+    <div id="printArea">
+      <div class="kpi-row">
+        <div class="kpi"><div class="v" id="kpiTotal">₹0</div><div class="l">Total outstanding</div></div>
+        <div class="kpi"><div class="v" id="kpiOverdue">₹0</div><div class="l">Overdue now</div></div>
+        <div class="kpi"><div class="v" id="kpiCount">0</div><div class="l">Open invoices</div></div>
+      </div>
+
+      <div class="card">
+        <h2>Collection priority — pehle kisse vasool karein</h2>
+        <p class="vq-hint">Priority = days overdue × outstanding amount. Zyada din + zyada rakam = upar.</p>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>#</th><th>Customer</th><th>Invoice</th><th>Due date</th><th class="r">Outstanding</th><th>Days overdue</th><th class="no-print"></th></tr></thead>
+          <tbody id="duesBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="card no-print" id="reminderCard" style="display:none">
+      <h2>WhatsApp reminder draft — <span id="remCust"></span></h2>
+      <p class="vq-hint"><strong>App auto-send nahi karta.</strong> Neeche diya text copy karein, WhatsApp me paste karke khud bhejein.</p>
+      <div class="wa-draft" id="waDraft"></div>
+      <div class="btn-row">
+        <button class="vq-btn go mini" id="copyBtn" type="button">Copy reminder text</button>
+      </div>
+      <p class="ok-msg" id="copyMsg"></p>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="dues-saved"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="dues-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Collection priority ranking kya hai?</summary>
+        <p>Priority = days overdue × outstanding amount. Jo invoice zyada din se baki hai aur jiski rakam badi hai, wo list me upar aata hai — taaki vasuli ki koshish sabse pehle wahin ho.</p>
+      </details>
+      <details>
+        <summary>Kya app WhatsApp par reminder bhej deta hai?</summary>
+        <p><strong>Nahi.</strong> App sirf ek polite reminder text taiyaar karta hai. Aap use copy karke apne WhatsApp se khud bhejte hain — koi auto-send nahi hota.</p>
+      </details>
+      <details>
+        <summary>Days overdue kaise nikala jata hai?</summary>
+        <p>Aaj ki date − due date. Agar due date beet gayi hai to din gin kar dikhaya jata hai; jo invoices abhi due nahi hui, un par "X days left" dikhta hai.</p>
+      </details>
+      <details>
+        <summary>बकाया वसूली में ये ऐप कैसे मदद करता है?</summary>
+        <p>Har invoice ka baki paisa, kitne din se overdue hai, aur kisse pehle vasool karna hai — ye sab ek list me. Saath me taiyaar WhatsApp reminder text taaki customer ko politely yaad dilaya ja sake.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

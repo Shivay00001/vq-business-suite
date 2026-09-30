@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash vs UPI vs Card Split Analyzer — Fee Drag & Reconciliation | VisionQuantech</title>
+  <meta name="description" content="Free sales-mix analyzer: cash vs UPI vs card splits, fee drag per mode, settlement-lag notes and a reconciliation checklist. कैश बनाम UPI बनाम कार्ड विश्लेषक।">
+  <meta name="keywords" content="sales mix analysis, payment mode reconciliation, fee drag calculator, upi vs card settlement, सेल्स मिक्स, फ़ी ड्रैग">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/cash-vs-upi-vs-card-split-analyzer/">
+  <meta property="og:title" content="Cash vs UPI vs Card Split Analyzer | VisionQuantech">
+  <meta property="og:description" content="Fee drag per mode plus reconciliation hints. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .tbl-wrap{overflow-x:auto;margin:1rem 0}
+    .tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+    .tbl th,.tbl td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left}
+    .tbl th{background:var(--paper-soft)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1rem 0}
+    .kpi{background:var(--paper-soft);border-radius:10px;padding:.8rem;text-align:center}
+    .kpi-n{font-size:1.3rem;font-weight:800}
+    .kpi-l{font-size:.8rem;color:var(--ink-soft)}
+    .txt-bad{color:#b3261e}
+    .ubar{background:#e8e8e8;border-radius:8px;height:10px;overflow:hidden;margin:.3rem 0}
+    .ufill{height:100%;border-radius:8px}
+    .bar-ok{background:#1d7a3f}
+  </style>
+</head>
+<body data-app="cash-vs-upi-vs-card-split-analyzer">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Cash vs UPI vs Card — Split Analyzer</h1>
+      <p>Enter your <strong>sales split</strong> across cash, UPI and cards. The tool shows the <strong>fee drag per mode</strong>, settlement-lag notes, and a <strong>reconciliation checklist</strong> so every mode's money lands in your books. <span lang="hi">कैश बनाम UPI बनाम कार्ड — बिक्री मिश्रण विश्लेषण।</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="s-gate"></div>
+
+    <section class="card" aria-label="Split inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your sales split</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="s-sales">Monthly sales (₹)</label>
+          <input id="s-sales" type="number" min="0" step="0.01" value="1000000" inputmode="decimal">
+        </div>
+      </div>
+      <h3 class="vq-section-title">Split of sales % (must total 100)</h3>
+      <div class="form-grid" id="s-splits"></div>
+      <h3 class="vq-section-title">Fee rates % (editable)</h3>
+      <div class="form-grid" id="s-rates"></div>
+      <button id="s-calc" class="vq-btn" type="button">Analyze split</button>
+      <p id="s-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="s-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Split analysis</h2>
+      <div id="s-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Default rates (Sep 2026, editable):</strong> cash 0%, UPI 0.25% blended (NPCI MDR eff. 15-Oct-2026: 0% to ₹2,000; 0.40% above, capped ₹300), cards 2.0% blended (debit ≤0.90%, credit 1.5–2.5%).</li>
+        <li><strong>Settlement lags:</strong> cash same-day, UPI usually same-day/T+1, cards T+1/T+2 net of MDR.</li>
+        <li><strong>Fee drag is on gross (GST-inclusive) transaction value.</strong></li>
+        <li><strong>Rates are editable benchmarks</strong> — your acquirer's settlement statement is final. Estimate only — confirm with your CA.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Sales mix &amp; reconciliation — FAQs</h2>
+      <details><summary>What is fee drag in a sales mix?</summary><p>The % of your sales lost to payment acceptance fees — MDR on cards and UPI, zero on cash. A 2% drag on ₹10 lakh monthly sales is ₹20,000/month leaking to fees.</p></details>
+      <details><summary lang="hi">सेल्स मिक्स में फ़ी ड्रैग क्या है?</summary><p lang="hi">भुगतान शुल्क में जाने वाली बिक्री का प्रतिशत। ₹10 लाख की बिक्री पर 2% ड्रैग = ₹20,000/माह का नुकसान।</p></details>
+      <details><summary>How fast does each mode settle?</summary><p>Cash: same day. UPI: usually same day or T+1. Cards: T+1/T+2 via the acquirer, credited net of MDR.</p></details>
+      <details><summary>Why don't card credits match my sales report?</summary><p>Settlements arrive NET of MDR and may deduct refunds/chargebacks. Reconcile gross sale vs net credit; the gap should equal your MDR %.</p></details>
+      <details><summary>How do I reconcile UPI sales?</summary><p>Match the day's UPI-app/POS report against bank credits within 2 days, and confirm your QR's P2M vs P2PM classification for the correct MDR.</p></details>
+      <details><summary>Are the fee rates fixed?</summary><p>No — editable Sep-2026 benchmarks (UPI 0.25% blended, cards 2.0% blended). Your acquirer's settlement statement is final.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

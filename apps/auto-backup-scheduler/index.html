@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Backup Scheduler — Backup Plan Builder & 3-2-1 Checker | VisionQuantech</title>
+  <meta name="description" content="Free backup plan builder: what to back up, where, how often — with 3-2-1 rule checker and next-backup schedule list. On-device. बैकअप शेड्यूलर।">
+  <meta name="keywords" content="backup scheduler, backup plan builder, 3-2-1 backup rule, small business backup plan, बैकअप शेड्यूलर, backup reminder app">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/auto-backup-scheduler/">
+  <meta property="og:title" content="Auto Backup Scheduler | VisionQuantech">
+  <meta property="og:description" content="Build a backup plan, check it against the 3-2-1 rule, list next backup dates. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-ok{ background:#e9f7ef; color:#1d7a3f; }
+    .b-critical{ background:#fdeceb; color:#b3261e; }
+    .ghost{ background:transparent; border:1px solid var(--line); padding:.3rem .7rem; font-size:.8rem; }
+  </style>
+</head>
+<body data-app="auto-backup-scheduler">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Auto Backup Scheduler — Backup Plan Builder</h1>
+      <p>Build a backup plan — <strong>what, where, how often</strong> — check it against the <strong>3-2-1 rule</strong> (3 copies, 2 media types, 1 off-site), and get your next-backup schedule. <span lang="hi">बैकअप योजना बनाएं — 3-2-1 नियम से जांचें।</span></p>
+      <p class="vq-hint">Free: 20 plan actions per day. Plans are stored on this device only. This lists when to back up — it does not back up files itself.</p>
+    </div>
+
+    <div id="b-gate"></div>
+
+    <section class="card" aria-label="Build backup plan">
+      <h2 class="vq-section-title" style="margin-top:0">Build a backup plan</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="b-name">Plan name</label>
+          <input id="b-name" type="text" maxlength="80" placeholder="e.g. Tally + invoices" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="b-freq">Frequency</label>
+          <select id="b-freq">
+            <option value="daily" selected>Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="b-what">What gets backed up</label>
+          <input id="b-what" type="text" maxlength="200" placeholder="e.g. Tally data, invoice PDFs" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="b-where">Where backups are stored</label>
+          <input id="b-where" type="text" maxlength="200" placeholder="e.g. external HDD + Google Drive" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="b-start">Start date</label>
+          <input id="b-start" type="date">
+        </div>
+        <div class="vq-field">
+          <label for="b-copies">Number of copies kept</label>
+          <input id="b-copies" type="number" min="1" max="10" step="1" value="3" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="b-media">Different media types</label>
+          <input id="b-media" type="number" min="1" max="5" step="1" value="2" inputmode="numeric">
+        </div>
+      </div>
+      <div class="check-row">
+        <input id="b-offsite" type="checkbox">
+        <label for="b-offsite" style="margin:0">At least one copy is stored off-site (cloud or another location)</label>
+      </div>
+      <button id="b-add" class="vq-btn" type="button">Save backup plan</button>
+      <p id="b-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Backup plans">
+      <h2 class="vq-section-title" style="margin-top:0">Your backup plans</h2>
+      <div id="b-list"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Backup scheduler — FAQs</h2>
+      <details><summary>What is the 3-2-1 backup rule?</summary><p>Keep 3 copies of your data, on 2 different media types, with 1 copy off-site. This app checks your plan against that rule.</p></details>
+      <details><summary lang="hi">3-2-1 बैकअप नियम क्या है?</summary><p lang="hi">डेटा की 3 प्रतियां, 2 अलग-अलग मीडिया पर, 1 प्रति ऑफ-साइट। यह ऐप आपकी योजना को इस नियम पर जांचता है।</p></details>
+      <details><summary>How often should a small business back up?</summary><p>Daily for active accounting data (Tally, invoices); weekly is the minimum for most small businesses. Monthly alone is rarely enough.</p></details>
+      <details><summary>Where is my backup plan stored?</summary><p>In the on-device vault in your browser. It lists when to back up — it does not back up files itself.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

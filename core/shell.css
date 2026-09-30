@@ -1,0 +1,274 @@
+/* ============================================================
+   VisionQuantech Business Suite — shared design system
+   Mobile-first. Vanilla CSS. No frameworks.
+   ============================================================ */
+
+:root {
+  --brand: #1746c2;          /* VisionQuantech blue */
+  --brand-dark: #0f3394;
+  --brand-soft: #e8eefa;
+  --accent: #0e9f6e;         /* success green */
+  --warn: #c2410c;           /* upsell orange */
+  --ink: #1a1d26;
+  --ink-soft: #4b5263;
+  --paper: #ffffff;
+  --paper-soft: #f5f7fb;
+  --line: #e2e8f2;
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(15, 51, 148, .08);
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Noto Sans", "Noto Sans Devanagari", Arial, sans-serif;
+  --maxw: 1080px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+  font-size: 16px;
+}
+img, svg { max-width: 100%; height: auto; }
+a { color: var(--brand); }
+a:hover { color: var(--brand-dark); }
+
+/* ---------- layout ---------- */
+.vq-main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+}
+.vq-narrow { max-width: 720px; margin: 0 auto; }
+
+/* ---------- header / nav ---------- */
+.vq-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.vq-header-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: .65rem 1rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.vq-brand {
+  display: flex; align-items: center; gap: .55rem;
+  font-weight: 800; font-size: 1.02rem; color: var(--ink);
+  text-decoration: none; white-space: nowrap;
+}
+.vq-brand img { width: 30px; height: 30px; }
+.vq-brand small {
+  display: block; font-weight: 500; font-size: .68rem;
+  color: var(--ink-soft); line-height: 1.2;
+}
+.vq-nav { margin-left: auto; display: flex; align-items: center; gap: .25rem; }
+.vq-nav a {
+  text-decoration: none; color: var(--ink-soft); font-weight: 600;
+  font-size: .9rem; padding: .5rem .7rem; border-radius: 8px;
+}
+.vq-nav a:hover { background: var(--paper-soft); color: var(--ink); }
+.vq-nav a.active { color: var(--brand); background: var(--brand-soft); }
+.vq-lang { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.vq-lang button {
+  border: 0; background: var(--paper); padding: .45rem .6rem;
+  font-size: .78rem; font-weight: 700; cursor: pointer; color: var(--ink-soft);
+}
+.vq-lang button.on { background: var(--brand); color: #fff; }
+
+/* ---------- hero ---------- */
+.vq-hero {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+  color: #fff; border-radius: var(--radius);
+  padding: 2.2rem 1.4rem; margin: 1rem 0 1.6rem;
+  box-shadow: var(--shadow);
+}
+.vq-hero h1 { margin: 0 0 .5rem; font-size: 1.7rem; line-height: 1.25; }
+.vq-hero p { margin: 0 0 1.2rem; opacity: .92; max-width: 34rem; }
+.vq-hero .vq-btn { margin-right: .6rem; margin-bottom: .4rem; }
+
+/* ---------- buttons / forms ---------- */
+.vq-btn {
+  display: inline-block; border: 0; cursor: pointer;
+  background: var(--brand); color: #fff; font-weight: 700;
+  padding: .8rem 1.4rem; border-radius: 10px; font-size: 1rem;
+  text-decoration: none; min-height: 44px;
+}
+.vq-btn:hover { background: var(--brand-dark); color: #fff; }
+.vq-btn.secondary { background: #fff; color: var(--brand); border: 2px solid #fff; }
+.vq-btn.ghost { background: transparent; color: var(--brand); border: 1.5px solid var(--line); }
+.vq-btn.warn { background: var(--warn); }
+.vq-btn:disabled { opacity: .55; cursor: not-allowed; }
+
+.vq-field { margin-bottom: 1rem; }
+.vq-field label { display: block; font-weight: 600; margin-bottom: .35rem; font-size: .93rem; }
+.vq-field input, .vq-field select, .vq-field textarea {
+  width: 100%; padding: .75rem .85rem; font-size: 1rem;
+  border: 1.5px solid var(--line); border-radius: 10px;
+  font-family: inherit; background: #fff; min-height: 44px;
+}
+.vq-field input:focus, .vq-field select:focus, .vq-field textarea:focus {
+  outline: 2px solid var(--brand); border-color: var(--brand);
+}
+.vq-hint { font-size: .82rem; color: var(--ink-soft); margin-top: .3rem; }
+.vq-formula {
+  background: var(--paper-soft); border-left: 4px solid var(--brand);
+  padding: .8rem 1rem; border-radius: 0 8px 8px 0;
+  font-size: .9rem; color: var(--ink-soft); margin: 1.2rem 0;
+}
+
+/* ---------- tool card grid ---------- */
+.vq-section-title { font-size: 1.35rem; margin: 2rem 0 .4rem; }
+.vq-section-sub { color: var(--ink-soft); margin: 0 0 1.1rem; }
+.tool-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .tool-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 960px) { .tool-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.tool-card {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.15rem; background: var(--paper); box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: .5rem;
+  text-decoration: none; color: inherit;
+}
+a.tool-card:hover { border-color: var(--brand); transform: translateY(-2px); }
+.tool-card h3 { margin: 0; font-size: 1.05rem; color: var(--ink); }
+.tool-card p { margin: 0; font-size: .9rem; color: var(--ink-soft); flex: 1; }
+.tool-cluster {
+  align-self: flex-start; font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em;
+  background: var(--brand-soft); color: var(--brand);
+  padding: .2rem .55rem; border-radius: 20px;
+}
+.tool-card .go { font-weight: 700; font-size: .9rem; color: var(--brand); }
+
+/* ---------- result / table ---------- */
+.vq-result {
+  background: var(--paper-soft); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 1.1rem; margin: 1.2rem 0;
+}
+.vq-result .big { font-size: 1.9rem; font-weight: 800; color: var(--brand); }
+.vq-table { width: 100%; border-collapse: collapse; font-size: .93rem; margin: 1rem 0; }
+.vq-table th, .vq-table td {
+  border: 1px solid var(--line); padding: .6rem .7rem; text-align: left;
+}
+.vq-table th { background: var(--paper-soft); }
+.vq-table-wrap { overflow-x: auto; }
+
+/* ---------- ad slots ---------- */
+.ad-slot {
+  border: 1.5px dashed var(--line); border-radius: var(--radius);
+  background: var(--paper-soft); color: var(--ink-soft);
+  min-height: 90px; margin: 1.5rem auto;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: .2rem; font-size: .8rem;
+  max-width: 100%;
+}
+.ad-slot .ad-label {
+  font-size: .68rem; text-transform: uppercase; letter-spacing: .08em;
+  border: 1px solid var(--line); padding: .1rem .5rem; border-radius: 4px;
+  background: #fff;
+}
+.ad-leaderboard { min-height: 110px; }
+.ad-rectangle { min-height: 280px; max-width: 336px; }
+.ad-banner { min-height: 70px; max-width: 468px; }
+
+/* ---------- upsell banner / modal ---------- */
+.upsell-banner {
+  border: 1.5px solid #f3c58a; background: #fff8ec;
+  border-radius: var(--radius); padding: 1.1rem 1.2rem;
+  margin: 1.2rem 0; display: flex; gap: 1rem; align-items: center;
+  flex-wrap: wrap;
+}
+.upsell-banner .u-text { flex: 1; min-width: 200px; }
+.upsell-banner strong { display: block; margin-bottom: .2rem; }
+.upsell-banner p { margin: 0; font-size: .9rem; color: var(--ink-soft); }
+.vq-modal-veil {
+  position: fixed; inset: 0; background: rgba(10, 18, 40, .55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; padding: 1rem;
+}
+.vq-modal {
+  background: #fff; border-radius: 16px; padding: 1.6rem;
+  max-width: 420px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,.25);
+}
+.vq-modal h3 { margin-top: 0; }
+.vq-modal .vq-btn { width: 100%; margin-top: .6rem; text-align: center; }
+
+/* ---------- pricing ---------- */
+.price-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin: 1.5rem 0; }
+@media (min-width: 820px) { .price-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.price-card {
+  border: 1.5px solid var(--line); border-radius: 16px;
+  padding: 1.5rem; background: #fff; display: flex; flex-direction: column; gap: .6rem;
+}
+.price-card.featured { border-color: var(--brand); box-shadow: var(--shadow); position: relative; }
+.price-card .p-name { font-weight: 800; font-size: 1.05rem; }
+.price-card .p-price { font-size: 2rem; font-weight: 800; }
+.price-card .p-price small { font-size: .9rem; font-weight: 500; color: var(--ink-soft); }
+.price-card ul { margin: 0; padding-left: 1.2rem; font-size: .93rem; color: var(--ink-soft); }
+.price-card li { margin-bottom: .35rem; }
+.p-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--brand); color: #fff; font-size: .72rem; font-weight: 700;
+  padding: .2rem .8rem; border-radius: 20px; white-space: nowrap;
+}
+
+/* ---------- FAQ ---------- */
+.vq-faq details {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: .9rem 1rem; margin-bottom: .6rem; background: #fff;
+}
+.vq-faq summary { font-weight: 700; cursor: pointer; }
+.vq-faq p { margin: .6rem 0 0; color: var(--ink-soft); font-size: .94rem; }
+
+/* ---------- footer ---------- */
+.vq-footer {
+  border-top: 1px solid var(--line); background: var(--paper-soft);
+  margin-top: 2rem;
+}
+.vq-footer-inner {
+  max-width: var(--maxw); margin: 0 auto; padding: 1.8rem 1rem;
+  display: grid; gap: 1.2rem; grid-template-columns: 1fr;
+  font-size: .88rem; color: var(--ink-soft);
+}
+@media (min-width: 720px) { .vq-footer-inner { grid-template-columns: 2fr 1fr 1fr; } }
+.vq-footer strong { color: var(--ink); display: block; margin-bottom: .4rem; }
+.vq-footer a { color: var(--ink-soft); text-decoration: none; display: block; margin-bottom: .3rem; }
+.vq-footer a:hover { color: var(--brand); }
+.vq-footnote {
+  max-width: var(--maxw); margin: 0 auto; padding: 0 1rem 1.4rem;
+  font-size: .78rem; color: var(--ink-soft);
+}
+
+/* ---------- API docs ---------- */
+.api-endpoint {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1rem 1.2rem; margin-bottom: 1rem; background: #fff;
+}
+.api-endpoint code {
+  background: var(--ink); color: #c8f5c8; padding: .35rem .7rem;
+  border-radius: 6px; font-size: .85rem; display: inline-block; margin-bottom: .5rem;
+}
+.api-endpoint pre {
+  background: var(--paper-soft); border: 1px solid var(--line);
+  border-radius: 8px; padding: .8rem; overflow-x: auto; font-size: .82rem;
+}
+.vq-notice {
+  border: 1.5px solid #f3c58a; background: #fff8ec; border-radius: var(--radius);
+  padding: 1rem 1.2rem; margin: 1.2rem 0; font-size: .93rem;
+}
+
+/* ---------- print ---------- */
+@media print {
+  .vq-header, .vq-footer, .vq-footnote, .ad-slot,
+  .upsell-banner, .vq-modal-veil, .vq-nav, .vq-lang, .vq-btn { display: none !important; }
+  .vq-main { max-width: none; padding: 0; }
+  .vq-hero { background: none; color: #000; box-shadow: none; padding: 0; }
+  body { font-size: 12pt; }
+}

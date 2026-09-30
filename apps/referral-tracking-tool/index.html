@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Referral Tracking Tool — रेफरल ट्रैकिंग | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free referral tracking for Indian SMEs: referrer → referee links, referral status (invited/joined/purchased), reward due/paid tracking, top referrers list, CSV export. रेफरल ट्रैकिंग मुफ्त में।">
+  <meta name="keywords" content="referral tracking, रेफरल ट्रैकिंग, referral program India, refer and earn tracker, referee referral software, top referrers, referral reward tracker, रेफरल प्रोग्राम">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .rs-invited { background: #eef2ff; color: #3b5bfd; }
+    .rs-joined { background: #fff7e0; color: #946200; }
+    .rs-purchased { background: #e6f6ec; color: #1a7f37; }
+    .rw-due { background: #fde8e8; color: #b42318; }
+    .rw-paid { background: #f1f5f9; color: #475569; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    .row-actions { white-space: nowrap; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+    .kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: .7rem; text-align: center; }
+    .kpi .num { font-weight: 800; font-size: 1.2rem; }
+    .kpi .lbl { font-size: .78rem; color: var(--ink-soft); }
+    .top-row { display: flex; align-items: center; gap: .6rem; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+    .top-row:last-child { border-bottom: 0; }
+    .top-rank { font-weight: 800; font-size: 1.1rem; min-width: 2rem; text-align: center; color: var(--brand); }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem; font-size: .9rem; }
+    .formula code { background: #eef2ff; padding: .1rem .4rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="referral-tracking-tool">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Referral Tracking Tool</h1>
+    <p class="lede">रेफरल ट्रैकिंग — <strong>referrer → referee</strong> links, referral <strong>status</strong> (invited / joined / purchased), <strong>reward due / paid</strong> tracking, <strong>top referrers</strong> list, CSV export. <strong>Export: 20/day free · snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add referral / रेफरल जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="r-referrer">Referrer name (kisne bheja) *</label><input id="r-referrer" type="text" placeholder="e.g. Amit Kumar" maxlength="120"></div>
+        <div class="vq-field"><label for="r-referee">Referee name (naya customer) *</label><input id="r-referee" type="text" placeholder="e.g. Neha Gupta" maxlength="120"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="r-contact">Referee contact (phone/email)</label><input id="r-contact" type="text" placeholder="e.g. 98765 43210" maxlength="60"></div>
+        <div class="vq-field"><label for="r-date">Date *</label><input id="r-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="r-reward">Reward amount (₹) *</label><input id="r-reward" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 500"></div>
+        <div class="vq-field"><label for="r-note">Note</label><input id="r-note" type="text" placeholder="e.g. Website package referral" maxlength="200"></div>
+      </div>
+      <button class="vq-btn go" id="addRefBtn" type="button">Add referral</button>
+      <p class="err" id="r-error" role="alert"></p>
+      <p class="vq-hint">Reward tabhi <strong>due</strong> hota hai jab referee <strong>purchased</strong> status me pahunche. Status log me aage badhayein.</p>
+    </div>
+
+    <div class="card">
+      <h2>Overview</h2>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="num" id="kpiTotal">—</div><div class="lbl">Total referrals</div></div>
+        <div class="kpi"><div class="num" id="kpiPurchased">—</div><div class="lbl">Purchased</div></div>
+        <div class="kpi"><div class="num" id="kpiDue">—</div><div class="lbl">Reward due (₹)</div></div>
+        <div class="kpi"><div class="num" id="kpiPaid">—</div><div class="lbl">Reward paid (₹)</div></div>
+      </div>
+      <div class="formula">
+        <strong>Rules (on-screen):</strong><br>
+        <code>reward due = Σ reward of referrals with status "purchased" AND not paid</code><br>
+        <code>reward paid = Σ reward of referrals marked paid</code>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>All referrals</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Date</th><th>Referrer → Referee</th><th>Contact</th><th>Status</th><th class="r">Reward (₹)</th><th>Reward</th><th class="no-print">Actions</th></tr></thead>
+        <tbody id="refBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>🏆 Top referrers</h2>
+      <div id="topList"></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn secondary" id="exportBtn" type="button">Export CSV</button>
+      <button class="vq-btn secondary" id="saveBtn" type="button">Save snapshot</button>
+      <button class="vq-btn ghost" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="rt-saved"></p>
+    <p class="vq-hint no-print">List dekhna free hai — sirf CSV export (20/day) aur snapshots (25/day) par limit hai.</p>
+    <div id="rt-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Referral status ka flow kya hai?</summary>
+        <p><strong>Invited</strong> = referee ko invite kiya gaya, <strong>Joined</strong> = vo jud gaya (signup/visit), <strong>Purchased</strong> = usne khareed liya. Reward sirf <strong>purchased</strong> par due hota hai.</p>
+      </details>
+      <details>
+        <summary>Reward due aur reward paid me kya farak hai?</summary>
+        <p><strong>Due</strong> = referee ne purchase kar liya par referrer ko reward abhi dena baaki hai. Log me <strong>Mark paid</strong> dabane par vo <strong>paid</strong> me chala jaata hai.</p>
+      </details>
+      <details>
+        <summary>Top referrers list kaise banti hai?</summary>
+        <p>Har referrer ke <strong>purchased</strong> referrals gine jaate hain — sabse zyada successful referrals wala sabse upar. Ye aapke best brand ambassadors hain.</p>
+      </details>
+      <details>
+        <summary>रेफरल प्रोग्राम क्यों ज़रूरी है?</summary>
+        <p>Referral se aane wale customers ka bharosa pehle se hota hai aur vo aam leads se zyada khareedte hain. Chhota sa reward dekar aap apne customers ko apna sales team bana sakte hain.</p>
+      </details>
+      <details>
+        <summary>Kya mera data safe hai?</summary>
+        <p>Haan — saara data sirf aapke browser ke vault me store hota hai. Passphrase se encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

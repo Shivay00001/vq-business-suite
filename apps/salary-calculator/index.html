@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salary Calculator India – CTC to In-Hand Salary, PF, ESI & Tax (FY 2025-26) | VisionQuantech</title>
+  <meta name="description" content="Free India salary calculator: convert CTC to monthly in-hand salary with full breakup — Basic, HRA, PF @12%, ESI, professional tax by state, and income tax under BOTH new & old regimes (FY 2025-26). सैलरी कैलकुलेटर – CTC से इन-हैंड सैलरी निकालें।">
+  <meta name="keywords" content="salary calculator India, CTC to in-hand salary calculator, in-hand salary calculator, take home salary India, सैलरी कैलकुलेटर, वेतन गणना, PF calculation, ESI calculation, professional tax Maharashtra, income tax calculator FY 2025-26, new vs old tax regime">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .stat-grid { display: grid; grid-template-columns: 1fr; gap: .8rem; margin: 1rem 0; }
+    @media (min-width: 640px) { .stat-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-grid > div { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .9rem 1rem; }
+    .stat-grid span { display: block; font-size: .82rem; color: var(--ink-soft); }
+    .stat-grid .big { color: var(--brand); font-size: 1.6rem; font-weight: 800; }
+    td.hl { background: #f2f6ff; font-weight: 700; }
+    td.dim { color: var(--ink-soft); font-size: .88rem; }
+    .form-grid { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1.2rem; margin: 1.2rem 0; box-shadow: var(--shadow); }
+    .check-row { display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem; }
+    .check-row input { width: 1.2rem; height: 1.2rem; accent-color: var(--brand); }
+    .sources { font-size: .85rem; color: var(--ink-soft); }
+    .sources li { margin-bottom: .3rem; }
+    .assump { background: var(--paper-soft); border-radius: 10px; padding: .9rem 1rem; font-size: .9rem; }
+    .assump li { margin-bottom: .3rem; }
+  </style>
+</head>
+<body data-app="salary-calculator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Salary Calculator India — CTC to In-Hand</h1>
+      <p>Free salary calculator for Indian employees &amp; HR: full CTC breakup with PF, ESI, state professional tax and income tax under <strong>both new and old regimes (FY 2025-26)</strong>. <span lang="hi">सैलरी कैलकुलेटर — CTC से मासिक इन-हैंड सैलरी, PF, ESI और टैक्स तुरंत जानें।</span></p>
+    </div>
+
+    <div id="s-gate"></div>
+
+    <section class="card" aria-label="Salary inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your salary details</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="s-ctc">Annual CTC (₹)</label>
+          <input id="s-ctc" type="number" min="0" value="1200000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="s-state">Work state (for professional tax)</label>
+          <select id="s-state">
+            <option value="none">Delhi / no professional tax</option>
+            <option value="maharashtra" selected>Maharashtra</option>
+            <option value="karnataka">Karnataka</option>
+            <option value="west-bengal">West Bengal</option>
+            <option value="tamil-nadu">Tamil Nadu</option>
+            <option value="gujarat">Gujarat</option>
+            <option value="andhra-pradesh">Andhra Pradesh</option>
+            <option value="telangana">Telangana</option>
+            <option value="kerala">Kerala</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="s-basic">Basic salary (% of CTC)</label>
+          <input id="s-basic" type="number" min="1" max="100" step="0.1" value="40" inputmode="decimal">
+          <p class="vq-hint">Typically 40–50% of CTC.</p>
+        </div>
+        <div class="vq-field">
+          <label for="s-hra">HRA (% of Basic)</label>
+          <input id="s-hra" type="number" min="0" max="100" step="0.1" value="40" inputmode="decimal">
+          <p class="vq-hint">40% non-metro, 50% metro is standard.</p>
+        </div>
+        <div class="vq-field">
+          <label for="s-da">DA / conveyance (% of CTC)</label>
+          <input id="s-da" type="number" min="0" max="100" step="0.1" value="0" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="s-rent">Monthly rent paid (₹, for old-regime HRA)</label>
+          <input id="s-rent" type="number" min="0" value="15000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="s-80c">Other 80C investments (₹/yr, old regime)</label>
+          <input id="s-80c" type="number" min="0" value="0" inputmode="decimal">
+          <p class="vq-hint">Your PF is added automatically. Max total ₹1,50,000.</p>
+        </div>
+        <div class="vq-field">
+          <label for="s-80d">80D health-insurance premium (₹/yr, old regime)</label>
+          <input id="s-80d" type="number" min="0" value="0" inputmode="decimal">
+        </div>
+      </div>
+      <div class="check-row">
+        <input id="s-metro" type="checkbox">
+        <label for="s-metro" style="margin:0">I live in a metro city (Delhi / Mumbai / Chennai / Kolkata) — 50% HRA exemption rule</label>
+      </div>
+      <button id="s-calc" class="vq-btn" type="button">Calculate in-hand salary</button>
+      <p class="vq-hint">Free: 20 calculations per day. All math happens in your browser.</p>
+    </section>
+
+    <section id="s-results" aria-live="polite"></section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions (all editable above)</h2>
+      <ul class="assump">
+        <li><strong>PF:</strong> 12% employee + 12% employer on Basic (+DA), wage ceiling ₹25,000/month (₹3,000 each max), w.e.f. 17-09-2026 (S.O. 5109(E)). Employer share = 8.33% pension (EPS) + 3.67% PF.</li>
+        <li><strong>ESI:</strong> 0.75% employee + 3.25% employer on gross salary, only when gross ≤ ₹21,000/month (₹25,000 for persons with disabilities).</li>
+        <li><strong>Professional tax:</strong> deducted per your state's monthly slab (e.g. Maharashtra ₹200/month above ₹10,000; ₹300 in February).</li>
+        <li><strong>Gratuity:</strong> (Basic + DA) ÷ 26 × 15 per year, shown as employer cost inside CTC (payable after 5 years of service).</li>
+        <li><strong>Special allowance</strong> is the balancing figure: gross − Basic − HRA − DA.</li>
+        <li><strong>New regime tax:</strong> FY 2025-26 slabs 0/5/10/15/20/25/30% on 0–4L/4–8L/8–12L/12–16L/16–20L/20–24L/&gt;24L; ₹75,000 standard deduction; zero tax up to ₹12L taxable (87A rebate, marginal relief just above).</li>
+        <li><strong>Old regime tax:</strong> slabs 0/5/20/30% on 0–2.5L/2.5–5L/5–10L/&gt;10L; ₹50,000 standard deduction; 80C (₹1.5L max incl. PF), 80D, HRA exemption and PT deducted; 87A rebate up to ₹5L.</li>
+        <li><strong>Cess:</strong> 4% health &amp; education cess on tax + surcharge (surcharge applies above ₹50L).</li>
+        <li>Employees with average daily wage ≤ ₹176 are exempt from the employee ESI share — not modelled here.</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>Income-tax slabs FY 2025-26 (new &amp; old regime), 87A rebate &amp; standard deduction — <a href="https://economictimes.indiatimes.com/wealth/tax/income-tax-union-budget-2026-live-updates-standard-deduction-hike-income-tax-slab-changes-nirmala-sitharaman-tax-relief-feb-1/liveblog/127830262.cms" rel="noopener">Economic Times — Budget 2026 slab tables</a>; <a href="https://taxconcept.net/income-tax/income-tax-slabs-for-fy-2025-26-ay-2026-27-under-old-tax-new-tax-regime/" rel="noopener">taxconcept.net</a>; <a href="https://www.manthanexperts.com/old-tax-regime-vs-new-tax-regime-for-f-y-2025-26-a-y-2026-27/" rel="noopener">manthanexperts.com</a></li>
+        <li>EPF 12% rate, ₹25,000 wage ceiling w.e.f. 17-09-2026 (S.O. 5109(E)), EPS/EPF split — <a href="https://upstox.com/news/personal-finance/latest-updates/epfo-wage-ceiling-hiked-to-25-000-labour-ministry-issues-gazette-notification/article-200466/" rel="noopener">Upstox</a>; <a href="https://mercans.com/resources/statutory-alerts/india-increase-in-statutory-wage-ceiling-for-provident-fund-17-september-2026/" rel="noopener">Mercans statutory alert</a></li>
+        <li>ESI 0.75% / 3.25%, ₹21,000 wage ceiling — <a href="https://www.thepeoplesboard.com/hr-compliance/esic-compliance-for-employers-guide/" rel="noopener">thepeoplesboard.com</a>; <a href="https://kredily.com/esi-calculation-in-india-contribution-rate-formula-salary-limit/" rel="noopener">kredily.com</a></li>
+        <li>Professional-tax state slabs — <a href="https://github.com/eurth/claude-for-ca/blob/HEAD/payroll-compliance/skills/professional-tax/SKILL.md" rel="noopener">claude-for-ca payroll-compliance skill (FY 2025-26)</a>; <a href="https://factohr.com/professional-tax/" rel="noopener">factohr.com</a>; <a href="https://vakilsearch.com/blog/profession-tax-slabs-in-indian-states/" rel="noopener">vakilsearch.com</a></li>
+      </ul>
+      <p class="vq-hint">Rates change with budgets and state notifications — verify before payroll or filing.</p>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Salary calculator — FAQs</h2>
+      <details><summary>How is in-hand salary calculated from CTC in India?</summary><p>Gross salary = CTC minus employer PF (12% of Basic up to ₹25,000/month, w.e.f. 17-09-2026), employer ESI (3.25% if gross is within ₹21,000/month) and gratuity accrual. In-hand = gross minus employee PF (12%), employee ESI (0.75%), professional tax and income-tax TDS.</p></details>
+      <details><summary lang="hi">सैलरी कैलकुलेटर कैसे काम करता है?</summary><p lang="hi">अपना सालाना CTC, राज्य और किराया डालें — कैलकुलेटर PF, ESI, प्रोफेशनल टैक्स और इनकम टैक्स (नए और पुराने दोनों रीजिम में) घटाकर मासिक इन-हैंड सैलरी बताता है।</p></details>
+      <details><summary>What is the PF deduction on salary?</summary><p>12% of Basic + DA from the employee, matched by 12% from the employer, on wages up to ₹25,000/month (₹3,000/month each), w.e.f. 17-09-2026 (S.O. 5109(E)). The employer's share splits into 8.33% pension (EPS) and 3.67% PF.</p></details>
+      <details><summary>What is the ESI deduction rate?</summary><p>0.75% of gross salary from the employee and 3.25% from the employer, applicable when gross monthly wages are ₹21,000 or less (₹25,000 for persons with disabilities).</p></details>
+      <details><summary>Which tax regime is better in FY 2025-26?</summary><p>It depends on your deductions. The new regime has lower slab rates, a ₹75,000 standard deduction and zero tax up to ₹12 lakh taxable income; the old regime allows 80C, 80D, HRA and other deductions with a ₹50,000 standard deduction. This calculator shows both side by side.</p></details>
+      <details><summary>Is this official tax advice?</summary><p>No. Figures use FY 2025-26 statutory rates for estimation only. Verify with a chartered accountant before filing.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

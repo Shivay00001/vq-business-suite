@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSN Code Finder &amp; SAC Code Finder — GST Rate List (GST 2.0) | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free HSN code finder and SAC code finder for Indian SMEs: search ~100 common HSN chapters & SAC services with GST 2.0 rates (5%/18%/40% from 22-Sep-2025). No signup. एचएसएन कोड और एसएसी कोड खोजें।">
+  <meta name="keywords" content="HSN code finder, SAC code finder, एचएसएन कोड लिस्ट, GST rate list, HSN code list with GST rate, SAC code for services, GST 2.0 rate list, hsn code kaise nikale">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .search-row { display: grid; grid-template-columns: 1fr; gap: .7rem; margin-bottom: .7rem; }
+    .filters { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
+    .filters select { flex: 1 1 140px; min-height: 44px; padding: .55rem .7rem; font-size: .95rem; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; }
+    #hsnInput { min-height: 48px; padding: .7rem .9rem; font-size: 1rem; border: 1.5px solid var(--line); border-radius: 10px; width: 100%; }
+    #results { display: grid; gap: .6rem; margin-top: .8rem; }
+    .code-card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .8rem .9rem; }
+    .code-card .top { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+    .code-no { font-weight: 800; font-size: 1.05rem; letter-spacing: .03em; }
+    .kind { font-size: .72rem; font-weight: 700; padding: .15rem .5rem; border-radius: 999px; background: var(--paper-soft); border: 1px solid var(--line); }
+    .rate { margin-left: auto; font-weight: 800; font-size: 1.05rem; padding: .25rem .7rem; border-radius: 8px; }
+    .rate.r-nil { background: #e6f4ea; color: #1a7f37; }
+    .rate.r-3 { background: #eef4ff; color: #1a56db; }
+    .rate.r-5 { background: #eef7ee; color: #237b3a; }
+    .rate.r-18 { background: #fff4e0; color: #a15c00; }
+    .rate.r-40 { background: #fdecec; color: #b42318; }
+    .rate.r-out { background: #f1f3f4; color: #5f6368; }
+    .code-desc { font-weight: 600; margin: .35rem 0 .15rem; }
+    .code-note { font-size: .85rem; color: var(--ink-soft); }
+    .code-src { font-size: .75rem; color: var(--ink-soft); margin-top: .3rem; }
+    #countLine { font-size: .85rem; color: var(--ink-soft); margin: .4rem 0; }
+    .legend { display: flex; gap: .4rem; flex-wrap: wrap; font-size: .78rem; color: var(--ink-soft); margin-bottom: .6rem; }
+    .legend span { border: 1px solid var(--line); border-radius: 999px; padding: .1rem .55rem; background: #fff; }
+  </style>
+</head>
+<body data-app="hsn-sac-finder">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>HSN Code Finder &amp; SAC Code Finder</h1>
+    <p class="lede">एचएसएन / एसएसी कोड खोजें — ~100 sabse common <strong>HSN chapters</strong> (goods) aur <strong>SAC headings</strong> (services) ke saath <strong>GST 2.0 rates</strong>: <strong>5%</strong> aur <strong>18%</strong> ke do mukhya slab, luxury/sin goods par <strong>40%</strong> demerit rate — <strong>22 September 2025</strong> se effective (56th GST Council). Keyword ya code se search karein; har entry me rate + chapter note + source diya gaya hai. <strong>Free: 20 searches/day.</strong></p>
+
+    <div class="search-row">
+      <div class="vq-field">
+        <label for="hsnInput">Search by product/service name or code / नाम या कोड से खोजें</label>
+        <input id="hsnInput" type="text" autocomplete="off" placeholder="e.g. shampoo, 3305, restaurant, 9983…">
+      </div>
+    </div>
+    <div class="filters">
+      <select id="kindFilter" aria-label="Filter by HSN or SAC">
+        <option value="">HSN + SAC (all)</option>
+        <option value="HSN">HSN — goods only</option>
+        <option value="SAC">SAC — services only</option>
+      </select>
+      <select id="rateFilter" aria-label="Filter by GST rate">
+        <option value="">All rates</option>
+        <option value="nil">Nil (0%)</option>
+        <option value="3">3%</option>
+        <option value="5">5%</option>
+        <option value="18">18%</option>
+        <option value="40">40% (demerit)</option>
+        <option value="out">Outside GST</option>
+      </select>
+      <button class="vq-btn go" id="searchBtn" type="button">Search</button>
+      <button class="vq-btn ghost" id="clearBtn" type="button">Clear</button>
+    </div>
+    <p class="vq-hint">Free: 20 searches per day. Reading results is never metered after the search runs.</p>
+    <p class="err" id="hsn-error" role="alert"></p>
+    <div id="hsn-upsell"></div>
+
+    <div class="legend">
+      <span>0% = nil/exempt</span><span>3% = special (gold)</span><span>5% / 18% = GST 2.0 slabs</span><span>40% = demerit (luxury/sin)</span>
+    </div>
+    <div id="countLine"></div>
+    <div id="results" aria-live="polite"></div>
+
+    <div class="vq-notice" style="margin-top:1.2rem">
+      <strong>Honest note / ईमानदार नोट:</strong> ye dataset <strong>curated</strong> hai — lagbhag 100 sabse common entries jo Indian SMEs bechte hain. Ye <strong>poora GST tariff nahi</strong> hai. Exact classification (especially branded vs unbranded, pack-size ya end-use par nirbhar rates) ke liye <strong>cbic-gst.gov.in</strong> ka official rate schedule dekhein ya apne CA se confirm karein. Rates <strong>GST 2.0 (56th GST Council, 22-Sep-2025)</strong> ke hisaab se hain; purane 12%/28% slabs zyada-tar 5%/18% me merge ho gaye.
+    </div>
+
+    <div class="vq-formula" style="margin-top:.8rem">
+      <strong>Sources:</strong> GST 2.0 rate rationalisation — 56th GST Council meeting (3-Sep-2025), effective 22-Sep-2025: two slabs 5% &amp; 18% + 40% demerit rate on luxury/sin goods (replacing the earlier 5%/12%/18%/28% structure). Special 3% rate continues for gold/silver/jewellery.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>HSN code kya hota hai aur invoice me kyun chahiye?</summary>
+        <p>HSN (Harmonized System of Nomenclature) goods ko classify karne ka international code system hai. GST invoice me HSN code likhna mandatory hai (turnover ke hisaab se 4 ya 6 digit tak), kyunki isi se pata chalta hai ki kaunsa GST rate lagega.</p>
+      </details>
+      <details>
+        <summary>SAC code kya hai?</summary>
+        <p>SAC (Services Accounting Code) services ka classification code hai — jaise HSN goods ke liye, waise SAC services ke liye. Service invoice me 6-digit SAC code diya jata hai.</p>
+      </details>
+      <details>
+        <summary>GST 2.0 me kaunse rates hain? (What are the GST 2.0 slabs?)</summary>
+        <p>56th GST Council (September 2025) ke baad do mukhya slabs hain — <strong>5% aur 18%</strong> — plus luxury aur sin goods (tobacco, pan masala, aerated drinks, badi gaadiyan) par <strong>40% demerit rate</strong>. Ye 22 September 2025 se effective hai. Sone-chaandi par 3% special rate jaari hai.</p>
+      </details>
+      <details>
+        <summary>Kya is finder me poora HSN tariff hai?</summary>
+        <p>Nahi — ye ~100 curated common entries hain jo SMEs aam taur par bechte hain. Poora official tariff <strong>cbic-gst.gov.in</strong> par available hai. Confusion ho to CA se confirm karein, kyunki galat HSN par galat rate lag sakta hai.</p>
+      </details>
+      <details>
+        <summary>Mera product list me nahi hai — kya karun?</summary>
+        <p>Keyword badal kar try karein (jaise "phone" ki jagah "mobile"), ya chapter-level entry dekhein. Phir bhi na mile to official CBIC rate schedule ya apne CA se exact HSN confirm karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

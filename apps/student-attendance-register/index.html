@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance Register – Daily Attendance, Monthly % & Defaulter List | VisionQuantech</title>
+  <meta name="description" content="Free student attendance register: daily present/absent/leave marking per batch, monthly attendance percentage report and defaulter list. छात्र उपस्थिति रजिस्टर – मासिक % रिपोर्ट। Data stays in your browser.">
+  <meta name="keywords" content="student attendance register, attendance register app, school attendance tracker, छात्र उपस्थिति रजिस्टर, defaulter list attendance, monthly attendance percentage">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/student-attendance-register/">
+  <meta property="og:title" content="Student Attendance Register – Monthly % Report | VisionQuantech">
+  <meta property="og:description" content="Daily attendance marking with monthly percentage reports and defaulter lists. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .bad { color:#b3261e; font-weight:700; }
+    .a-row { display:flex; justify-content:space-between; align-items:center; gap:.6rem; padding:.55rem 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+    .a-btns { display:flex; gap:.4rem; }
+    .vq-btn.small.a-mark { opacity:.55; }
+    .vq-btn.small.a-mark.active { opacity:1; outline:2px solid var(--brand); }
+    .vq-table { width:100%; border-collapse:collapse; margin:.6rem 0; font-size:.92rem; }
+    .vq-table th, .vq-table td { border:1px solid var(--line); padding:.45rem .6rem; }
+    .vq-table .num { text-align:right; }
+    .table-wrap { overflow-x:auto; }
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+  </style>
+</head>
+<body data-app="student-attendance-register">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard top slot --></div>
+
+    <div class="vq-hero">
+      <h1>Student Attendance Register — Daily Marking & Monthly Report</h1>
+      <p>Mark present/absent/leave daily per batch, then generate a monthly attendance percentage report with a defaulter list below your threshold. <span lang="hi">छात्र उपस्थिति रजिस्टर — मासिक प्रतिशत रिपोर्ट और डिफॉल्टर सूची।</span></p>
+      <p class="vq-hint">Free: 20 reports per day. Marks save automatically in your browser vault (max 25 students). Nothing is uploaded.</p>
+    </div>
+
+    <div id="a-gate"></div>
+
+    <section class="card" aria-label="Add student">
+      <h2 class="vq-section-title" style="margin-top:0">Add student</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="a-name">Student name</label>
+          <input id="a-name" type="text" maxlength="120" placeholder="e.g. Aarav Patel">
+        </div>
+        <div class="vq-field">
+          <label for="a-batch">Batch</label>
+          <input id="a-batch" type="text" maxlength="120" placeholder="e.g. Class 10 – Morning">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-add-sa" class="vq-btn" type="button">Add student</button>
+      </div>
+      <p id="a-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Mark attendance">
+      <h2 class="vq-section-title" style="margin-top:0">Mark attendance</h2>
+      <div class="vq-field" style="max-width:16rem">
+        <label for="a-date">Date</label>
+        <input id="a-date" type="date">
+      </div>
+      <div id="a-grid"></div>
+    </section>
+
+    <section class="card" aria-label="Monthly report">
+      <h2 class="vq-section-title" style="margin-top:0">Monthly report</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="a-month">Month</label>
+          <input id="a-month" type="month">
+        </div>
+        <div class="vq-field">
+          <label for="a-threshold">Defaulter threshold (%)</label>
+          <input id="a-threshold" type="number" min="0" max="100" value="75" inputmode="numeric">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-report" class="vq-btn" type="button">Generate report</button>
+      </div>
+      <div class="table-wrap">
+      <table class="vq-table">
+        <thead><tr><th>Student</th><th>Batch</th><th>Present</th><th>Absent</th><th>Leave</th><th>Attendance %</th></tr></thead>
+        <tbody id="a-report-body"><tr><td colspan="6" class="vq-hint">Pick a month.</td></tr></tbody>
+      </table>
+      </div>
+      <div id="a-defaulter" aria-live="polite"></div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard bottom slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Student attendance register — FAQs</h2>
+      <details><summary>How do I mark daily attendance?</summary><p>Pick a date and tap Present/Absent/Leave for each student. Marks save automatically in your browser.</p></details>
+      <details><summary lang="hi">मासिक उपस्थिति प्रतिशत कैसे निकालें?</summary><p lang="hi">महीना चुनें और रिपोर्ट बनाएँ — हर छात्र की present/absent/leave संख्या और प्रतिशत अपने आप निकलेगा। 75% से कम वालों की डिफॉल्टर सूची भी मिलेगी।</p></details>
+      <details><summary>Who counts as a defaulter?</summary><p>Any student with attendance below your threshold (default 75%) for the selected month, provided they have at least one marked day.</p></details>
+      <details><summary>Is attendance data stored online?</summary><p>No — everything stays in your browser vault (max 25 students). Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

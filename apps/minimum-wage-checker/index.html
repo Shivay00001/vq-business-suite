@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimum Wage Checker – State-wise Minimum Wages India 2026 | VisionQuantech</title>
+  <meta name="description" content="Free minimum wage checker for Indian employers: compare wages against verified state minimums — Delhi, Maharashtra, Karnataka, Telangana, Central sphere — with effective dates and sources. न्यूनतम वेतन जाँच।">
+  <meta name="keywords" content="minimum wage checker India, minimum wages Delhi Maharashtra Karnataka Telangana 2026, न्यूनतम वेतन, minimum wage compliance, VDA rates">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/minimum-wage-checker/">
+  <meta property="og:title" content="Minimum Wage Checker – State Minimum Wages India | VisionQuantech">
+  <meta property="og:description" content="Compare your wages against verified state minimums with effective dates and sources. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .verdict-pass { border-left:5px solid #1d7a3f; } .verdict-fail { border-left:5px solid #b3261e; }
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-pass{ background:#d9f2e3; color:#1d7a3f; } .b-fail{ background:#fde3e3; color:#b3261e; }
+    .big { font-size:1.5rem; font-weight:800; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .alert { background:#fff3d6; border:1px solid #8a6100; border-radius:10px; padding:.9rem 1rem; font-size:.92rem; }
+  </style>
+</head>
+<body data-app="minimum-wage-checker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Minimum Wage Checker — India (2026)</h1>
+      <p>Free minimum-wage compliance check: pick your state, employment, skill level and zone, and compare a worker's gross monthly wage against a <strong>verified</strong> minimum with its effective date and source. <span lang="hi">न्यूनतम वेतन जाँच — राज्य-वार दरें।</span></p>
+      <div class="alert" role="note"><strong>Honest dataset:</strong> this covers selected states/employments we could verify (Delhi official order; Maharashtra, Karnataka, Telangana via published tables; Central-sphere VDA from the Labour Bureau) — <strong>not all India</strong>. Rates are revised periodically (often every 6 months via VDA). <strong>Always confirm the latest notification of your state labour department before relying on this.</strong></div>
+      <p class="vq-hint">Free: 20 checks per day. Nothing is stored — all checks run in your browser.</p>
+    </div>
+
+    <div id="mw-gate"></div>
+
+    <section class="card" aria-label="Wage check inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Check a wage</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="mw-state">State / sphere</label><select id="mw-state"></select></div>
+        <div class="vq-field"><label for="mw-emp">Employment</label><select id="mw-emp"></select></div>
+        <div class="vq-field"><label for="mw-skill">Skill level</label><select id="mw-skill"></select></div>
+        <div class="vq-field" id="mw-zone-row"><label for="mw-zone">Zone / area</label><select id="mw-zone"></select></div>
+        <div class="vq-field"><label for="mw-wage">Worker's gross monthly wage (₹)</label><input id="mw-wage" type="number" min="0" max="10000000" step="0.01" value="20000" inputmode="decimal"><p class="vq-hint">Gross monthly wage (Basic + DA + allowances before deductions).</p></div>
+      </div>
+      <button id="mw-run" class="vq-btn" type="button">Check wage</button>
+      <p id="mw-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="mw-result-card" aria-label="Check result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Result</h2>
+      <div id="mw-result"></div>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li><strong>Delhi</strong> — official order effective 1 Oct 2025: Unskilled ₹19,846 (₹764/day), Semi-skilled ₹21,813 (₹839/day), Skilled ₹23,905 (₹920/day), Graduate clerical/supervisory ₹25,876 (₹996/day) — <a href="https://bidplus.gem.gov.in/resources/upload_nas/NovQ425/bidding/biddoc/bid-8573368/1762851180.pdf" rel="noopener">Delhi Labour Dept order (PDF)</a></li>
+        <li><strong>Maharashtra, Karnataka, Telangana</strong> — comparative table, sources Simpliance (columns verified against header: Unskilled / Skilled / Highly skilled) — <a href="https://www.india-briefing.com/news/guide-minimum-wage-india-19406.html/" rel="noopener">India Briefing</a>; that article itself warns the table is not comprehensive and official notifications must be consulted.</li>
+        <li><strong>Maharashtra — Shops &amp; Commercial Establishments</strong>, effective 1 Jul 2026 — <a href="https://labourcodes360.com/minimum-wages/maharashtra" rel="noopener">labourcodes360.com</a></li>
+        <li><strong>Central sphere</strong> (sweeping/cleaning, construction, watch &amp; ward) — VDA revision effective 1 Apr 2026, daily rates × 26 days — <a href="https://www.india-briefing.com/news/guide-minimum-wage-india-19406.html/" rel="noopener">per Chief Labour Commissioner, clc.gov.in, cited in India Briefing</a></li>
+      </ul>
+      <p class="vq-hint">Only values taken directly from the cited sources are included. Entries missing a zone mean the source did not publish that zone — treat as unverified, not as zero.</p>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Minimum wage — FAQs</h2>
+      <details><summary>Is there one national minimum wage in India?</summary><p>No. States fix their own minimum wages by skill level, zone and scheduled employment; the Code on Wages, 2019 adds a central floor wage as a baseline. Always check your state's notification.</p></details>
+      <details><summary lang="hi">क्या पूरे भारत में एक न्यूनतम वेतन है?</summary><p lang="hi">नहीं। राज्य कौशल स्तर, ज़ोन और निर्धारित नियोजन के अनुसार अपने न्यूनतम वेतन तय करते हैं। हमेशा अपने राज्य की अधिसूचना जाँचें।</p></details>
+      <details><summary>What is VDA and how often do rates change?</summary><p>Variable Dearness Allowance (VDA) is the inflation-linked part of the wage, revised usually every six months (1 April and 1 October in the central sphere). The wage you check today may change next quarter.</p></details>
+      <details><summary>Why does this checker cover only some states?</summary><p>Because we only include values we could verify directly from a cited source, with effective dates. Unverified or OCR-unclear values are deliberately excluded rather than guessed.</p></details>
+      <details><summary>What is the penalty for paying below minimum wage?</summary><p>Under the Code on Wages, paying below the notified minimum wage can lead to imprisonment up to three months and/or a fine up to ₹1,00,000, plus payment of arrears.</p></details>
+      <details><summary>Is this official compliance advice?</summary><p>No — this is a self-check. Confirm the latest notification of your state labour department before relying on it.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

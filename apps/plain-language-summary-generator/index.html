@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plain Language Summary Generator — Understand Notices & Audit Notes | VisionQuantech</title>
+  <meta name="description" content="Free plain-language tool: paste jargon-heavy text (notice, audit para) to get key numbers extracted and a simple bullet summary. Comprehension aid — not legal advice.">
+  <meta name="keywords" content="plain language summary, understand legal notice, simplify legal text, audit paragraph explained, कानूनी भाषा आसान, नोटिस समझें, legal jargon simplifier">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/plain-language-summary-generator/">
+  <meta property="og:title" content="Plain Language Summary Generator | VisionQuantech">
+  <meta property="og:description" content="Paste jargon — get plain bullets and key numbers. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .assump { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li { margin-bottom:.4rem; }
+    .chip { display:inline-block; background:#eef3ff; border:1px solid #bcd; border-radius:99px; padding:.15rem .7rem; margin:.15rem .2rem; font-size:.85rem; font-weight:600; }
+    textarea { width:100%; min-height:160px; border:1px solid var(--line); border-radius:10px; padding:.8rem; font:inherit; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+  </style>
+</head>
+<body data-app="plain-language-summary-generator">
+  <main class="vq-main">
+    <!-- ADSENSE: --><div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Plain Language Summary Generator — Understand the Jargon</h1>
+      <p>Paste a <strong>jargon-heavy paragraph</strong> — a tax notice, an audit note, a clause — and get the <strong>key numbers extracted</strong> (amounts, rates, deadlines) plus a <strong>plain-language bullet summary</strong>. <span lang="hi">कठिन भाषा को आसान समझें — मुख्य नंबर और सरल सार।</span></p>
+      <p class="vq-hint">Free: 20 summaries per day. Nothing is pasted anywhere — all processing happens in your browser. <strong>Comprehension aid only — not legal/financial advice.</strong></p>
+    </div>
+
+    <div id="s-gate"></div>
+
+    <section class="card" aria-label="Text input">
+      <h2 class="vq-section-title" style="margin-top:0">Paste the text</h2>
+      <div class="vq-field">
+        <label for="s-text">Notice / audit paragraph (max 20,000 characters)</label>
+        <textarea id="s-text" maxlength="20000" placeholder="Paste the paragraph here…"></textarea>
+      </div>
+      <button id="s-calc" class="vq-btn" type="button">Simplify it</button>
+      <p id="s-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="s-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Plain-language summary</h2>
+      <div id="s-result"></div>
+    </section>
+
+    <!-- ADSENSE: --><div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Plain-language summary — FAQs</h2>
+      <details><summary>What does this plain-language tool do?</summary><p>Paste a jargon-heavy paragraph — a tax notice, an audit note — and it pulls out the key numbers (amounts, rates, deadlines) and rewrites the important sentences in plain words.</p></details>
+      <details><summary lang="hi">कठिन कानूनी भाषा को आसान कैसे समझें?</summary><p lang="hi">पैराग्राफ पेस्ट करें — टूल मुख्य रकम, दरें और समय-सीमा निकालकर ज़रूरी बातों को सरल भाषा में बुलेट पॉइंट में देता है।</p></details>
+      <details><summary>Does it interpret the law for me?</summary><p>No. It simplifies wording and surfaces numbers; it does not interpret legal meaning or give advice. A CA or lawyer must interpret notices.</p></details>
+      <details><summary>What text works best?</summary><p>One focused paragraph (a notice, an audit observation, a clause). Very long documents should be pasted one key section at a time.</p></details>
+      <details><summary>Is my pasted text stored anywhere?</summary><p>No — everything is processed in your browser and nothing is uploaded or saved.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

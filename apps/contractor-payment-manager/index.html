@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contractor Payment Manager – RA Bill Register, Holdback & Aging India | VisionQuantech</title>
+  <meta name="description" content="Free contractor payment manager India: RA bill register with certified vs paid, holdback %, unpaid aging buckets (30/60/90 days) and collection summary. RA बिल रजिस्टर।">
+  <meta name="keywords" content="contractor payment manager India, RA bill register, running account bill tracker, certified vs paid bills, holdback retention bill, payment aging contractor, RA बिल रजिस्टर, ठेकेदार भुगतान ट्रैकर, बकाया बिल एजिंग">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/contractor-payment-manager/">
+  <meta property="og:title" content="Contractor Payment Manager | VisionQuantech">
+  <meta property="og:description" content="RA bill register: certified vs paid, holdbacks, unpaid aging. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sum-strip{ display:flex; flex-wrap:wrap; gap:.4rem 1rem; background:var(--paper-soft); border-radius:10px; padding:.7rem 1rem; margin-bottom:1rem; font-size:.92rem; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.88rem; margin:.8rem 0; display:block; overflow-x:auto; }
+    .vq-table th,.vq-table td{ border:1px solid var(--line); padding:.45rem .55rem; text-align:left; white-space:nowrap; }
+    .vq-table th{ background:var(--paper-soft); }
+    .neg{ color:#b3261e; font-weight:700; } .pos{ color:#1d7a3f; }
+    .mini{ padding:.15rem .5rem; font-size:.8rem; }
+    .btn-row{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.8rem; }
+  </style>
+</head>
+<body data-app="contractor-payment-manager">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Contractor Payment Manager — RA Bill Register, India</h1>
+      <p><strong>RA (running account) bill register</strong>: certified vs paid per bill, holdback %, <strong>unpaid aging</strong> buckets, and collection summary. <span lang="hi">RA बिल रजिस्टर — प्रमाणित बनाम भुगतान, बकाया एजिंग।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Stored only on this device — all math happens in your browser.</p>
+    </div>
+
+    <div id="a-gate"></div>
+
+    <section class="card" aria-label="Add bill">
+      <h2 class="vq-section-title" style="margin-top:0">Add an RA bill</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="a-no">Bill no.</label><input id="a-no" type="text" maxlength="40" placeholder="e.g. RA-07"></div>
+        <div class="vq-field"><label for="a-date">Bill date</label><input id="a-date" type="date"></div>
+        <div class="vq-field"><label for="a-cert">Certified value (₹)</label><input id="a-cert" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 480000"></div>
+        <div class="vq-field"><label for="a-paid">Amount paid so far (₹)</label><input id="a-paid" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+        <div class="vq-field"><label for="a-hb">Holdback %</label><input id="a-hb" type="number" min="0" max="25" step="0.5" value="10" inputmode="decimal"><p class="vq-hint">Held back per bill; released with retention.</p></div>
+      </div>
+      <button id="a-add" class="vq-btn" type="button">Add bill</button>
+      <p id="a-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Bill register">
+      <h2 class="vq-section-title" style="margin-top:0">Bill register</h2>
+      <div id="a-summary"></div>
+      <div id="a-list"><p class="vq-hint">No bills yet — add your first RA bill above.</p></div>
+      <div class="btn-row">
+        <button id="a-save" class="vq-btn" type="button">Save snapshot (this device)</button>
+      </div>
+      <p class="vq-hint">Max 25 bills. Reading your saved register is never counted against the free limit.</p>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>RA bill</strong> = running account claim for work done; certified value set by the client's engineer; payment follows minus holdback and statutory deductions (TDS, GST).</li>
+        <li><strong>Paid can never exceed certified</strong> — the tool rejects overpayments.</li>
+        <li><strong>Holdback</strong> is a % of the certified bill held back, released with retention after the defect liability period.</li>
+        <li><strong>Aging</strong> counts from bill date: current (0–30d), 31–60, 61–90, 90+ days. Chase 90+ day dues aggressively.</li>
+        <li><strong>Receivables aid, not accounting advice.</strong> Confirm TDS/GST treatment and contract terms with your CA.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Contractor payment manager — FAQs</h2>
+      <details><summary>What is an RA bill in construction contracts?</summary><p>A Running Account bill — the contractor’s periodic claim for work done. The client’s engineer certifies a value; payment follows, usually minus holdback/retention and statutory deductions (TDS, GST).</p></details>
+      <details><summary lang="hi">RA बिल क्या है?</summary><p lang="hi">रनिंग अकाउंट बिल — ठेकेदार का समय-समय पर कार्य का दावा। ग्राहक का इंजीनियर मूल्य प्रमाणित करता है; होल्डबैक और वैधानिक कटौतियों (TDS, GST) के बाद भुगतान होता है।</p></details>
+      <details><summary>What is holdback on a bill?</summary><p>A % of each certified bill held back by the client (like retention on the bill), typically released with the retention money after the defect liability period.</p></details>
+      <details><summary lang="hi">बकाया भुगतान कैसे ट्रैक करें?</summary><p lang="hi">हर बिल की तिथि से उम्र (aging) निकालें — 0–30, 31–60, 61–90, 90+ दिन। 90+ दिन का बकाया तुरंत फॉलो-अप माँगता है।</p></details>
+      <details><summary>Is this accounting advice?</summary><p>No — a receivables planning aid. Confirm TDS/GST treatment and contract terms with your CA.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

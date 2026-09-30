@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tender Deadline Tracker – Submission Countdown & Document Checklist India | VisionQuantech</title>
+  <meta name="description" content="Free tender deadline tracker India: add tenders with submission deadlines, get days-left countdown with red/orange urgency coding, and per-tender document checklist with completion %. टेंडर डेडलाइन ट्रैकर — सबमिशन की अंतिम तिथि ट्रैक करें।">
+  <meta name="keywords" content="tender deadline tracker India, tender submission countdown, government tender tracking, GeM tender deadline, tender document checklist, टेंडर डेडलाइन ट्रैकर, टेंडर सबमिशन ट्रैकर, टेंडर दस्तावेज़ चेकलिस्ट">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/tender-deadline-tracker/">
+  <meta property="og:title" content="Tender Deadline Tracker | VisionQuantech">
+  <meta property="og:description" content="Never miss a bid: days-left countdown, urgency color coding, document checklist. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sum-strip{ display:flex; flex-wrap:wrap; gap:.4rem 1rem; background:var(--paper-soft); border-radius:10px; padding:.7rem 1rem; margin-bottom:1rem; font-size:.92rem; }
+    .tender-card{ border:1px solid var(--line); border-left:6px solid #999; border-radius:10px; padding:.9rem 1rem; margin-bottom:1rem; }
+    .t-head{ display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap; }
+    .badge{ font-size:.8rem; font-weight:700; padding:.2rem .6rem; border-radius:999px; background:#eee; }
+    .u-overdue{ border-left-color:#b3261e; } .u-overdue .badge{ background:#fdeceb; color:#b3261e; }
+    .u-critical{ border-left-color:#e8710a; } .u-critical .badge{ background:#fef1e6; color:#b3541e; }
+    .u-soon{ border-left-color:#b79b00; } .u-soon .badge{ background:#fef9e0; color:#7a6a00; }
+    .u-normal{ border-left-color:#1d7a3f; } .u-normal .badge{ background:#e9f6ee; color:#1d7a3f; }
+    .doc-list{ display:grid; gap:.25rem; margin:.6rem 0; }
+    .doc-item{ font-size:.9rem; display:flex; gap:.5rem; align-items:center; }
+    textarea{ width:100%; min-height:4.5rem; border:1px solid var(--line); border-radius:8px; padding:.5rem; font:inherit; }
+    .btn-row{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.8rem; }
+  </style>
+</head>
+<body data-app="tender-deadline-tracker">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Tender Deadline Tracker — Submission Countdown, India</h1>
+      <p>Track every tender's <strong>submission deadline</strong> with a days-left countdown, red/orange urgency color-coding, EMD &amp; tender-fee notes, and a per-tender <strong>document checklist</strong>. <span lang="hi">टेंडर डेडलाइन ट्रैकर — अंतिम तिथि, EMD और दस्तावेज़ सूची एक जगह।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Stored only on this device — all math happens in your browser.</p>
+    </div>
+
+    <div id="t-gate"></div>
+
+    <section class="card" aria-label="Add tender">
+      <h2 class="vq-section-title" style="margin-top:0">Add a tender</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="t-name">Tender name / work description</label>
+          <input id="t-name" type="text" maxlength="120" placeholder="e.g. Road repair work, Ward 12">
+        </div>
+        <div class="vq-field">
+          <label for="t-ref">Tender reference / NIT no. (optional)</label>
+          <input id="t-ref" type="text" maxlength="40" placeholder="e.g. NIT-2026/EE-114">
+        </div>
+        <div class="vq-field">
+          <label for="t-authority">Issuing authority (optional)</label>
+          <input id="t-authority" type="text" maxlength="80" placeholder="e.g. PWD Division II, Pune">
+        </div>
+        <div class="vq-field">
+          <label for="t-deadline">Submission deadline (date)</label>
+          <input id="t-deadline" type="date">
+        </div>
+        <div class="vq-field">
+          <label for="t-emd">EMD amount (₹, optional)</label>
+          <input id="t-emd" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 50000">
+        </div>
+        <div class="vq-field">
+          <label for="t-fee">Tender document fee (₹, optional)</label>
+          <input id="t-fee" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 1180">
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="t-docs">Required documents (one per line)</label>
+        <textarea id="t-docs" placeholder="GST registration&#10;PAN card&#10;EMD demand draft&#10;Experience certificate"></textarea>
+      </div>
+      <button id="t-add" class="vq-btn" type="button">Add tender</button>
+      <p id="t-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Tracked tenders">
+      <h2 class="vq-section-title" style="margin-top:0">Tracked tenders</h2>
+      <div id="t-summary"></div>
+      <div id="t-list"><p class="vq-hint">No tenders tracked yet — add your first one above.</p></div>
+      <div class="btn-row">
+        <button id="t-save" class="vq-btn" type="button">Save snapshot (this device)</button>
+        <button id="t-clear" class="vq-btn vq-btn-ghost" type="button">Clear view</button>
+      </div>
+      <p class="vq-hint">Max 25 tenders. Reading your saved list is never counted against the free limit.</p>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Urgency bands:</strong> overdue = past deadline; critical = ≤3 days left; due soon = 4–7 days; normal = 8+ days. Days are whole calendar days from today.</li>
+        <li><strong>Deadline time:</strong> portals (GeM, e-procure) close at the exact time stated in the bid document — enter and watch the <em>time</em> too, not just the date.</li>
+        <li><strong>Late bids:</strong> are summarily rejected on GeM and in most government tenders — no grace period.</li>
+        <li><strong>EMD:</strong> typically 1–2% of the estimated contract value (check the NIT); MSE/Startup-registered bidders are often exempt via Bid Securing Declaration; refunded to unsuccessful bidders without interest, typically within 30 days of award.</li>
+        <li><strong>This is a planning aid, not legal advice.</strong> Always verify dates against the corrigenda/NIT — deadlines change. <strong>Confirm with your CA/consultant before bidding.</strong></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Tender deadline tracker — FAQs</h2>
+      <details><summary>How do I track tender submission deadlines?</summary><p>Add each tender with its submission deadline from the NIT/GeM bid document. The tracker computes days left and color-codes urgency: red for overdue, orange for ≤3 days, amber for ≤7 days.</p></details>
+      <details><summary lang="hi">टेंडर डेडलाइन कैसे ट्रैक करें?</summary><p lang="hi">NIT या GeM दस्तावेज़ से सबमिशन डेडलाइन डालें। टूल बचे हुए दिन निकालकर रंग-कोड दिखाता है: लाल (अतिदेय), नारंगी (≤3 दिन), पीला (≤7 दिन)।</p></details>
+      <details><summary>What happens if I miss a tender submission deadline?</summary><p>Late bids are summarily rejected on GeM and in most government tenders — portals close exactly at the deadline time. Track both date and time from the bid document.</p></details>
+      <details><summary lang="hi">EMD कैसे ट्रैक करें?</summary><p lang="hi">हर टेंडर के साथ EMD राशि दर्ज करें। MSE/Startup पंजीकृत बोलीदाता कई टेंडरों में EMD से छूट पाते हैं (Bid Securing Declaration) — NIT ज़रूर देखें।</p></details>
+      <details><summary>Is my tender data sent to any server?</summary><p>No. Everything is stored only in your browser (this device), optionally encrypted with your own passphrase. Nothing leaves the device.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

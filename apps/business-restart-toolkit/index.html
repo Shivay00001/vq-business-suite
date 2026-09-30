@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Restart Toolkit — Reopening Checklist After Shutdown | VisionQuantech</title>
+  <meta name="description" content="Free business restart toolkit: step-by-step reopening checklist after a crash or closure — licenses, staff, vendors, cash, relaunch — in Day 1 / Week 1 / Month 1 phases. बंद व्यवसाय दोबारा खोलें।">
+  <meta name="keywords" content="business restart checklist, reopening business after closure, restart closed business india, business recovery plan, बंद दुकान दोबारा खोलें, business reopening plan">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/business-restart-toolkit/">
+  <meta property="og:title" content="Business Restart Toolkit | VisionQuantech">
+  <meta property="og:description" content="Step-by-step reopening checklist: licenses, staff, vendors, cash. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}
+    .bar{ height:.6rem; background:#eef1f6; border-radius:999px; margin:.35rem 0 .8rem; overflow:hidden; }
+    .bar-fill{ height:100%; background:var(--brand); border-radius:999px; }
+  </style>
+</head>
+<body data-app="business-restart-toolkit">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Business Restart Toolkit — Reopen Step by Step</h1>
+      <p>After a crash, shutdown or long pause: a <strong>phased reopening checklist</strong> — Day 1 (stabilize), Week 1 (restart operations), Month 1 (rebuild momentum) — covering licenses, staff, vendors, cash and relaunch. <span lang="hi">बंद व्यवसाय दोबारा खोलने की चरणबद्ध सूची।</span></p>
+      <p class="vq-hint">Free: 20 progress checks per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="k-gate"></div>
+
+    <section class="card" aria-label="Reopening checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Your situation</h2>
+      <div class="vq-field">
+        <label for="k-type">What happened?</label>
+        <select id="k-type">
+          <option value="temporary" selected>Temporarily paused (licenses mostly valid)</option>
+          <option value="closed">Fully shut down (needs re-registration)</option>
+        </select>
+      </div>
+      <div id="k-checks"></div>
+      <button id="k-calc" class="vq-btn" type="button">Check restart progress</button>
+    </section>
+
+    <section class="card" id="k-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Restart progress</h2>
+      <div id="k-result"></div>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Business restart — FAQs</h2>
+      <details><summary>What is the first thing to do when reopening a business?</summary><p>Day 1 is about stabilizing: count cash and bank balances, list payables and receivables, and confirm premises access and utilities before anything else.</p></details>
+      <details><summary lang="hi">बंद दुकान दोबारा कैसे खोलें?</summary><p lang="hi">पहले दिन नकद और बैंक बैलेंस गिनें, देनदारी की सूची बनाएं, दुकान/बिजली/पानी कन्फर्म करें। फिर लाइसेंस, स्टाफ, वेंडर और अंत में दोबारा लॉन्च की घोषणा।</p></details>
+      <details><summary>Temporary pause vs full shutdown — what changes?</summary><p>A full shutdown adds re-registration of cancelled licenses, reactivating the bank account, and a fresh hiring round. Pick the right track at the top of the page.</p></details>
+      <details><summary>When should pending tax filings be handled?</summary><p>In Month 1 at the latest — pending GST/TDS filings accrue penalties, so catch up early while revenue restarts.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

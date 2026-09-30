@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — Free vs Pro ₹299/mo vs Enterprise API | VisionQuantech Business Suite</title>
+  <meta name="description" content="VisionQuantech Business Suite pricing: Free forever, Pro at ₹299/month with higher limits and no ads, and Enterprise API for developers.">
+  <meta name="keywords" content="visionquantech pricing, business suite pro, ₹299, enterprise api india">
+  <meta property="og:title" content="Pricing — VisionQuantech Business Suite">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="core/shell.css">
+</head>
+<body data-nav="pricing">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <section class="vq-narrow" style="text-align:center; padding-top:1rem;">
+      <h1>Simple, honest pricing</h1>
+      <p style="color:var(--ink-soft)">Free for everyday use. Pro when your business outgrows
+         the free limits. An API when you want to build on top.</p>
+    </section>
+
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="p-name">Free</div>
+        <div class="p-price">₹0 <small>forever</small></div>
+        <ul>
+          <li>All 10 business tools</li>
+          <li>20 calculations / day per tool</li>
+          <li>5 document generations / day</li>
+          <li>On-device storage (unencrypted or passphrase-encrypted)</li>
+          <li>Ad-supported</li>
+        </ul>
+        <a class="vq-btn ghost" href="index.html#tools" style="text-align:center;">Start free</a>
+      </div>
+      <div class="price-card featured">
+        <div class="p-badge">Launching soon</div>
+        <div class="p-name">Pro</div>
+        <div class="p-price">₹299 <small>/ month</small></div>
+        <ul>
+          <li>Everything in Free</li>
+          <li>10× daily limits (200 calcs, 50 generations)</li>
+          <li>No ads anywhere</li>
+          <li>Priority access to new tools</li>
+          <li>Email support</li>
+        </ul>
+        <button class="vq-btn" id="pro-waitlist" type="button">Reserve Pro — ₹299/mo</button>
+        <p class="vq-hint">Checkout isn't live yet — reserving saves a reminder on this device only.</p>
+      </div>
+      <div class="price-card">
+        <div class="p-name">Enterprise API</div>
+        <div class="p-price">Custom <small>annual</small></div>
+        <ul>
+          <li>REST API for every tool family</li>
+          <li>API keys, usage dashboard</li>
+          <li>SLA &amp; onboarding support</li>
+          <li>Custom rate limits</li>
+        </ul>
+        <a class="vq-btn ghost" href="api.html" style="text-align:center;">Read API docs</a>
+      </div>
+    </div>
+
+    <h2 class="vq-section-title">Compare in detail</h2>
+    <div class="vq-table-wrap">
+      <table class="vq-table">
+        <thead><tr><th>Feature</th><th>Free</th><th>Pro ₹299/mo</th><th>Enterprise API</th></tr></thead>
+        <tbody>
+          <tr><td>Calculations per tool / day</td><td>20</td><td>200</td><td>Unlimited*</td></tr>
+          <tr><td>Document generations / day</td><td>5</td><td>50</td><td>Unlimited*</td></tr>
+          <tr><td>Ads</td><td>Yes</td><td>No</td><td>No</td></tr>
+          <tr><td>On-device encrypted vault</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+          <tr><td>REST API access</td><td>—</td><td>—</td><td>Yes</td></tr>
+          <tr><td>Support</td><td>Community</td><td>Email</td><td>Dedicated</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="vq-hint">* Fair-use policy applies. Reading your saved data is never limited on any plan.</p>
+
+    <h2 class="vq-section-title">Frequently asked questions</h2>
+    <section class="vq-faq">
+      <details><summary>When can I actually pay for Pro?</summary>
+        <p>Pro checkout is not live yet — the suite is in its free static phase.
+           The reserve button above saves a local reminder on your device; we'll
+           announce checkout on this page when it opens. Nothing is charged today.</p></details>
+      <details><summary>What counts as one "use"?</summary>
+        <p>Pressing calculate, or generating/saving a document (invoice, payslip, P&amp;L).
+           Simply opening a tool or viewing something you saved earlier never counts.</p></details>
+      <details><summary>Do limits reset?</summary>
+        <p>Yes — every day at midnight, automatically.</p></details>
+      <details><summary>Can I cancel Pro?</summary>
+        <p>Yes, any time, and you'll keep Pro until the end of the billing month.
+           Your saved data stays on your device regardless.</p></details>
+      <details><summary>Is my business data used for advertising?</summary>
+        <p>No. Ads are contextual to the page, not to your data — your inputs and
+           saved documents never leave your device.</p></details>
+    </section>
+
+    <div id="ad-bottom"></div>
+  </main>
+
+  <script src="core/shell.js"></script>
+  <script src="core/vault.js"></script>
+  <script src="core/ads.js"></script>
+  <script src="core/seo.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      Ads.render(document.getElementById('ad-top'), 'pricing-top', 'leaderboard');
+      Ads.render(document.getElementById('ad-bottom'), 'pricing-bottom', 'fluid');
+
+      /* Honest waitlist: stored locally until checkout exists. */
+      document.getElementById('pro-waitlist').addEventListener('click', function () {
+        Vault.save('suite', 'pro-waitlist', { reservedAt: new Date().toISOString() })
+          .then(function () {
+            alert('Reserved! We saved a reminder on this device. Pro checkout will be announced here when it opens — nothing is charged today.');
+          })
+          .catch(function () {
+            alert('Could not save the reservation on this device (storage unavailable).');
+          });
+      });
+
+      SEO.faq([
+        { q: 'How much does VisionQuantech Business Suite cost?', a: 'Free forever with daily limits. Pro at ₹299/month (launching soon) raises limits and removes ads.' },
+        { q: 'Can I cancel Pro?', a: 'Yes, any time. Your saved data stays on your device.' },
+        { q: 'Is my data used for advertising?', a: 'No. Ads are contextual to the page; your inputs never leave your device.' }
+      ]);
+    })();
+  </script>
+</body>
+</html>

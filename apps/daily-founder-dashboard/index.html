@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Founder Dashboard — Morning Numbers, Tasks & Alerts | VisionQuantech</title>
+  <meta name="description" content="Free daily founder dashboard: cash in hand, dues in/out, net position, today's tasks and money alerts on one screen. Tasks saved on-device. डेली फाउंडर डैशबोर्ड।">
+  <meta name="keywords" content="founder dashboard, daily business dashboard, morning business numbers, small business dashboard india, डेली बिज़नेस डैशबोर्ड, फाउंडर डैशबोर्ड">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/daily-founder-dashboard/">
+  <meta property="og:title" content="Daily Founder Dashboard | VisionQuantech">
+  <meta property="og:description" content="Morning numbers, tasks and alerts on one screen. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr 1fr; } }
+    .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.8rem; margin-bottom:1rem; }
+    .kpi { background:var(--paper-soft); border-radius:10px; padding:.8rem; text-align:center; }
+    .kpi span { display:block; font-size:.8rem; color:var(--ink-soft); }
+    .kpi strong { font-size:1.15rem; }
+    .kpi .g { color:#1d7a3f; } .kpi .r { color:#b3261e; }
+    .task { display:flex; align-items:center; gap:.6rem; padding:.5rem 0; border-bottom:1px solid var(--line); }
+    .task.done span { text-decoration:line-through; color:var(--ink-soft); }
+    .task .del { margin-left:auto; }
+    .assump { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li { margin-bottom:.4rem; }
+    .al-critical { color:#b3261e; font-weight:700; }
+    .al-warn { color:#9a6b00; font-weight:600; }
+    .al-ok { color:#1d7a3f; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+  </style>
+</head>
+<body data-app="daily-founder-dashboard">
+  <main class="vq-main">
+    <!-- ADSENSE: --><div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Daily Founder Dashboard — Your Morning in One Screen</h1>
+      <p>Enter <strong>cash, dues receivable, dues payable</strong> — get net position, <strong>alerts</strong>, and <strong>today's task list</strong> in one view. <span lang="hi">रोज़ सुबह के नंबर, टास्क और अलर्ट — एक स्क्रीन पर।</span></p>
+      <p class="vq-hint">Free: 20 refreshes per day. Money numbers stay in your browser; only tasks are saved on-device (max 25).</p>
+    </div>
+
+    <div id="m-gate"></div>
+
+    <section class="card" aria-label="Morning numbers">
+      <h2 class="vq-section-title" style="margin-top:0">This morning's numbers</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="m-cash">Cash in hand (₹)</label>
+          <input id="m-cash" type="number" min="0" max="10000000000" step="0.01" value="0" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="m-duesin">Dues receivable — customers owe you (₹)</label>
+          <input id="m-duesin" type="number" min="0" max="10000000000" step="0.01" value="0" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="m-duesout">Dues payable — you owe (₹)</label>
+          <input id="m-duesout" type="number" min="0" max="10000000000" step="0.01" value="0" inputmode="decimal">
+        </div>
+      </div>
+      <button id="m-calc" class="vq-btn" type="button">Refresh dashboard</button>
+      <p id="m-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Today's tasks">
+      <h2 class="vq-section-title" style="margin-top:0">Today's tasks</h2>
+      <div class="vq-field" style="display:flex;gap:.6rem;align-items:flex-end">
+        <div style="flex:1">
+          <label for="m-newtask">New task</label>
+          <input id="m-newtask" type="text" maxlength="200" placeholder="e.g. Call Sharma Traders for ₹80,000 dues">
+        </div>
+        <button id="m-add" class="vq-btn" type="button">Add</button>
+      </div>
+      <div id="m-tasks"></div>
+    </section>
+
+    <section class="card" id="m-result-card" aria-label="Dashboard" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Dashboard</h2>
+      <div id="m-result"></div>
+    </section>
+
+    <!-- ADSENSE: --><div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Founder dashboard — FAQs</h2>
+      <details><summary>What should a founder check every morning?</summary><p>Five numbers: cash in hand, dues receivable, dues payable, net position, and open tasks. This dashboard computes them plus alerts on one screen.</p></details>
+      <details><summary lang="hi">फाउंडर को रोज़ सुबह क्या देखना चाहिए?</summary><p lang="hi">कैश, वसूलने योग्य बकाया, देय बकाया, नेट पोज़िशन और खुले टास्क — एक ही स्क्रीन पर अलर्ट के साथ।</p></details>
+      <details><summary>Are my dashboard numbers stored anywhere?</summary><p>No — cash and dues numbers are computed in your browser and never leave it. Only your task list is saved on-device (max 25 tasks).</p></details>
+      <details><summary>What does a critical alert mean?</summary><p>Payables exceed cash in hand, or zero cash with dues moving. Treat those days as collection days first.</p></details>
+      <details><summary>Is this financial advice?</summary><p>No — a morning visibility tool. Big money decisions still go through your CA.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

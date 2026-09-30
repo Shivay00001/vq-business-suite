@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITC Mismatch Analyzer — GSTR-2B vs Purchase Register Reconciliation | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free ITC mismatch analyzer for Indian businesses: compare your purchase register with GSTR-2B, flag missing invoices, value differences & wrong GSTINs, and total at-risk ITC. 100% on-device. आईटीसी मिसमैच रिपोर्ट बनाएं।">
+  <meta name="keywords" content="ITC mismatch analyzer, आईटीसी मिसमैच, GSTR-2B reconciliation, purchase register vs 2B, ITC at risk calculator, GSTR-2B mismatch report, ITC reconciliation tool India">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.02rem; margin: 0 0 .6rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+    textarea.csv { width: 100%; min-height: 130px; font-family: monospace; font-size: .82rem; padding: .6rem; border: 1.5px solid var(--line); border-radius: 10px; }
+    .row-form { display: grid; grid-template-columns: 1.2fr 1fr .9fr .9fr auto; gap: .5rem; align-items: end; }
+    @media (max-width: 700px) { .row-form { grid-template-columns: 1fr 1fr; } }
+    .row-form .vq-field { margin-bottom: 0; }
+    .row-form input { width: 100%; min-height: 44px; padding: .5rem .6rem; font-size: .9rem; border: 1.5px solid var(--line); border-radius: 8px; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .9rem 0; }
+    .flag { display: inline-block; font-size: .75rem; font-weight: 700; padding: .15rem .55rem; border-radius: 999px; margin-right: .3rem; }
+    .flag.missing { background: #fdecec; color: #b42318; }
+    .flag.diff { background: #fff4e0; color: #a15c00; }
+    .flag.gstin { background: #f3e8fd; color: #7a2fd0; }
+    .flag.unclaimed { background: #e6f4ea; color: #1a7f37; }
+    .flag.ok { background: #eef1f4; color: #5f6368; }
+    .sum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .7rem; margin: .8rem 0; }
+    .sum-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; }
+    .sum-cell .k { font-size: .78rem; color: var(--ink-soft); }
+    .sum-cell .v { font-size: 1.3rem; font-weight: 800; }
+    .sum-cell.risk .v { color: #b42318; }
+    .saved-item { display: flex; justify-content: space-between; gap: .6rem; align-items: center; padding: .6rem .2rem; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-item .acts { display: flex; gap: .4rem; }
+  </style>
+</head>
+<body data-app="gst-itc-mismatch-analyzer">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>ITC Mismatch Analyzer — 2B vs Purchase Register</h1>
+    <p class="lede">आईटीसी मिसमैच एनालाइज़र — apna <strong>purchase register</strong> (supplier GSTIN, invoice, taxable value, claimed ITC) aur <strong>GSTR-2B</strong> jaisa data paste karein. Tool <strong>missing invoices</strong>, <strong>value differences</strong>, <strong>wrong GSTIN</strong> flag karega aur <strong>at-risk ITC</strong> ka total nikalega. Sab kuch aapke device par — koi data upload nahi hota. <strong>Free: 20 analyses/day.</strong></p>
+
+    <div class="two-col">
+      <div class="card">
+        <h2>1 · Purchase register (aapki books)</h2>
+        <p class="vq-hint">CSV format: <code>supplier_gstin, invoice_no, taxable_value, itc_claimed</code></p>
+        <textarea class="csv" id="prCsv" placeholder="27ABCDE1234F1Z5, INV-101, 100000, 18000&#10;29ABCDE1234F1Z5, INV-102, 50000, 9000"></textarea>
+        <p class="vq-hint">Ya neeche row-by-row add karein.</p>
+        <div class="row-form">
+          <div class="vq-field"><label for="prGstin">Supplier GSTIN</label><input id="prGstin" maxlength="15" style="text-transform:uppercase" placeholder="27…"></div>
+          <div class="vq-field"><label for="prInv">Invoice no</label><input id="prInv" placeholder="INV-101"></div>
+          <div class="vq-field"><label for="prTax">Taxable ₹</label><input id="prTax" type="number" min="0" step="0.01" placeholder="100000"></div>
+          <div class="vq-field"><label for="prItc">ITC claimed ₹</label><input id="prItc" type="number" min="0" step="0.01" placeholder="18000"></div>
+          <button class="vq-btn ghost" id="prAdd" type="button">+ Add</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>2 · GSTR-2B data (portal se download)</h2>
+        <p class="vq-hint">CSV format: <code>supplier_gstin, invoice_no, taxable_value, itc_available</code></p>
+        <textarea class="csv" id="b2Csv" placeholder="27ABCDE1234F1Z5, INV-101, 100000, 18000&#10;29ABCDE1234F1Z5, INV-103, 20000, 3600"></textarea>
+        <p class="vq-hint">GSTR-2B portal se download karke yahan paste karein (invoice-wise summary).</p>
+        <div class="row-form">
+          <div class="vq-field"><label for="b2Gstin">Supplier GSTIN</label><input id="b2Gstin" maxlength="15" style="text-transform:uppercase" placeholder="27…"></div>
+          <div class="vq-field"><label for="b2Inv">Invoice no</label><input id="b2Inv" placeholder="INV-101"></div>
+          <div class="vq-field"><label for="b2Tax">Taxable ₹</label><input id="b2Tax" type="number" min="0" step="0.01" placeholder="100000"></div>
+          <div class="vq-field"><label for="b2Itc">ITC available ₹</label><input id="b2Itc" type="number" min="0" step="0.01" placeholder="18000"></div>
+          <button class="vq-btn ghost" id="b2Add" type="button">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="vq-btn go" id="analyzeBtn" type="button">Analyze mismatches</button>
+      <button class="vq-btn ghost" id="loadSampleBtn" type="button">Load sample data</button>
+      <button class="vq-btn ghost" id="clearBtn" type="button">Clear all</button>
+    </div>
+    <p class="vq-hint">Free: 20 analyses per day · Saved reports: up to 25.</p>
+    <p class="err" id="itc-error" role="alert"></p>
+    <div id="itc-upsell"></div>
+
+    <div class="vq-result" id="itc-result" style="display:none">
+      <h2 class="vq-section-sub">Analysis report / विश्लेषण रिपोर्ट</h2>
+      <div class="sum-grid" id="sumGrid"></div>
+      <div class="btn-row">
+        <button class="vq-btn secondary" id="exportBtn" type="button">Download CSV report</button>
+        <button class="vq-btn go" id="saveBtn" type="button">Save report to vault</button>
+      </div>
+      <p class="ok-msg" id="itc-saved"></p>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Flag</th><th>Supplier GSTIN</th><th>Invoice</th><th>PR taxable</th><th>PR ITC claimed</th><th>2B ITC available</th><th>At-risk ITC ₹</th></tr></thead>
+        <tbody id="flagBody"></tbody>
+      </table></div>
+      <div class="vq-formula" style="margin-top:.8rem">
+        <strong>How it flags:</strong> rows are matched on <em>supplier GSTIN + invoice number</em> (case-insensitive, ₹1 tolerance on values).
+        <strong>Missing in 2B</strong> = aapne ITC claim kiya, supplier ne GSTR-1 me invoice nahi dikhaya (Rule 36(4) ke tahat ye ITC risk me hai).
+        <strong>Value difference</strong> = claimed ITC &gt; available ITC. <strong>Wrong GSTIN</strong> = same invoice no 2B me kisi aur GSTIN ke naam par hai.
+        <strong>Unclaimed</strong> = 2B me ITC available hai jo aapne claim nahi kiya (opportunity, risk nahi).
+      </div>
+    </div>
+
+    <h2 class="vq-section-title">Saved reports</h2>
+    <div id="savedList"><p class="vq-hint">Loading…</p></div>
+    <div class="vq-notice" style="margin-top:1rem">
+      <strong>Honest note:</strong> ye tool sirf aapke diye gaye data ki tulna karta hai — ye GST portal se live 2B fetch <strong>nahi</strong> karta. GSTR-2B hamesha portal se download karke paste karein. "At-risk ITC" ka matlab hai ki supplier ke GSTR-1 me invoice na dikhne par department is ITC ko reverse kar sakta hai (Rule 36(4) / Section 16(2)(c)) — final call aapke CA ki hogi.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>ITC mismatch kya hota hai?</summary>
+        <p>Jab aapke purchase register me claimed ITC aur supplier ke GSTR-1 se bane GSTR-2B me available ITC me antar ho — invoice missing ho, value alag ho, ya GSTIN galat ho — use ITC mismatch kehte hain. Aisi ITC par department reversal + interest maang sakta hai.</p>
+      </details>
+      <details>
+        <summary>Supplier ne invoice file nahi kiya to kya hoga? (What if the supplier didn't file GSTR-1?)</summary>
+        <p>Section 16(2)(c) CGST Act ke tahat ITC tabhi milta hai jab supplier ne apne GSTR-1 me invoice report kiya ho aur tax pay kiya ho. Agar invoice 2B me nahi hai, to claimed ITC "at risk" hai — supplier se follow-up karein ya ITC reverse karke interest se bachein.</p>
+      </details>
+      <details>
+        <summary>Kya ye tool GST portal se 2B download karta hai?</summary>
+        <p>Nahi. Ye 100% offline tool hai — 2B aapko portal se download karke yahan paste karna hota hai. Aapka data kabhi device se bahar nahi jata.</p>
+      </details>
+      <details>
+        <summary>At-risk ITC kaise calculate hota hai?</summary>
+        <p>Missing-in-2B invoices par poori claimed ITC + value-difference cases me (claimed − available) ka positive antar — dono ka yog at-risk ITC hai. ₹1 tak ka antar tolerance me ignore hota hai.</p>
+      </details>
+      <details>
+        <summary>Meri report ka data kahan save hota hai?</summary>
+        <p>Sirf aapke browser ke local vault me (chahein to passphrase se encrypt karein). Maximum 25 reports save hoti hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

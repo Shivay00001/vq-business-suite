@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Purchase Optimizer — EOQ Calculator + Discount Break-Even | VisionQuantech</title>
+  <meta name="description" content="Free EOQ calculator: optimal order quantity from demand, ordering and holding costs, plus quantity-discount break-even comparison. बल्क परचेज़ ऑप्टिमाइज़र।">
+  <meta name="keywords" content="eoq calculator, ईओक्यू कैलकुलेटर, economic order quantity, bulk purchase optimizer, quantity discount break even, optimal order quantity, बल्क डिस्काउंट">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/bulk-purchase-optimizer/">
+  <meta property="og:title" content="Bulk Purchase Optimizer | VisionQuantech">
+  <meta property="og:description" content="EOQ plus quantity-discount break-even — the cheapest order quantity. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+    .num{ text-align:right; white-space:nowrap; }
+    .po-table-wrap{ overflow-x:auto; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+    .vq-table th,.vq-table td{ padding:.5rem .6rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    .c-winner td{ background:#f3f9f0; font-weight:600; }
+  </style>
+</head>
+<body data-app="bulk-purchase-optimizer">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard slot --></div>
+
+    <div class="vq-hero">
+      <h1>Bulk Purchase Optimizer — EOQ + Discount Break-Even</h1>
+      <p>Find the <strong>cheapest order quantity</strong>: EOQ from your demand and costs, then a head-to-head with every quantity-discount tier. <span lang="hi">बल्क परचेज़ ऑप्टिमाइज़र — EOQ और डिस्काउंट ब्रेक-ईवन से सबसे सस्ती ऑर्डर मात्रा।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Analyses saved on this device — nothing is sent anywhere.</p>
+    </div>
+
+    <div id="b-gate"></div>
+
+    <section class="card" aria-label="EOQ inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your numbers</h2>
+      <p class="formula">EOQ = √(2 × Annual demand × Ordering cost ÷ Holding cost)</p>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="b-demand">Annual demand (units)</label>
+          <input id="b-demand" class="vq-input" type="number" min="0" step="1" value="12000" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="b-ordercost">Ordering cost per order (₹)</label>
+          <input id="b-ordercost" class="vq-input" type="number" min="0" step="0.01" value="500" inputmode="decimal">
+          <p class="vq-hint">Transport, paperwork, inspection per order.</p>
+        </div>
+        <div class="vq-field">
+          <label for="b-holdcost">Holding cost per unit per year (₹)</label>
+          <input id="b-holdcost" class="vq-input" type="number" min="0" step="0.01" value="20" inputmode="decimal">
+          <p class="vq-hint">Storage, insurance, capital locked per unit/year.</p>
+        </div>
+        <div class="vq-field">
+          <label for="b-price">Unit price (₹)</label>
+          <input id="b-price" class="vq-input" type="number" min="0" step="0.01" value="100" inputmode="decimal">
+        </div>
+      </div>
+
+      <h3 class="vq-section-title">Quantity discount tiers <span class="vq-hint">(optional)</span></h3>
+      <div class="po-table-wrap">
+        <table class="vq-table">
+          <thead><tr><th class="num">Min qty</th><th class="num">Discount %</th><th></th></tr></thead>
+          <tbody id="b-tiers"></tbody>
+        </table>
+      </div>
+      <p style="margin-top:.6rem"><button id="b-add-tier" class="vq-btn vq-btn-ghost" type="button">+ Add tier</button></p>
+      <button id="b-calc" class="vq-btn" type="button">Find cheapest order quantity</button>
+      <p id="b-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="b-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Recommendation</h2>
+      <div id="b-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Total annual cost</strong> = purchase (demand × discounted unit price) + ordering (orders × cost per order) + holding (average stock × holding cost).</li>
+        <li><strong>A discount tier wins</strong> only if its total annual cost is lower than EOQ's — a bigger headline discount can lose if holding cost on extra stock outweighs it.</li>
+        <li><strong>EOQ assumes</strong> constant demand, fixed ordering cost, holding cost proportional to stock, no stockouts, instant replenishment — a planning guide, not a guarantee.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Bulk purchase optimizer — FAQs</h2>
+      <details><summary>How do I calculate the economic order quantity (EOQ)?</summary><p>Enter annual demand, ordering cost per order and holding cost per unit per year. EOQ = √(2 × demand × ordering cost ÷ holding cost). The tool also compares EOQ against your quantity-discount tiers and recommends the cheapest total annual cost.</p></details>
+      <details><summary lang="hi">EOQ कैसे निकालें?</summary><p lang="hi">वार्षिक मांग, प्रति ऑर्डर लागत और प्रति इकाई वार्षिक होल्डिंग लागत डालें। EOQ = √(2 × मांग × ऑर्डर लागत ÷ होल्डिंग लागत)। डिस्काउंट स्लैब के साथ तुलना करके सबसे सस्ता विकल्प सुझाया जाता है।</p></details>
+      <details><summary>What is the discount break-even in bulk purchase?</summary><p>A quantity-discount tier wins only when its total annual cost (purchase + ordering + holding at the discounted price) is lower than EOQ's total. Bigger discounts can lose if holding cost on the extra stock outweighs them.</p></details>
+      <details><summary lang="hi">बल्क डिस्काउंट ब्रेक-ईवन क्या है?</summary><p lang="hi">डिस्काउंट स्लैब तभी जीतता है जब उसकी कुल वार्षिक लागत (छूट वाले प्राइस पर खरीद + ऑर्डर + होल्डिंग) EOQ की कुल लागत से कम हो।</p></details>
+      <details><summary>What assumptions does EOQ make?</summary><p>Constant demand, fixed ordering cost, holding cost proportional to stock, no stockouts, and instant replenishment. It is a planning guide, not a guarantee — confirm with your inventory reality.</p></details>
+      <details><summary>Is my data stored online?</summary><p>No. Up to 25 analyses are saved in your browser vault on this device only.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

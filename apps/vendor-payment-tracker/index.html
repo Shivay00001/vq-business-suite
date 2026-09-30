@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Payment Tracker — Payables + MSME 45-Day Rule Alerts | VisionQuantech</title>
+  <meta name="description" content="Free vendor payment tracker: payables ledger, due dates, MSME 45-day breach flags and delayed-payment interest estimate at 3× RBI bank rate (16.50%). MSME भुगतान ट्रैकर।">
+  <meta name="keywords" content="vendor payment tracker, वेंडर पेमेंट ट्रैकर, msme 45 day rule, msmed act delayed payment interest, accounts payable tracker, supplier payment due dates, 3x rbi bank rate interest">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/vendor-payment-tracker/">
+  <meta property="og:title" content="Vendor Payment Tracker | VisionQuantech">
+  <meta property="og:description" content="Payables ledger with MSME 45-day breach flags and interest estimates. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .num{ text-align:right; white-space:nowrap; }
+    .po-table-wrap{ overflow-x:auto; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+    .vq-table th,.vq-table td{ padding:.5rem .6rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    .a-badge{ display:inline-block; border-radius:99px; padding:.15rem .7rem; font-size:.8rem; font-weight:700; white-space:nowrap; }
+    .a-ok{ background:#e6f4ea; color:#1d7a3f; } .a-bad{ background:#fdeceb; color:#b3261e; } .a-wait{ background:#fff4e0; color:#8a5a00; }
+    .t-cards{ display:grid; grid-template-columns:repeat(2,1fr); gap:.7rem; margin-bottom:1rem; }
+    @media (min-width:640px){ .t-cards{ grid-template-columns:repeat(4,1fr); } }
+    .t-card{ border:1px solid var(--line); border-radius:10px; padding:.7rem .9rem; display:flex; flex-direction:column; }
+    .t-card strong{ font-size:1.25rem; }
+    .t-warn{ border-color:#e5a; }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+  </style>
+</head>
+<body data-app="vendor-payment-tracker">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard slot --></div>
+
+    <div class="vq-hero">
+      <h1>Vendor Payment Tracker — Payables + MSME 45-Day Rule</h1>
+      <p>Track <strong>payables per vendor</strong> with due dates, and get flagged when an <strong>MSME supplier's payment crosses 45 days</strong> — with the Sec 16 interest estimate. <span lang="hi">वेंडर पेमेंट ट्रैकर — बकाया भुगतान और MSME 45-दिन नियम अलर्ट।</span></p>
+      <p class="vq-hint">Free: 20 entries per day. Ledger stays in your browser vault — nothing is sent anywhere.</p>
+    </div>
+
+    <div id="t-gate"></div>
+
+    <section class="card" aria-label="Add invoice">
+      <h2 class="vq-section-title" style="margin-top:0">Add a payable invoice</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="t-vendor">Vendor name</label><input id="t-vendor" class="vq-input" type="text" maxlength="120"></div>
+        <div class="vq-field"><label for="t-invno">Invoice number</label><input id="t-invno" class="vq-input" type="text" maxlength="60"></div>
+        <div class="vq-field"><label for="t-date">Invoice date</label><input id="t-date" class="vq-input" type="date"></div>
+        <div class="vq-field"><label for="t-amount">Amount (₹)</label><input id="t-amount" class="vq-input" type="number" min="0" step="0.01" inputmode="decimal"></div>
+        <div class="vq-field"><label for="t-credit">Agreed credit days</label><input id="t-credit" class="vq-input" type="number" min="0" max="180" step="1" value="30" inputmode="numeric"><p class="vq-hint">Capped at 45 for MSME suppliers (Sec 15).</p></div>
+      </div>
+      <div class="check-row">
+        <input id="t-msme" type="checkbox">
+        <label for="t-msme" style="margin:0">MSME-registered supplier (MSMED Act 45-day rule + Sec 16 interest applies)</label>
+      </div>
+      <button id="t-add" class="vq-btn" type="button">Add invoice</button>
+      <p id="t-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Payables ledger">
+      <h2 class="vq-section-title" style="margin-top:0">Payables ledger</h2>
+      <div id="t-ledger"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Sec 15 (MSMED Act, 2006):</strong> buyer must pay an MSME supplier within the agreed credit period, capped at <strong>45 days</strong> from acceptance — a longer agreed period is not enforceable.</li>
+        <li><strong>Sec 16:</strong> delay attracts <strong>compound interest with monthly rests at 3× the RBI bank rate</strong>. RBI bank rate <strong>5.50% p.a.</strong> (verified Sep 2026) → interest <strong>16.50% p.a.</strong></li>
+        <li><strong>Interest model:</strong> monthly compounding for each completed 30-day block past the due date; simple interest on (principal + accrued) for leftover days. This is an estimate — confirm with your CA before filing a claim.</li>
+        <li>Disputes go to the Micro and Small Enterprises Facilitation Council (MSEFC) via the <strong>MSME Samadhaan</strong> portal (Sec 18).</li>
+        <li><strong>Storage:</strong> max 25 invoices on this device. Nothing leaves your browser.</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-label="Statutory sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>MSMED Act: 45-day cap on agreed credit (Sec 15); 3× RBI bank rate, compound with monthly rests (Sec 16) — <a href="https://finodha.in/msme-payment-rules/" rel="noopener">Finodha — MSME payment rules</a>; <a href="https://businessconnectindia.in/msmes-can-recover-pending-payments-legally/" rel="noopener">Business Connect India — recovery guide</a></li>
+        <li>RBI bank rate 5.50% (repo 5.25%, MSF 5.50%) — <a href="https://www.codeforbanks.com/bankguid/key-rates-of-rbi/" rel="noopener">CodeForBanks — RBI key rates</a>; <a href="https://Moneylife.in/article/rbi-keeps-repo-rate-unchanged-at-525-percentage-announces-digital-fraud-compensation-rules-against-misselling/79589.html" rel="noopener">Moneylife — MPC policy (Aug 2026)</a></li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Vendor payment tracker — FAQs</h2>
+      <details><summary>What is the MSME 45-day payment rule?</summary><p>Under Section 15 of the MSMED Act 2006, a buyer must pay an MSME supplier within the agreed credit period, which cannot exceed 45 days from acceptance of goods/services — even if the contract says longer.</p></details>
+      <details><summary lang="hi">MSME 45-दिन का भुगतान नियम क्या है?</summary><p lang="hi">MSMED एक्ट 2006 की धारा 15 के तहत खरीदार को MSME सप्लायर को स्वीकृति के 45 दिनों के भीतर भुगतान करना होता है — अनुबंध में ज़्यादा अवधि लिखी हो तो भी।</p></details>
+      <details><summary>What interest applies on delayed MSME payments?</summary><p>Section 16 mandates compound interest with monthly rests at three times the RBI bank rate. With the bank rate at 5.50% (verified Sep 2026), that is 16.50% p.a. Confirm the current rate with your CA before filing a claim.</p></details>
+      <details><summary lang="hi">MSME भुगतान में देरी पर कितना ब्याज लगता है?</summary><p lang="hi">धारा 16 के तहत मासिक चक्रवृद्धि के साथ RBI बैंक दर के तीन गुने की दर से ब्याज — बैंक दर 5.50% (सितंबर 2026 सत्यापित) पर यह 16.50% वार्षिक है।</p></details>
+      <details><summary>How does this tracker flag breaches?</summary><p>Tick "MSME-registered supplier" and the agreed credit is capped at 45 days. Invoices still unpaid beyond that are flagged "MSME 45-day breach" with an interest estimate; all overdue invoices are listed with days overdue.</p></details>
+      <details><summary>Where can an MSME complain about delayed payment?</summary><p>On the government MSME Samadhaan portal, which routes the case to the Micro and Small Enterprises Facilitation Council (MSEFC) for conciliation and arbitration under Section 18.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

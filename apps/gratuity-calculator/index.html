@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gratuity Calculator – Calculate Gratuity (15/26 Formula) India | VisionQuantech</title>
+  <meta name="description" content="Free gratuity calculator India: (15/26) × last-drawn salary × completed years, 5-year eligibility check, ₹20 lakh cap. Payment of Gratuity Act 1972 formula with on-screen assumptions. ग्रेच्युटी कैलकुलेटर – ग्रेच्युटी कैसे निकालें।">
+  <meta name="keywords" content="gratuity calculator India, gratuity calculation formula, how to calculate gratuity, 15/26 gratuity formula, gratuity eligibility 5 years, ग्रेच्युटी कैलकुलेटर, ग्रेच्युटी कैसे निकालें, ग्रेच्युटी फॉर्मूला">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/gratuity-calculator/">
+  <meta property="og:title" content="Gratuity Calculator – (15/26) Formula | VisionQuantech">
+  <meta property="og:description" content="Compute gratuity under the Payment of Gratuity Act 1972. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="gratuity-calculator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Gratuity Calculator — (15/26) Formula, India</h1>
+      <p>Free gratuity calculator under the <strong>Payment of Gratuity Act, 1972</strong>: 15 days' wages for every completed year of service, on a 26-day month basis. <span lang="hi">ग्रेच्युटी कैलकुलेटर — अंतिम वेतन और सेवा अवधि से ग्रेच्युटी निकालें।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="g-gate"></div>
+
+    <section class="card" aria-label="Gratuity inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your details</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="g-salary">Last-drawn monthly salary — Basic + DA (₹)</label>
+          <input id="g-salary" type="number" min="0" max="100000000" step="0.01" value="30000" inputmode="decimal">
+          <p class="vq-hint">HRA, bonus and overtime are <strong>not</strong> included under the Act.</p>
+        </div>
+        <div class="vq-field">
+          <label for="g-years">Completed years of service</label>
+          <input id="g-years" type="number" min="0" max="60" step="1" value="5" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="g-months">Extra months (0–11)</label>
+          <input id="g-months" type="number" min="0" max="11" step="1" value="0" inputmode="numeric">
+          <p class="vq-hint">More than 6 months in the final year counts as a full year.</p>
+        </div>
+      </div>
+      <div class="check-row">
+        <input id="g-covered" type="checkbox" checked>
+        <label for="g-covered" style="margin:0">Establishment is covered by the Act (10+ employees in the preceding 12 months — factories, mines, shops &amp; establishments, etc.)</label>
+      </div>
+      <div class="check-row">
+        <input id="g-special" type="checkbox">
+        <label for="g-special" style="margin:0">Death / disablement due to accident or disease (5-year rule is waived in this case)</label>
+      </div>
+      <button id="g-calc" class="vq-btn" type="button">Calculate gratuity</button>
+      <p id="g-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="g-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Gratuity payable</h2>
+      <p class="formula">Gratuity = (Last-drawn salary × 15 × billable years) ÷ 26</p>
+      <div id="g-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Formula:</strong> (15 ÷ 26) × last-drawn monthly salary (Basic + DA, incl. fixed sales commission) × completed years of service.</li>
+        <li><strong>Eligibility:</strong> 5 years of continuous service, except death/disablement where gratuity is payable regardless of tenure.</li>
+        <li><strong>Part-year rule:</strong> service over 6 months in the final year counts as one full year; under 6 months is ignored.</li>
+        <li><strong>Statutory cap:</strong> ₹20,00,000 maximum under the Act (raised from ₹10 lakh in 2018). Amounts above the cap are taxable in the employee's hands.</li>
+        <li><strong>Not covered by the Act?</strong> Employers may still pay gratuity ex-gratia — the usual formula there is (15 ÷ 30) × salary × years. Confirm with your CA.</li>
+        <li><strong>This is an estimate, not legal advice.</strong> Continuous-service disputes (breaks, 240-day rules) need a labour consultant — <strong>confirm with your CA before paying or filing.</strong></li>
+      </ul>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>Payment of Gratuity Act, 1972 — 15 days' wages per completed year, 26-day month, 5-year eligibility, 10+ employee applicability — <a href="https://www.bajajfinserv.in/payment-of-gratuity-act-1972" rel="noopener">Bajaj Finserv guide</a>; <a href="https://economictimes.indiatimes.com/wealth/invest/how-to-calculate-gratuity/articleshow/61913387.cms" rel="noopener">Economic Times — how gratuity is calculated</a></li>
+        <li>6+ months = full year; salary = Basic + DA (+ fixed commission) — <a href="https://www.livemint.com/Money/KJM6JU6w8ouOFBycLuriaL/How-is-gratuity-calculated.html" rel="noopener">Mint</a></li>
+        <li>₹20 lakh cap (2018 amendment) — <a href="https://www.jainam.in/glossary/gratuity-amount/" rel="noopener">Jainam</a></li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Gratuity calculator — FAQs</h2>
+      <details><summary>How is gratuity calculated in India?</summary><p>Gratuity = (last-drawn monthly salary × 15 × completed years of service) ÷ 26, where salary means Basic + DA. A month is taken as 26 working days, hence 15/26.</p></details>
+      <details><summary lang="hi">ग्रेच्युटी कैसे निकालें?</summary><p lang="hi">ग्रेच्युटी = (अंतिम मासिक वेतन × 15 × सेवा के पूर्ण वर्ष) ÷ 26। वेतन में बेसिक + DA शामिल है। 5 साल की निरंतर सेवा ज़रूरी है।</p></details>
+      <details><summary>Who is eligible for gratuity?</summary><p>Employees of establishments with 10+ workers who complete 5 years of continuous service. The 5-year rule is waived on death or disablement due to accident/disease.</p></details>
+      <details><summary>Is there a maximum gratuity amount?</summary><p>Yes — ₹20,00,000 under the Payment of Gratuity Act (raised from ₹10 lakh in 2018). Anything above that is taxable.</p></details>
+      <details><summary>What if my company is not covered by the Act?</summary><p>Employers can still pay gratuity voluntarily; the common ex-gratia formula uses 30 days instead of 26. Confirm the correct treatment with your CA.</p></details>
+      <details><summary>Is this official legal advice?</summary><p>No — this is an estimate using the statutory formula. Confirm with your CA or labour consultant before paying or filing.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

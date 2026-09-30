@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cashbook Tool — कैश बुक हिसाब | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free digital cashbook (rokad bahi) for Indian SMEs: daily cash in/out entries with categories, opening balance, day-wise closing balance, month view, counted-cash difference flag, print. कैश बुक फ्री में बनाएं।">
+  <meta name="keywords" content="cashbook, कैश बुक, rokad bahi, daily cash book, cash in out tracker, cash closing balance, petty cash book, hisab kitab app">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; }
+    .p-warn { background: #fff4d6; color: #8a5a00; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    tr.diff-bad td { background: #fef2f2; }
+    .type-row { display: flex; gap: .6rem; margin-bottom: 1rem; }
+    .type-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem 1rem; cursor: pointer; font-weight: 600; background: #fff; flex: 1; text-align: center; }
+    .type-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    .big-balance { font-size: 1.6rem; font-weight: 800; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+      #printArea { display: block !important; }
+    }
+  </style>
+</head>
+<body data-app="cashbook-tool">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Cashbook Tool</h1>
+    <p class="lede">कैश बुक (रोकड़ बही) — roz ke <strong>cash in / cash out</strong> entries category aur note ke saath, opening balance se <strong>day-wise closing balance</strong>, month view, aur gine hue cash se <strong>difference flag</strong>. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Opening balance</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="openBal">Cash in hand at start (₹)</label><input id="openBal" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 10000"></div>
+        <div class="vq-field"><label for="openDate">Effective from (date)</label><input id="openDate" type="date"></div>
+      </div>
+      <button class="vq-btn secondary mini" id="saveOpenBtn" type="button">Save opening balance</button>
+      <p class="err" id="open-error" role="alert"></p>
+    </div>
+
+    <div id="editorWrap" class="no-print">
+      <div class="card">
+        <h2>Add cash entry / एंट्री जोड़ें</h2>
+        <div class="type-row">
+          <label><input type="radio" name="ctype" value="in" checked> Cash IN (+)</label>
+          <label><input type="radio" name="ctype" value="out"> Cash OUT (−)</label>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="e-cat">Category</label><select id="e-cat"></select></div>
+          <div class="vq-field"><label for="e-date">Date *</label><input id="e-date" type="date"></div>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="e-amount">Amount (₹) *</label><input id="e-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 5000"></div>
+          <div class="vq-field"><label for="e-note">Note</label><input id="e-note" type="text" placeholder="e.g. Shop sales / Supplier payment"></div>
+        </div>
+        <button class="vq-btn go" id="addEntryBtn" type="button">Add entry</button>
+        <p class="err" id="e-error" role="alert"></p>
+      </div>
+    </div>
+
+    <div id="printArea">
+      <div class="card">
+        <h2>Cashbook — <span id="cbMonth"></span></h2>
+        <div class="vq-field no-print" style="max-width:240px"><label for="monthSel">Month</label><input id="monthSel" type="month"></div>
+        <p>Opening balance: <strong id="cbOpen"></strong> &nbsp;·&nbsp; Today's closing: <span class="big-balance" id="cbToday"></span></p>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Date</th><th>Particulars</th><th>Category</th><th class="r">Cash in (+)</th><th class="r">Cash out (−)</th><th class="r">Closing balance</th><th></th></tr></thead>
+          <tbody id="cbBody"></tbody>
+        </table></div>
+        <p class="vq-hint">Closing balance = opening + total in − total out (us date tak ki saari entries).</p>
+      </div>
+
+      <div class="card">
+        <h2>Month view — daily totals</h2>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Date</th><th class="r">Cash in</th><th class="r">Cash out</th><th class="r">Closing balance</th></tr></thead>
+          <tbody id="monthBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="card no-print">
+      <h2>Cash-vs-book check (gine hue cash ka milaan)</h2>
+      <p class="vq-hint">Tijori me gine hue cash ko book balance se milayein — farak hoga to flag lagega.</p>
+      <div class="grid2">
+        <div class="vq-field"><label for="chk-date">Date</label><input id="chk-date" type="date"></div>
+        <div class="vq-field"><label for="chk-counted">Counted cash in hand (₹)</label><input id="chk-counted" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 12350"></div>
+      </div>
+      <button class="vq-btn go mini" id="chkBtn" type="button">Check difference</button>
+      <p class="err" id="chk-error" role="alert"></p>
+      <p id="chk-result"></p>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="cb-saved"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="cb-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Cashbook kaise banaye? (रोकड़ बही कैसे बनाएं?)</summary>
+        <p>Opening balance set karein, phir roz ki cash in/out entries category aur note ke saath darj karein. App automatic day-wise closing balance nikalta hai.</p>
+      </details>
+      <details>
+        <summary>Cash-vs-book difference ka matlab kya hai?</summary>
+        <p>Book balance (hisab) aur tijori me gine hue cash me farak hona chahiye zero. Agar farak hai to koi entry chhoot gayi hai ya galti hui hai — ye check usi ko pakadta hai.</p>
+      </details>
+      <details>
+        <summary>Month view me kya dikhta hai?</summary>
+        <p>Har din ka total cash in, cash out aur us din ka closing balance — poore mahine ka cash flow ek nazar me.</p>
+      </details>
+      <details>
+        <summary>कैश बुक क्या होती है?</summary>
+        <p>Cashbook (rokad bahi) me roz ke nakad len-den ka hisaab rehta hai — kitna cash aaya, kitna gaya, aur din ke ant me kitna bacha. Chhote dukaandaaron ka sabse zaroori register.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

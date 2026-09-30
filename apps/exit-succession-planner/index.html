@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exit & Succession Planner — Readiness Checklist + Valuation Snapshot | VisionQuantech</title>
+  <meta name="description" content="Free exit & succession planner: 15-point readiness checklist, valuation snapshot (ESTIMATE) and handover task list for Indian SME owners. सक्सेशन प्लानर।">
+  <meta name="keywords" content="succession planning small business, business exit planning india, succession readiness checklist, handover checklist business sale, सक्सेशन प्लानिंग, बिज़नेस एक्ज़िट प्लान">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/exit-succession-planner/">
+  <meta property="og:title" content="Exit & Succession Planner | VisionQuantech">
+  <meta property="og:description" content="Succession readiness score, valuation snapshot and handover tasks. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:.7rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .assump { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li { margin-bottom:.4rem; }
+    .est-tag { background:#fff3cd; border:1px solid #d9a400; border-radius:10px; padding:.7rem 1rem; font-weight:800; color:#7a5b00; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+  </style>
+</head>
+<body data-app="exit-succession-planner">
+  <main class="vq-main">
+    <!-- ADSENSE: --><div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Exit &amp; Succession Planner — Is Your Business Transferable?</h1>
+      <p>Work through a <strong>15-point readiness checklist</strong>, get a <strong>readiness %</strong>, a <strong>valuation snapshot</strong> (ESTIMATE) and a <strong>handover task list</strong>. <span lang="hi">सक्सेशन प्लानर — क्या आपका बिज़नेस आपके बिना चल सकता है?</span></p>
+      <p class="vq-hint">Free: 20 plans per day. Checklist progress is saved on-device; nothing is uploaded.</p>
+    </div>
+
+    <div id="x-gate"></div>
+
+    <section class="card" aria-label="Readiness checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Succession readiness checklist</h2>
+      <div id="x-list"></div>
+    </section>
+
+    <section class="card" aria-label="Valuation snapshot inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Valuation snapshot (optional)</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="x-pat">Annual PAT — profit after tax (₹, leave blank to skip)</label>
+          <input id="x-pat" type="number" min="0" max="100000000000" step="0.01" inputmode="decimal" value="">
+        </div>
+        <div class="vq-field">
+          <label for="x-mult">Profit multiple (1–10)</label>
+          <input id="x-mult" type="number" min="1" max="10" step="0.5" value="4" inputmode="decimal">
+        </div>
+      </div>
+      <button id="x-calc" class="vq-btn" type="button">Score my readiness</button>
+      <p id="x-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="x-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your succession plan</h2>
+      <div id="x-result"></div>
+    </section>
+
+    <!-- ADSENSE: --><div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Succession planning — FAQs</h2>
+      <details><summary>What is succession planning for a small business?</summary><p>Making the business transferable: documented processes, a second-in-command, diversified customers, clean books and deal-ready paperwork. This tool scores your readiness across 15 checkpoints.</p></details>
+      <details><summary lang="hi">सक्सेशन प्लानिंग क्या है?</summary><p lang="hi">बिज़नेस को हस्तांतरणीय बनाना — दस्तावेज़ी प्रक्रियाएं, सेकंड-इन-कमांड, विविध ग्राहक, साफ़ खाते। यह टूल 15 बिंदुओं पर आपकी तैयारी स्कोर करता है।</p></details>
+      <details><summary>What hurts a business valuation most at exit?</summary><p>Owner dependence — if the business stops when you step away for 30 days, buyers discount heavily. That is the single biggest readiness factor.</p></details>
+      <details><summary>Should I sell shares or assets?</summary><p>Tax and liability outcomes differ sharply. Take structuring advice from your CA and lawyer before signing anything.</p></details>
+      <details><summary>Is the valuation snapshot financial advice?</summary><p>No — it is a rough PAT × multiple range for the handover conversation. A registered valuer is needed for any deal.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Feedback Manager — ग्राहक फीडबैक | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free customer feedback & complaint manager for Indian SMEs: feedback log with 1-5 star rating, category, status (open/in-progress/resolved), resolution notes, open-complaint aging. ग्राहक फीडबैक मुफ्त में मैनेज करें।">
+  <meta name="keywords" content="customer feedback, ग्राहक फीडबैक, complaint management India, customer complaint tracker, feedback log, customer rating tracker, शिकायत प्रबंधन, service feedback tool">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .fs-open { background: #fde8e8; color: #b42318; }
+    .fs-progress { background: #fff7e0; color: #946200; }
+    .fs-resolved { background: #e6f6ec; color: #1a7f37; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    .row-actions { white-space: nowrap; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+    .kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: .7rem; text-align: center; }
+    .kpi .num { font-weight: 800; font-size: 1.25rem; }
+    .kpi .lbl { font-size: .78rem; color: var(--ink-soft); }
+    tr.stale td { background: #fff5f5; }
+    .stars { color: #eab308; letter-spacing: .1em; }
+    .resolve-box { border-top: 1px dashed var(--line); margin-top: .8rem; padding-top: .8rem; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="customer-feedback-manager">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Customer Feedback Manager</h1>
+    <p class="lede">ग्राहक फीडबैक — har feedback/complaint ka <strong>log</strong>: customer, <strong>rating 1–5</strong>, category, status (<strong>open / in-progress / resolved</strong>), resolution notes aur <strong>open-complaint aging</strong>. <strong>Export: 20/day free · snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add feedback / फीडबैक दर्ज करें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="f-customer">Customer name *</label><input id="f-customer" type="text" placeholder="e.g. Priya Singh" maxlength="120"></div>
+        <div class="vq-field"><label for="f-rating">Rating (1–5) *</label><select id="f-rating">
+          <option value="5">★★★★★ 5 — Excellent</option><option value="4">★★★★ 4 — Good</option>
+          <option value="3">★★★ 3 — Average</option><option value="2">★★ 2 — Poor</option>
+          <option value="1">★ 1 — Very poor</option>
+        </select></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="f-cat">Category *</label><select id="f-cat">
+          <option>Product</option><option>Service</option><option>Delivery</option><option>Billing</option><option>Staff behaviour</option><option>Other</option>
+        </select></div>
+        <div class="vq-field"><label for="f-date">Date *</label><input id="f-date" type="date"></div>
+      </div>
+      <div class="vq-field"><label for="f-text">Feedback / complaint text *</label><textarea id="f-text" rows="3" maxlength="2000" placeholder="Customer ne kya kaha…"></textarea></div>
+      <button class="vq-btn go" id="addFbBtn" type="button">Add feedback</button>
+      <p class="err" id="f-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <h2>Overview</h2>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="num" id="kpiOpen">—</div><div class="lbl">Open</div></div>
+        <div class="kpi"><div class="num" id="kpiProgress">—</div><div class="lbl">In-progress</div></div>
+        <div class="kpi"><div class="num" id="kpiResolved">—</div><div class="lbl">Resolved</div></div>
+        <div class="kpi"><div class="num" id="kpiAvg">—</div><div class="lbl">Avg rating</div></div>
+      </div>
+      <div class="grid2 no-print">
+        <div class="vq-field"><label for="flt-status">Filter: status</label><select id="flt-status">
+          <option value="">— All —</option><option value="open">Open</option>
+          <option value="in-progress">In-progress</option><option value="resolved">Resolved</option>
+        </select></div>
+        <div class="vq-field"><label for="flt-cat">Filter: category</label><select id="flt-cat">
+          <option value="">— All —</option><option>Product</option><option>Service</option><option>Delivery</option>
+          <option>Billing</option><option>Staff behaviour</option><option>Other</option>
+        </select></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Feedback log</h2>
+      <p class="vq-hint">Aging = khuli (open/in-progress) complaint kitne din se pending hai. 7+ din purani open complaints red me highlight hoti hain.</p>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Date</th><th>Customer</th><th>Category</th><th>Rating</th><th>Feedback</th><th>Status</th><th class="r">Aging (days)</th><th class="no-print">Actions</th></tr></thead>
+        <tbody id="fbBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card no-print" id="resolveCard" style="display:none">
+      <h2>Resolve / update — <span id="resolveFor"></span></h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="r-status">New status</label><select id="r-status">
+          <option value="open">Open</option><option value="in-progress">In-progress</option><option value="resolved">Resolved</option>
+        </select></div>
+        <div class="vq-field"><label for="r-date">Resolved date (resolved par)</label><input id="r-date" type="date"></div>
+      </div>
+      <div class="vq-field"><label for="r-note">Resolution notes</label><textarea id="r-note" rows="3" maxlength="2000" placeholder="Kya action liya gaya…"></textarea></div>
+      <div class="btn-row">
+        <button class="vq-btn go" id="saveResolveBtn" type="button">Save update</button>
+        <button class="vq-btn ghost" id="cancelResolveBtn" type="button">Cancel</button>
+      </div>
+      <p class="err" id="r-error" role="alert"></p>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn secondary" id="exportBtn" type="button">Export CSV</button>
+      <button class="vq-btn secondary" id="saveBtn" type="button">Save snapshot</button>
+      <button class="vq-btn ghost" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="fm-saved"></p>
+    <p class="vq-hint no-print">Log dekhna free hai — sirf CSV export (20/day) aur snapshots (25/day) par limit hai.</p>
+    <div id="fm-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Open-complaint aging kya hoti hai?</summary>
+        <p>Aging batati hai ki ek khuli (open ya in-progress) complaint <strong>kitne din se pending</strong> hai. 7+ din purani complaints red me highlight hoti hain taaki turant action liya ja sake.</p>
+      </details>
+      <details>
+        <summary>Status kaise update karein?</summary>
+        <p>Log me <strong>Update</strong> dabayein, naya status chunein (open / in-progress / resolved) aur <strong>resolution notes</strong> likhein — kya action liya gaya. Resolved par resolved date bhi daalein.</p>
+      </details>
+      <details>
+        <summary>Rating se kya pata chalta hai?</summary>
+        <p>1–5 star rating se average rating nikalti hai — ye aapki service quality ka seedha measure hai. Low rating wali categories (delivery, billing…) par focus karke sudhaar kiya ja sakta hai.</p>
+      </details>
+      <details>
+        <summary>ग्राहक शिकायत प्रबंधन क्यों ज़रूरी है?</summary>
+        <p>Shikayat ko time par solve karne se customer wapas aata hai; ignore karne se negative reviews milte hain. Log me har complaint ka status aur aging saaf dikhta hai.</p>
+      </details>
+      <details>
+        <summary>Kya mera data safe hai?</summary>
+        <p>Haan — saara data sirf aapke browser ke vault me store hota hai. Passphrase se encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

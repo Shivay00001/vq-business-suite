@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Price History — Free आइटम प्राइस हिस्ट्री & Trend Tracker | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free item price history for Indian SMEs: purchase price entries over time → price trend chart (SVG), min/max/avg, latest-vs-average %, supplier-wise comparison. प्राइस हिस्ट्री फ्री।">
+  <meta name="keywords" content="price history, प्राइस हिस्ट्री, purchase price trend, supplier price comparison, rate trend chart, khareed bhav track, raw material price tracking India, price fluctuation analysis">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-up { background: #fde8e8; color: #b42318; } .p-dn { background: #e6f6ec; color: #1a7f37; } .p-flat { background: #eef2f7; color: #475569; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: .8rem; margin-bottom: 1rem; }
+    @media (max-width: 700px) { .kpis { grid-template-columns: 1fr 1fr; } }
+    .kpi { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; }
+    .kpi .n { font-size: 1.15rem; font-weight: 800; } .kpi .l { font-size: .8rem; color: var(--ink-soft); }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="item-price-history">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Item Price History</h1>
+    <p class="lede">आइटम प्राइस हिस्ट्री — har item ke <strong>purchase price entries</strong> time ke saath darj karein. <strong>Price trend chart</strong>, <strong>min / max / avg</strong>, <strong>latest-vs-average %</strong>, aur <strong>supplier-wise comparison table</strong>. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add price entry</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="p-item">Item *</label><input id="p-item" type="text" placeholder="e.g. Mustard Oil 1L"></div>
+        <div class="vq-field"><label for="p-date">Date *</label><input id="p-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="p-rate">Purchase rate (₹) *</label><input id="p-rate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 185"></div>
+        <div class="vq-field"><label for="p-sup">Supplier</label><input id="p-sup" type="text" placeholder="e.g. Gupta Oil Mill"></div>
+      </div>
+      <button class="vq-btn go" id="addPriceBtn" type="button">Add price</button>
+      <p class="err" id="p-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <div class="vq-field no-print" style="max-width:320px"><label for="itemSel">Price trend for item</label><select id="itemSel"></select></div>
+      <h2>Trend — <span id="trendItem"></span></h2>
+      <div class="kpis">
+        <div class="kpi"><div class="n" id="kLatest">—</div><div class="l">Latest rate</div></div>
+        <div class="kpi"><div class="n" id="kMin">—</div><div class="l">Min</div></div>
+        <div class="kpi"><div class="n" id="kMax">—</div><div class="l">Max</div></div>
+        <div class="kpi"><div class="n" id="kAvg">—</div><div class="l">Average</div></div>
+        <div class="kpi"><div class="n" id="kVs">—</div><div class="l">Latest vs avg</div></div>
+      </div>
+      <div id="trendChart"></div>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Date</th><th class="r">Rate</th><th>Supplier</th><th class="no-print"></th></tr></thead>
+        <tbody id="priceBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Supplier comparison — <span id="cmpItem"></span></h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Supplier</th><th class="r">Entries</th><th class="r">Latest rate</th><th class="r">Avg rate</th><th class="r">Min</th><th>Verdict</th></tr></thead>
+        <tbody id="supBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Formula — गणना कैसे होती है</h2>
+      <div class="formula">
+        <p><strong>Min / Max / Avg:</strong> <code>Avg = Σ Rates ÷ Entries</code></p>
+        <p><strong>Latest vs average %</strong> <code>= ((Latest rate − Avg) ÷ Avg) × 100</code> — positive matlab latest rate ausat se mehenga</p>
+        <p><strong>Supplier verdict:</strong> sabse kam avg rate wala supplier "Cheapest on average"</p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Price history track karne se kya fayda?</summary>
+        <p>Rate kab badha/ghata, kaun sa supplier sasta padta hai, aur bargaining ke liye proof — ye sab price history se milta hai.</p>
+      </details>
+      <details>
+        <summary>Latest vs average % ka matlab kya hai?</summary>
+        <p>Ye batata hai ki aaj ka rate ausat rate se kitna % upar/neeche hai — positive % matlab abhi rate mehenga chal raha hai.</p>
+      </details>
+      <details>
+        <summary>Supplier comparison kaise use karein?</summary>
+        <p>Har supplier ka avg aur latest rate compare karein — consistently saste supplier se zyada order dein, mehange se bargain karein.</p>
+      </details>
+      <details>
+        <summary>प्राइस हिस्ट्री क्यों ज़रूरी है?</summary>
+        <p>Raw material ke bhav roz badalte hain — bina history ke pata nahi chalta kab sasta khareedein aur supplier rate sahi de raha hai ya nahi.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

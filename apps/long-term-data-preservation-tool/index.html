@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Preservation Tool — Statutory Record Retention India | VisionQuantech</title>
+  <meta name="description" content="Free statutory record-retention tool for India: how long to keep books, GST, ESI, PF and wage records (Companies Act 8 years, IT Act, GST 72 months) — with destruction-eligibility alerts and sources. रिकॉर्ड संरक्षण।">
+  <meta name="keywords" content="record retention india, document retention policy india, books of account retention 8 years, gst record retention 72 months, रिकॉर्ड संरक्षण, statutory document retention">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/long-term-data-preservation-tool/">
+  <meta property="og:title" content="Long-Term Data Preservation Tool | VisionQuantech">
+  <meta property="og:description" content="Statutory retention schedule for India with destruction-eligibility alerts. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-ok{ background:#e9f7ef; color:#1d7a3f; }
+    .b-watch{ background:#fff4e0; color:#9a6200; }
+    .ghost{ background:transparent; border:1px solid var(--line); padding:.3rem .7rem; font-size:.8rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.35rem; }
+    .btn-row{ display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.8rem; }
+  </style>
+</head>
+<body data-app="long-term-data-preservation-tool">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Long-Term Data Preservation Tool — Statutory Retention, India</h1>
+      <p>How long must you keep each record? <strong>Companies Act: 8 years · Income-tax: 6 years from AY end · GST: 72 months · ESI: 5 years · Wages: 3 years.</strong> Pick a document type and a reference date to get its destruction-eligibility date, with the statute and source on screen. <span lang="hi">रिकॉर्ड कितने साल रखें — कानून के हिसाब से।</span></p>
+      <p class="vq-hint">Free: 20 checks per day. Minimums only — keeping longer is always safe. Confirm destruction with your CA. Batches stored on this device.</p>
+    </div>
+
+    <div id="d-gate"></div>
+
+    <section class="card" aria-label="Retention check">
+      <h2 class="vq-section-title" style="margin-top:0">Check a record batch</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="d-type">Document type</label>
+          <select id="d-type"></select>
+        </div>
+        <div class="vq-field">
+          <label for="d-ref">Reference date</label>
+          <input id="d-ref" type="date">
+          <p class="vq-hint" id="d-basis"></p>
+        </div>
+        <div class="vq-field">
+          <label for="d-label">Batch label (optional)</label>
+          <input id="d-label" type="text" maxlength="60" placeholder="e.g. FY 2018-19 purchase bills" autocomplete="off">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="d-check" class="vq-btn" type="button">Check retention</button>
+        <button id="d-add" class="vq-btn" type="button">Track this batch</button>
+      </div>
+      <p id="d-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="d-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Retention verdict</h2>
+      <div id="d-result"></div>
+    </section>
+
+    <section class="card" aria-label="Tracked batches">
+      <h2 class="vq-section-title" style="margin-top:0">Tracked batches</h2>
+      <div id="d-list"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>Companies Act, 2013, Sec 128(5) — books of account + vouchers, min 8 financial years — <a href="https://taxguru.in/company-law/maintenance-books-accounts-section-128-companies-act-2013.html" rel="noopener">TaxGuru</a>; <a href="https://blog.taxrobo.in/section-128-books-of-account-under-the-companies-act-2013/" rel="noopener">TaxRobo</a></li>
+        <li>Income-tax Act, 1961 — 6 years from end of relevant AY (~8 previous years); Rule 10D transfer pricing: 8 years; foreign-asset escape: 16 years — <a href="https://www.bcasonline.org/Referencer2016-17/Other%20Laws/period_of_preservation_of_accounts_records.html" rel="noopener">BCAS referencer</a>; <a href="https://www.taxtmi.com/forum/issue?id=107587" rel="noopener">TaxTMI</a></li>
+        <li>CGST Act, 2017, Sec 36 — 72 months from annual-return due date — <a href="https://www.caclubindia.com/articles/how-long-must-you-keep-your-books-of-accounts-under-gst-54470.asp" rel="noopener">CAclubindia</a></li>
+        <li>ESI (General) Regulations, 1950 — Rule 32 (Form 7 register) &amp; Rule 66 (accident book): 5 years from last entry; ESIC circular 28-01-2020 — <a href="https://www.lawyersclubindia.com/forum/esic-record-maintenance-9537.asp" rel="noopener">LawyersClubIndia</a>; <a href="https://www.scconline.com/blog/post/2020/01/31/esic-officials-shall-not-ask-records-beyond-5-years-from-employer-to-determine-contributions/" rel="noopener">SCC Times</a></li>
+        <li>Payment of Wages Act, 1936, Sec 13A(2) — wage registers 3 years after last entry — <a href="https://indiankanoon.org/doc/186852307/" rel="noopener">Indian Kanoon</a></li>
+        <li>EPF wage records — commonly advised 6 years (forum guidance; confirm with consultant) — <a href="https://www.CAclubindia.com/forum/epf-employees-provident-fund-440602.asp" rel="noopener">CAclubindia forum</a></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Data preservation — FAQs</h2>
+      <details><summary>How long must books of account be kept in India?</summary><p>A company must preserve books of account and vouchers for at least 8 financial years (Companies Act, 2013, Sec 128(5)); income-tax books for 6 years from the end of the relevant AY; GST records for 72 months from the annual-return due date.</p></details>
+      <details><summary lang="hi">भारत में रिकॉर्ड कितने साल रखने होते हैं?</summary><p lang="hi">कंपनी की बही-खाते कम से कम 8 वित्तीय वर्ष (कंपनी अधिनियम 2013, धारा 128(5)); आयकर बही संबंधित निर्धारण वर्ष के अंत से 6 वर्ष; GST रिकॉर्ड वार्षिक रिटर्न की देय तिथि से 72 महीने।</p></details>
+      <details><summary>Can I destroy records as soon as the period ends?</summary><p>Only after confirming no litigation, appeal, assessment or investigation is open that needs them. This tool flags eligibility for review — the destruction decision stays with you and your CA.</p></details>
+      <details><summary>Where do the retention periods come from?</summary><p>Each row shows its statute and a source link — verified via web search in September 2026. They are minimums; keeping longer is always safe.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Approval Workflow — Multi-Level Approvals + Audit Trail | VisionQuantech</title>
+  <meta name="description" content="Free purchase approval workflow: amount-slab approval matrix, ordered multi-level approvals, and a full audit trail. परचेज़ अप्रूवल — मल्टी-लेवल स्वीकृति।">
+  <meta name="keywords" content="purchase approval workflow, परचेज़ अप्रूवल, approval matrix, multi level approval, purchase approval process, approval audit trail, अप्रूवल वर्कफ़्लो">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/purchase-approval-workflow/">
+  <meta property="og:title" content="Purchase Approval Workflow | VisionQuantech">
+  <meta property="og:description" content="Amount-slab approval chains with ordered approvals and audit trail. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .a-req{ border:1px solid var(--line); border-radius:10px; padding:.8rem 1rem; margin-bottom:.8rem; }
+    .a-req-head{ display:flex; justify-content:space-between; gap:.6rem; align-items:center; flex-wrap:wrap; }
+    .a-badge{ display:inline-block; border-radius:99px; padding:.15rem .7rem; font-size:.8rem; font-weight:700; }
+    .a-ok{ background:#e6f4ea; color:#1d7a3f; } .a-bad{ background:#fdeceb; color:#b3261e; } .a-wait{ background:#fff4e0; color:#8a5a00; }
+    .a-action{ display:grid; gap:.5rem; grid-template-columns:1fr; margin:.6rem 0; }
+    @media (min-width:640px){ .a-action{ grid-template-columns:1fr 1fr auto auto; } }
+    .vq-list{ list-style:none; padding:0; margin:.4rem 0; }
+    .vq-list li{ padding:.3rem 0; border-bottom:1px dashed var(--line); }
+  </style>
+</head>
+<body data-app="purchase-approval-workflow">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard slot --></div>
+
+    <div class="vq-hero">
+      <h1>Purchase Approval Workflow — Slab-Based Approvals</h1>
+      <p>Route every purchase through a <strong>multi-level approval matrix</strong> by amount slab, with an ordered chain and a full audit trail. <span lang="hi">परचेज़ अप्रूवल वर्कफ़्लो — राशि के हिसाब से मल्टी-लेवल स्वीकृति और ऑडिट ट्रेल।</span></p>
+      <p class="vq-hint">Free: 20 approval actions per day. Requests live in your browser vault — nothing is sent anywhere.</p>
+    </div>
+
+    <div id="a-gate"></div>
+
+    <section class="card" aria-label="Approval matrix">
+      <h2 class="vq-section-title" style="margin-top:0">Approval matrix <span class="vq-hint">(comma-separated roles per slab)</span></h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="mx-0">Up to ₹25,000</label><input id="mx-0" class="vq-input" type="text" maxlength="120"></div>
+        <div class="vq-field"><label for="mx-1">Up to ₹1,00,000</label><input id="mx-1" class="vq-input" type="text" maxlength="120"></div>
+        <div class="vq-field"><label for="mx-2">Up to ₹5,00,000</label><input id="mx-2" class="vq-input" type="text" maxlength="120"></div>
+        <div class="vq-field"><label for="mx-3">Above ₹5,00,000</label><input id="mx-3" class="vq-input" type="text" maxlength="120"></div>
+      </div>
+      <button id="a-save-matrix" class="vq-btn vq-btn-ghost" type="button">Save matrix</button>
+      <div id="a-matrix-view" style="margin-top:.8rem"></div>
+    </section>
+
+    <section class="card" aria-label="New purchase request">
+      <h2 class="vq-section-title" style="margin-top:0">New purchase request</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="a-title">Purchase title</label><input id="a-title" class="vq-input" type="text" maxlength="140" placeholder="e.g. 200 reams A4 paper"></div>
+        <div class="vq-field"><label for="a-vendor">Vendor</label><input id="a-vendor" class="vq-input" type="text" maxlength="120"></div>
+        <div class="vq-field"><label for="a-amount">Amount (₹)</label><input id="a-amount" class="vq-input" type="number" min="0" step="0.01" inputmode="decimal"></div>
+        <div class="vq-field"><label for="a-by">Requested by</label><input id="a-by" class="vq-input" type="text" maxlength="80" placeholder="Your name"></div>
+      </div>
+      <p><button id="a-preview" class="vq-btn vq-btn-ghost" type="button">Preview chain for this amount</button> <span id="a-preview-out" class="vq-hint"></span></p>
+      <button id="a-create" class="vq-btn" type="button">Create request</button>
+      <p id="a-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Requests">
+      <h2 class="vq-section-title" style="margin-top:0">Requests</h2>
+      <div id="a-requests"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Chain order is enforced:</strong> only the currently-pending role can approve or reject; out-of-turn attempts are refused.</li>
+        <li><strong>One rejection</strong> closes the request as rejected. Approvals must pass every role in the chain to close as approved.</li>
+        <li><strong>Matrix changes</strong> apply to new requests only; existing requests keep the chain they were created with.</li>
+        <li><strong>Storage:</strong> max 25 requests on this device; oldest is dropped. Audit timestamps use device time.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Purchase approval workflow — FAQs</h2>
+      <details><summary>How does the purchase approval workflow work?</summary><p>You define an approval matrix by amount slab (e.g. up to ₹25,000: HOD; up to ₹1,00,000: HOD then Finance). Each purchase request flows through its chain in order; approvals and rejections are recorded in a timestamped audit trail.</p></details>
+      <details><summary lang="hi">परचेज़ अप्रूवल वर्कफ़्लो कैसे काम करता है?</summary><p lang="hi">राशि के स्लैब के हिसाब से अप्रूवल मैट्रिक्स सेट करें। हर खरीद अनुरोध क्रम से अपने चेन से गुज़रता है; हर अप्रूवल/रिजेक्शन टाइमस्टैम्प के साथ ऑडिट ट्रेल में दर्ज होता है।</p></details>
+      <details><summary>Can someone approve out of turn?</summary><p>No. The tool enforces chain order — only the role that is currently pending can approve or reject. The attempt is rejected with an explanation.</p></details>
+      <details><summary lang="hi">क्या कोई क्रम से बाहर अप्रूव कर सकता है?</summary><p lang="hi">नहीं। टूल चेन के क्रम को लागू करता है — केवल वही रोल एक्शन ले सकता है जो उस समय पेंडिंग हो।</p></details>
+      <details><summary>Can I change the approval slabs?</summary><p>Yes — edit the comma-separated role lists per slab and save. The default is up to ₹25k: HOD; ₹1L: HOD, Finance; ₹5L: +Director; above: +MD. Changing the matrix does not rewrite old requests.</p></details>
+      <details><summary>Where are requests stored?</summary><p>In your browser vault on this device — up to 25 requests. Nothing is sent anywhere.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decision Support Engine – Weighted Scoring + Sensitivity | VisionQuantech</title>
+  <meta name="description" content="Free decision support engine: weighted scoring of business options across criteria with a ±20% sensitivity check on the winner. Expand vs hold — decide with numbers.">
+  <meta name="keywords" content="decision support system, weighted scoring decision matrix, business decision tool India, sensitivity analysis decision, निर्णय समर्थन इंजन">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/decision-support-engine/">
+  <meta property="og:title" content="Decision Support Engine – Score, Then Stress-Test | VisionQuantech">
+  <meta property="og:description" content="Weighted scoring across your criteria, plus a sensitivity check on the winner. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="decision-support-engine">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Decision Support Engine — Score Options, Then Stress-Test the Winner</h1>
+      <p>Define <strong>criteria with weights</strong>, score each <strong>option 1–10</strong>, and get a transparent ranking. The <strong>sensitivity check</strong> moves every weight ±20% to see if the winner survives. <span lang="hi">विकल्पों को स्कोर करें, विजेता की मज़बूती जांचें।</span></p>
+      <p class="vq-hint">Free: 20 decisions per day. Model stays on your device.</p>
+    </div>
+
+    <div id="ds-gate"></div>
+
+    <section class="card" aria-label="Criteria">
+      <h2 class="vq-section-title" style="margin-top:0">Step 1 — Criteria &amp; weights (must sum to 1.00)</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="ds-crit-name">Criterion</label>
+          <input id="ds-crit-name" maxlength="60" placeholder="e.g. Revenue upside">
+        </div>
+        <div class="vq-field">
+          <label for="ds-crit-w">Weight (0–1)</label>
+          <input id="ds-crit-w" type="number" min="0" max="1" step="0.05" placeholder="e.g. 0.35" inputmode="decimal">
+        </div>
+      </div>
+      <button id="ds-add-crit" class="vq-btn vq-btn-secondary" type="button">Add criterion</button>
+      <div id="ds-criteria" style="margin-top:1rem"></div>
+    </section>
+
+    <section class="card" aria-label="Options">
+      <h2 class="vq-section-title" style="margin-top:0">Step 2 — Options &amp; scores (1–10 per criterion)</h2>
+      <div class="vq-field" style="max-width:22rem">
+        <label for="ds-opt-name">Option</label>
+        <input id="ds-opt-name" maxlength="60" placeholder="e.g. Expand to 2nd shop">
+      </div>
+      <button id="ds-add-opt" class="vq-btn vq-btn-secondary" type="button">Add option</button>
+      <div id="ds-options" style="margin-top:1rem"></div>
+      <p style="margin-top:1rem"><button id="ds-calc" class="vq-btn" type="button">Score &amp; stress-test</button></p>
+      <p id="ds-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="ds-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Decision report</h2>
+      <p class="formula">Score = Σ (weight × score) · weights must sum to 1 · sensitivity: each weight ±20%, winner re-checked</p>
+      <div id="ds-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Linear additive model:</strong> criteria are independent and trade off linearly — standard for screening decisions, not for complex interactions.</li>
+        <li><strong>Weights sum to exactly 1.00</strong> — the tool refuses to score otherwise, so weights always mean "share of importance".</li>
+        <li><strong>Scores 1–10</strong> are your judgement — the engine structures it, it does not replace it.</li>
+        <li><strong>Sensitivity ±20%</strong> per weight, others renormalised proportionally.</li>
+        <li><strong>Decision aid only</strong> — not financial advice.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Decision support engine — FAQs</h2>
+      <details><summary>How does weighted scoring help a business decision?</summary><p>List criteria (cost, upside, risk, effort), weight them to sum to 1, score each option 1–10 per criterion. The weighted total ranks options transparently — anyone can see which criterion drove the result.</p></details>
+      <details><summary lang="hi">वेटेड स्कोरिंग से फ़ैसला कैसे लें?</summary><p lang="hi">मानदंड तय करें, वज़न दें (योग 1), हर विकल्प को 1–10 स्कोर दें। वेटेड स्कोर से पारदर्शी रैंकिंग मिलती है।</p></details>
+      <details><summary>What is the sensitivity check?</summary><p>Each criterion weight is moved ±20% (others renormalised) and the ranking re-run. If the winner never changes, the recommendation is robust; if it flips, those weights need a second look before you commit.</p></details>
+      <details><summary>Why must weights sum to 1?</summary><p>So scores stay on the 1–10 scale and weights mean "share of importance". The tool refuses to score until the sum is exactly 1.00.</p></details>
+      <details><summary>Is my decision model private?</summary><p>Yes — stored only on your device. Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

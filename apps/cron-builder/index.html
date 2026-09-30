@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cron Builder — Free Cron Expression Generator &amp; Scheduler | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free cron builder: click-to-build cron expressions with plain-English description and next 5 run-time preview. Cron kaise set kare — crontab examples included. 100% in-browser.">
+  <meta name="keywords" content="cron builder, cron generator, cron kaise set kare, cron expression generator, crontab example, cron schedule every 15 minutes">
+  <link rel="canonical" href="https://visionquantech.com/apps/cron-builder/">
+  <meta property="og:title" content="Cron Builder — Free Online">
+  <meta property="og:description" content="Build cron expressions visually, read them in plain English, preview next runs. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .expr { font-family: ui-monospace, monospace; font-size: 1.4rem; font-weight: 800; background: var(--paper-soft); border: 1px dashed var(--line); border-radius: 10px; padding: .8rem; text-align: center; margin: .6rem 0; letter-spacing: .05em; }
+    .desc { font-size: 1.05rem; font-weight: 600; color: var(--brand); margin: .4rem 0; }
+    .fields { display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem; }
+    @media (max-width: 640px) { .fields { grid-template-columns: 1fr 1fr; } }
+    .fields .vq-field { margin-bottom: .4rem; }
+    .fields input[type=text] { font-family: ui-monospace, monospace; }
+    .run-row { display: flex; gap: .7rem; padding: .45rem 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+    .run-row .n { font-weight: 800; color: var(--brand); min-width: 1.2rem; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .quicks { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0 1rem; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-app="cron-builder">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Cron Builder</h1>
+    <p class="lede">Click karke cron expression banayein — plain-English meaning aur <strong>next 5 run times</strong> turant dekhein. Linux <code>crontab</code> aur cPanel dono ke liye.</p>
+
+    <div class="quicks" aria-label="Quick presets">
+      <button class="vq-btn ghost sm" type="button" data-quick="* * * * *">Every minute</button>
+      <button class="vq-btn ghost sm" type="button" data-quick="*/15 * * * *">Every 15 min</button>
+      <button class="vq-btn ghost sm" type="button" data-quick="0 * * * *">Hourly</button>
+      <button class="vq-btn ghost sm" type="button" data-quick="0 2 * * *">Daily 2 AM</button>
+      <button class="vq-btn ghost sm" type="button" data-quick="0 9 * * 1">Mon 9 AM</button>
+      <button class="vq-btn ghost sm" type="button" data-quick="0 0 1 * *">Monthly 1st</button>
+    </div>
+
+    <form id="cron-form" onsubmit="return false;">
+      <div class="fields">
+        <div class="vq-field">
+          <label for="fMin">Minute</label>
+          <select id="fMin"></select>
+          <input type="text" id="fMinx" placeholder="custom" aria-label="Custom minute">
+        </div>
+        <div class="vq-field">
+          <label for="fHour">Hour</label>
+          <select id="fHour"></select>
+          <input type="text" id="fHourx" placeholder="custom" aria-label="Custom hour">
+        </div>
+        <div class="vq-field">
+          <label for="fDom">Day of month</label>
+          <select id="fDom"></select>
+          <input type="text" id="fDomx" placeholder="custom" aria-label="Custom day of month">
+        </div>
+        <div class="vq-field">
+          <label for="fMon">Month</label>
+          <select id="fMon"></select>
+          <input type="text" id="fMonx" placeholder="custom" aria-label="Custom month">
+        </div>
+        <div class="vq-field">
+          <label for="fDow">Weekday</label>
+          <select id="fDow"></select>
+          <input type="text" id="fDowx" placeholder="custom" aria-label="Custom weekday">
+        </div>
+      </div>
+      <p class="vq-hint">Preset chunein ya custom likhein (<code>*/15</code>, <code>1-5</code>, <code>mon,wed,fri</code> supported). Custom bhara ho to wahi use hoga.</p>
+      <p class="err" id="cron-error" role="alert"></p>
+    </form>
+
+    <div class="expr" id="exprOut">* * * * *</div>
+    <p class="desc" id="cron-desc">—</p>
+
+    <h2 class="vq-section-sub">Next 5 runs (your device time)</h2>
+    <div id="cron-runs"></div>
+
+    <div class="btnrow">
+      <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy expression</button>
+    </div>
+
+    <div id="cron-upsell"></div>
+    <div class="row2">
+      <div class="vq-field">
+        <label for="saveLabel">Label (to save on this device)</label>
+        <input id="saveLabel" type="text" placeholder="e.g. nightly backup">
+      </div>
+      <div class="vq-field" style="align-self:end">
+        <button class="vq-btn sm" id="saveBtn" type="button">Save schedule to vault</button>
+        <p class="vq-hint">Free: 25 vault saves/day.</p>
+      </div>
+    </div>
+    <p class="msg" id="cron-msg" role="status"></p>
+    <h2 class="vq-section-sub">Saved schedules</h2>
+    <div id="cron-saved"></div>
+
+    <div class="vq-notice">
+      <strong>crontab me kaise lagayein:</strong> Linux server par <code>crontab -e</code> chalakar line add karein, jaise <code>*/15 * * * * /home/user/backup.sh &gt;&gt; /home/user/backup.log 2&gt;&amp;1</code>. Server ka timezone check karna na bhoolein (<code>timedatectl</code>).
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Cron kaise set kare?</summary>
+        <p>Yahan 5-field expression banayein, copy karein, phir Linux par "crontab -e" me line paste karein — jaise "*/15 * * * * /path/to/script.sh". cPanel me Cron Jobs panel use karein.</p>
+      </details>
+      <details>
+        <summary>*/15 * * * * ka matlab kya hai?</summary>
+        <p>Har 15 minute me — minute 0, 15, 30 aur 45 par, har ghante, har din. Ye sabse common schedules me se ek hai.</p>
+      </details>
+      <details>
+        <summary>Cron me day-of-month aur day-of-week dono diye to kya hota hai?</summary>
+        <p>Standard cron me dono me se koi ek match hone par job chalti hai (OR logic). Jaise "0 9 1 * 1" har mahine ki 1 tareekh AUR har Somvaar subah 9 baje chalega.</p>
+      </details>
+      <details>
+        <summary>0 2 * * * ka matlab kya hai?</summary>
+        <p>Roz raat 2:00 baje. Backups aur reports ke liye common timing — server load kam hota hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

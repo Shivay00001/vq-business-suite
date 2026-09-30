@@ -1,0 +1,1958 @@
+{
+ "apps": [
+  {
+   "cluster": "gst-tax",
+   "description": "Calculate interest on delayed GST payments (CGST/SGST/IGST) with the statutory rate and a day-wise breakup.",
+   "keywords": [
+    "gst interest calculator",
+    "जीएसटी ब्याज कैलकुलेटर",
+    "gst late payment interest",
+    "gst interest rate"
+   ],
+   "name": "GST Interest Calculator",
+   "path": "apps/gst-interest-calculator/index.html",
+   "slug": "gst-interest-calculator"
+  },
+  {
+   "cluster": "gst-tax",
+   "description": "Track GSTR-1, GSTR-3B and other GST return due dates with reminders saved on your device.",
+   "keywords": [
+    "gst due date",
+    "जीएसटी देय तिथि",
+    "gstr-1 due date",
+    "gstr-3b due date",
+    "gst return last date"
+   ],
+   "name": "GST Due Date Monitor",
+   "path": "apps/gst-due-date-monitor/index.html",
+   "slug": "gst-due-date-monitor"
+  },
+  {
+   "cluster": "loans-credit",
+   "description": "Compute EMI, total interest and amortisation schedule for business or personal loans.",
+   "keywords": [
+    "emi calculator",
+    "ईएमआई कैलकुलेटर",
+    "loan emi calculator india",
+    "amortisation schedule"
+   ],
+   "name": "EMI Loan Tracker",
+   "path": "apps/emi-loan-tracker/index.html",
+   "slug": "emi-loan-tracker"
+  },
+  {
+   "cluster": "hr-payroll",
+   "description": "Break down CTC into in-hand salary with PF, ESI, professional tax and TDS estimates.",
+   "keywords": [
+    "salary calculator india",
+    "सैलरी कैलकुलेटर",
+    "ctc to in hand",
+    "in hand salary calculator"
+   ],
+   "name": "Salary Calculator",
+   "path": "apps/salary-calculator/index.html",
+   "slug": "salary-calculator"
+  },
+  {
+   "cluster": "hr-payroll",
+   "description": "Generate printable monthly payslips with earnings, deductions and net pay.",
+   "keywords": [
+    "payslip generator",
+    "पेस्लिप जनरेटर",
+    "salary slip maker",
+    "free payslip format india"
+   ],
+   "name": "Payslip Generator",
+   "path": "apps/payslip-generator/index.html",
+   "slug": "payslip-generator"
+  },
+  {
+   "cluster": "profit-analytics",
+   "description": "Build a profit & loss statement from revenue and expense entries, printable and savable.",
+   "keywords": [
+    "profit and loss statement",
+    "लाभ हानि विवरण",
+    "p&l statement generator",
+    "income statement maker"
+   ],
+   "name": "Profit & Loss Generator",
+   "path": "apps/profit-loss-generator/index.html",
+   "slug": "profit-loss-generator"
+  },
+  {
+   "cluster": "profit-analytics",
+   "description": "Find the break-even point in units and revenue from fixed costs, variable cost and price.",
+   "keywords": [
+    "break even calculator",
+    "ब्रेक ईवन कैलकुलेटर",
+    "break even point formula",
+    "breakeven analysis"
+   ],
+   "name": "Break-Even Calculator",
+   "path": "apps/break-even-calculator/index.html",
+   "slug": "break-even-calculator"
+  },
+  {
+   "cluster": "cash-banking",
+   "description": "Project monthly cash inflows and outflows to spot shortfalls before they happen.",
+   "keywords": [
+    "cash flow forecast",
+    "कैश फ्लो पूर्वानुमान",
+    "cash flow projection",
+    "business cash flow planner"
+   ],
+   "name": "Cash Flow Forecast",
+   "path": "apps/cash-flow-forecast/index.html",
+   "slug": "cash-flow-forecast"
+  },
+  {
+   "cluster": "invoicing-billing",
+   "description": "Create GST-compliant tax invoices with line items, GST breakup and print/PDF output.",
+   "keywords": [
+    "invoice generator",
+    "इनवॉइस जनरेटर",
+    "gst invoice format",
+    "free tax invoice maker india"
+   ],
+   "name": "Invoice Generator",
+   "path": "apps/invoice-generator/index.html",
+   "slug": "invoice-generator"
+  },
+  {
+   "cluster": "documents",
+   "description": "Store business notes and documents on your device with optional passphrase encryption.",
+   "keywords": [
+    "document vault",
+    "दस्तावेज़ तिजोरी",
+    "secure document storage",
+    "business document locker"
+   ],
+   "name": "Document Vault",
+   "path": "apps/document-vault/index.html",
+   "slug": "document-vault"
+  },
+  {
+   "slug": "dockerfile-generator",
+   "name": "Dockerfile Generator",
+   "cluster": "devops",
+   "path": "apps/dockerfile-generator/index.html",
+   "keywords": [
+    "dockerfile generator",
+    "dockerfile kaise banaye",
+    "multi-stage dockerfile example"
+   ],
+   "description": "Generate production-ready Dockerfiles with best-practice lint hints."
+  },
+  {
+   "slug": "docker-compose-generator",
+   "name": "Docker Compose Generator",
+   "cluster": "devops",
+   "path": "apps/docker-compose-generator/index.html",
+   "keywords": [
+    "docker compose generator",
+    "docker-compose.yml generator",
+    "docker compose file kaise banaye"
+   ],
+   "description": "Build docker-compose.yml files with a visual service editor."
+  },
+  {
+   "slug": "k8s-yaml-generator",
+   "name": "Kubernetes YAML Generator",
+   "cluster": "devops",
+   "path": "apps/k8s-yaml-generator/index.html",
+   "keywords": [
+    "kubernetes yaml generator",
+    "k8s deployment yaml",
+    "kubernetes manifest generator"
+   ],
+   "description": "Generate validated Kubernetes Deployment + Service manifests."
+  },
+  {
+   "slug": "ci-pipeline-generator",
+   "name": "CI Pipeline Generator",
+   "cluster": "devops",
+   "path": "apps/ci-pipeline-generator/index.html",
+   "keywords": [
+    "github actions generator",
+    "jenkinsfile generator",
+    "ci pipeline generator"
+   ],
+   "description": "Generate GitHub Actions workflows and Jenkinsfiles from presets."
+  },
+  {
+   "slug": "cron-builder",
+   "name": "Cron Builder",
+   "cluster": "devops",
+   "path": "apps/cron-builder/index.html",
+   "keywords": [
+    "cron builder",
+    "cron generator",
+    "cron kaise set kare",
+    "cron expression tester"
+   ],
+   "description": "Build cron expressions visually with plain-English descriptions and next-run preview."
+  },
+  {
+   "slug": "terraform-snippet-generator",
+   "name": "Terraform Snippet Generator",
+   "cluster": "devops",
+   "path": "apps/terraform-snippet-generator/index.html",
+   "keywords": [
+    "terraform snippet generator",
+    "terraform ec2 example",
+    "terraform hcl generator"
+   ],
+   "description": "Generate Terraform HCL snippets for EC2, S3, RDS and VPC."
+  },
+  {
+   "slug": "git-command-explorer",
+   "name": "Git Command Explorer",
+   "cluster": "devops",
+   "path": "apps/git-command-explorer/index.html",
+   "keywords": [
+    "git commands",
+    "git cheat sheet",
+    "git undo last commit"
+   ],
+   "description": "Searchable catalog of 60 git commands grouped by real-world scenarios."
+  },
+  {
+   "slug": "deployment-checklist",
+   "name": "Deployment Checklist",
+   "cluster": "devops",
+   "path": "apps/deployment-checklist/index.html",
+   "keywords": [
+    "deployment checklist",
+    "pre deploy checklist",
+    "production deploy checklist"
+   ],
+   "description": "Interactive pre/during/post deploy checklist with progress and export."
+  },
+  {
+   "slug": "prometheus-alert-generator",
+   "name": "Prometheus Alert Generator",
+   "cluster": "devops",
+   "path": "apps/prometheus-alert-generator/index.html",
+   "keywords": [
+    "prometheus alert generator",
+    "promql alert rule",
+    "prometheus rule generator"
+   ],
+   "description": "Generate Prometheus alert rules and recording rules with PromQL hints."
+  },
+  {
+   "slug": "sprint-planner",
+   "name": "Sprint Planner",
+   "cluster": "devops",
+   "path": "apps/sprint-planner/index.html",
+   "keywords": [
+    "sprint planner",
+    "story points calculator",
+    "burndown chart generator"
+   ],
+   "description": "Plan sprints with story points, capacity, velocity and burndown chart."
+  },
+  {
+   "slug": "customer-ledger-manager",
+   "name": "Customer Ledger Manager",
+   "cluster": "accounting",
+   "path": "apps/customer-ledger-manager/index.html",
+   "keywords": [
+    "customer ledger",
+    "ग्राहक खाता बही",
+    "ledger kaise banaye",
+    "khata bahi app"
+   ],
+   "description": "Customer khata bahi with vouchers, running balance and FIFO aging."
+  },
+  {
+   "slug": "supplier-ledger-manager",
+   "name": "Supplier Ledger Manager",
+   "cluster": "accounting",
+   "path": "apps/supplier-ledger-manager/index.html",
+   "keywords": [
+    "supplier ledger",
+    "सप्लायर खाता बही",
+    "purchase ledger",
+    "accounts payable tracker"
+   ],
+   "description": "Purchase ledger with payables, aging and due-date reminders."
+  },
+  {
+   "slug": "cashbook-tool",
+   "name": "Cashbook Tool",
+   "cluster": "accounting",
+   "path": "apps/cashbook-tool/index.html",
+   "keywords": [
+    "cashbook",
+    "कैश बुक",
+    "rokad bahi",
+    "daily cash book"
+   ],
+   "description": "Daily cash in/out entries with closing balance and difference flag."
+  },
+  {
+   "slug": "expense-tracker",
+   "name": "Expense Tracker",
+   "cluster": "accounting",
+   "path": "apps/expense-tracker/index.html",
+   "keywords": [
+    "expense tracker",
+    "खर्च ट्रैकर",
+    "business expense tracker India",
+    "budget vs actual"
+   ],
+   "description": "Categorized business expenses with budgets and overspend alerts."
+  },
+  {
+   "slug": "outstanding-dues-tracker",
+   "name": "Outstanding Dues Tracker",
+   "cluster": "accounting",
+   "path": "apps/outstanding-dues-tracker/index.html",
+   "keywords": [
+    "outstanding dues tracker",
+    "बकाया वसूली",
+    "overdue invoice tracker",
+    "payment reminder"
+   ],
+   "description": "Invoice-wise dues with overdue ranking and WhatsApp reminder drafts."
+  },
+  {
+   "slug": "pricing-calculator",
+   "name": "Pricing Calculator",
+   "cluster": "accounting",
+   "path": "apps/pricing-calculator/index.html",
+   "keywords": [
+    "pricing calculator",
+    "प्राइस कैलकुलेटर",
+    "product pricing India",
+    "margin calculator"
+   ],
+   "description": "Cost-plus pricing with margin analysis and GST 2.0 inclusive/exclusive."
+  },
+  {
+   "slug": "working-capital-analyzer",
+   "name": "Working Capital Analyzer",
+   "cluster": "accounting",
+   "path": "apps/working-capital-analyzer/index.html",
+   "keywords": [
+    "working capital",
+    "working capital formula",
+    "वर्किंग कैपिटल",
+    "current ratio",
+    "cash conversion cycle"
+   ],
+   "description": "Working capital, ratios, debtor/creditor days and cash conversion cycle."
+  },
+  {
+   "slug": "trial-balance-validator",
+   "name": "Trial Balance Validator",
+   "cluster": "accounting",
+   "path": "apps/trial-balance-validator/index.html",
+   "keywords": [
+    "trial balance",
+    "ट्रायल बैलेंस",
+    "debit credit check",
+    "suspense account"
+   ],
+   "description": "Validate debits = credits with suspense-difference flagging."
+  },
+  {
+   "slug": "hsn-sac-finder",
+   "name": "HSN/SAC Code Finder",
+   "cluster": "gst-tax",
+   "path": "apps/hsn-sac-finder/index.html",
+   "keywords": [
+    "hsn code finder",
+    "एचएसएन कोड",
+    "sac code list",
+    "gst rates list"
+   ],
+   "description": "Searchable 111-entry HSN/SAC finder with GST 2.0 rates."
+  },
+  {
+   "slug": "gst-itc-mismatch-analyzer",
+   "name": "GST ITC Mismatch Analyzer",
+   "cluster": "gst-tax",
+   "path": "apps/gst-itc-mismatch-analyzer/index.html",
+   "keywords": [
+    "itc mismatch",
+    "gstr-2b reconciliation",
+    "itc claim analysis"
+   ],
+   "description": "Reconcile purchase register vs GSTR-2B and flag at-risk ITC."
+  },
+  {
+   "slug": "gst-composition-checker",
+   "name": "GST Composition Checker",
+   "cluster": "gst-tax",
+   "path": "apps/gst-composition-checker/index.html",
+   "keywords": [
+    "composition scheme",
+    "composition dealer gst",
+    "cmp-08"
+   ],
+   "description": "Composition scheme eligibility verdict and tax estimate."
+  },
+  {
+   "slug": "place-of-supply-validator",
+   "name": "Place of Supply Validator",
+   "cluster": "gst-tax",
+   "path": "apps/place-of-supply-validator/index.html",
+   "keywords": [
+    "place of supply gst",
+    "igst or cgst sgst",
+    "place of supply rules"
+   ],
+   "description": "POS state and CGST/SGST vs IGST verdict with IGST Act sections."
+  },
+  {
+   "slug": "eway-bill-risk-checker",
+   "name": "E-Way Bill Risk Checker",
+   "cluster": "gst-tax",
+   "path": "apps/eway-bill-risk-checker/index.html",
+   "keywords": [
+    "e-way bill",
+    "eway bill validity",
+    "e way bill rules"
+   ],
+   "description": "E-way bill required/not-required verdict, validity and risk checklist."
+  },
+  {
+   "slug": "statutory-calendar",
+   "name": "Statutory Compliance Calendar",
+   "cluster": "compliance",
+   "path": "apps/statutory-calendar/index.html",
+   "keywords": [
+    "statutory compliance calendar",
+    "gst calendar",
+    "due date calendar"
+   ],
+   "description": "Month-view GST, PF, ESI, TDS and PT compliance calendar."
+  },
+  {
+   "slug": "vendor-compliance-checker",
+   "name": "Vendor Compliance Checker",
+   "cluster": "gst-tax",
+   "path": "apps/vendor-compliance-checker/index.html",
+   "keywords": [
+    "gstin verification",
+    "vendor compliance",
+    "gstin check"
+   ],
+   "description": "Batch GSTIN format and checksum validation with risk flags."
+  },
+  {
+   "slug": "stock-register",
+   "name": "Stock Register",
+   "cluster": "inventory",
+   "path": "apps/stock-register/index.html",
+   "keywords": [
+    "stock register",
+    "स्टॉक रजिस्टर",
+    "inward outward register",
+    "stock maintain"
+   ],
+   "description": "Item master with inward/outward entries, running stock and valuation."
+  },
+  {
+   "slug": "low-stock-alerts",
+   "name": "Low Stock Alerts",
+   "cluster": "inventory",
+   "path": "apps/low-stock-alerts/index.html",
+   "keywords": [
+    "low stock alert",
+    "लो स्टॉक अलर्ट",
+    "reorder level",
+    "out of stock alert"
+   ],
+   "description": "Reorder-level monitoring with out-of-stock and suggested-order lists."
+  },
+  {
+   "slug": "expiry-date-tracker",
+   "name": "Expiry Date Tracker",
+   "cluster": "inventory",
+   "path": "apps/expiry-date-tracker/index.html",
+   "keywords": [
+    "expiry date tracker",
+    "एक्सपायरी डेट ट्रैकर",
+    "batch expiry",
+    "FEFO"
+   ],
+   "description": "Batch-wise expiry tracking with FEFO issue order."
+  },
+  {
+   "slug": "inventory-valuation-tool",
+   "name": "Inventory Valuation Tool",
+   "cluster": "inventory",
+   "path": "apps/inventory-valuation-tool/index.html",
+   "keywords": [
+    "inventory valuation",
+    "इन्वेंटरी वैल्यूएशन",
+    "FIFO valuation",
+    "COGS calculator"
+   ],
+   "description": "Closing stock by FIFO and weighted-average with COGS comparison."
+  },
+  {
+   "slug": "dead-stock-analyzer",
+   "name": "Dead Stock Analyzer",
+   "cluster": "inventory",
+   "path": "apps/dead-stock-analyzer/index.html",
+   "keywords": [
+    "dead stock",
+    "डेड स्टॉक",
+    "stock aging report",
+    "slow moving stock"
+   ],
+   "description": "Idle-stock detection with locked value and clearance tips."
+  },
+  {
+   "slug": "stock-forecast-tool",
+   "name": "Stock Forecast Tool",
+   "cluster": "inventory",
+   "path": "apps/stock-forecast-tool/index.html",
+   "keywords": [
+    "stock forecast",
+    "स्टॉक फोरकास्ट",
+    "reorder point calculator",
+    "safety stock"
+   ],
+   "description": "Reorder point and order quantity from sales rate and lead time."
+  },
+  {
+   "slug": "item-price-history",
+   "name": "Item Price History",
+   "cluster": "inventory",
+   "path": "apps/item-price-history/index.html",
+   "keywords": [
+    "price history",
+    "प्राइस हिस्ट्री",
+    "supplier price comparison",
+    "purchase rate trend"
+   ],
+   "description": "Purchase price trends with supplier comparison."
+  },
+  {
+   "slug": "inventory-health-score",
+   "name": "Inventory Health Score",
+   "cluster": "inventory",
+   "path": "apps/inventory-health-score/index.html",
+   "keywords": [
+    "inventory health score",
+    "inventory audit",
+    "stock health check"
+   ],
+   "description": "Composite 0-100 inventory health score with grade and tips."
+  },
+  {
+   "slug": "customer-database-manager",
+   "name": "Customer Database Manager",
+   "cluster": "crm",
+   "path": "apps/customer-database-manager/index.html",
+   "keywords": [
+    "customer database",
+    "ग्राहक डेटाबेस",
+    "customer master India"
+   ],
+   "description": "Customer master with GSTIN validation, tags, search and CSV export."
+  },
+  {
+   "slug": "lead-management-tool",
+   "name": "Lead Management Tool",
+   "cluster": "crm",
+   "path": "apps/lead-management-tool/index.html",
+   "keywords": [
+    "lead management",
+    "लीड मैनेजमेंट",
+    "lead pipeline India"
+   ],
+   "description": "Lead pipeline with stages, follow-ups and pipeline value."
+  },
+  {
+   "slug": "sales-funnel-tracker",
+   "name": "Sales Funnel Tracker",
+   "cluster": "crm",
+   "path": "apps/sales-funnel-tracker/index.html",
+   "keywords": [
+    "sales funnel",
+    "सेल्स फ़नल",
+    "funnel conversion rate"
+   ],
+   "description": "Stage conversion rates, weighted pipeline and funnel chart."
+  },
+  {
+   "slug": "sales-target-tracker",
+   "name": "Sales Target Tracker",
+   "cluster": "crm",
+   "path": "apps/sales-target-tracker/index.html",
+   "keywords": [
+    "sales target tracker",
+    "सेल्स टार्गेट",
+    "run rate projection"
+   ],
+   "description": "Targets vs achievement with run-rate projection and alerts."
+  },
+  {
+   "slug": "customer-lifetime-value-estimator",
+   "name": "Customer Lifetime Value Estimator",
+   "cluster": "crm",
+   "path": "apps/customer-lifetime-value-estimator/index.html",
+   "keywords": [
+    "customer lifetime value",
+    "CLV calculator India",
+    "ग्राहक लाइफटाइम वैल्यू"
+   ],
+   "description": "CLV from order value, frequency, lifespan and margin."
+  },
+  {
+   "slug": "loyalty-points-manager",
+   "name": "Loyalty Points Manager",
+   "cluster": "crm",
+   "path": "apps/loyalty-points-manager/index.html",
+   "keywords": [
+    "loyalty points manager",
+    "लॉयल्टी पॉइंट्स",
+    "reward points tracker"
+   ],
+   "description": "Points earn/redeem ledger per customer with balances."
+  },
+  {
+   "slug": "customer-feedback-manager",
+   "name": "Customer Feedback Manager",
+   "cluster": "crm",
+   "path": "apps/customer-feedback-manager/index.html",
+   "keywords": [
+    "customer feedback",
+    "ग्राहक फीडबैक",
+    "complaint management India"
+   ],
+   "description": "Feedback and complaint log with ratings and resolution tracking."
+  },
+  {
+   "slug": "referral-tracking-tool",
+   "name": "Referral Tracking Tool",
+   "cluster": "crm",
+   "path": "apps/referral-tracking-tool/index.html",
+   "keywords": [
+    "referral tracking",
+    "रेफरल ट्रैकिंग",
+    "referral program India"
+   ],
+   "description": "Referrer referee links with rewards due/paid and top referrers."
+  },
+  {
+   "slug": "attendance-register",
+   "name": "Attendance Register",
+   "cluster": "hr",
+   "path": "apps/attendance-register/index.html",
+   "keywords": [
+    "attendance register",
+    "उपस्थिति रजिस्टर",
+    "staff attendance app"
+   ],
+   "description": "Daily attendance marking with monthly summary."
+  },
+  {
+   "slug": "leave-tracker",
+   "name": "Leave Tracker",
+   "cluster": "hr",
+   "path": "apps/leave-tracker/index.html",
+   "keywords": [
+    "leave tracker",
+    "छुट्टी ट्रैकर",
+    "leave management India"
+   ],
+   "description": "Leave quotas, applications and balance ledger."
+  },
+  {
+   "slug": "overtime-calculator",
+   "name": "Overtime Calculator",
+   "cluster": "hr",
+   "path": "apps/overtime-calculator/index.html",
+   "keywords": [
+    "overtime calculator",
+    "ओवरटाइम कैलकुलेटर",
+    "OT pay calculator"
+   ],
+   "description": "Overtime pay at 1x/1.5x/2x rates with monthly totals."
+  },
+  {
+   "slug": "gratuity-calculator",
+   "name": "Gratuity Calculator",
+   "cluster": "hr",
+   "path": "apps/gratuity-calculator/index.html",
+   "keywords": [
+    "gratuity calculator",
+    "ग्रेच्युटी कैलकुलेटर",
+    "gratuity kaise nikale"
+   ],
+   "description": "Gratuity (15/26 formula) with 20L cap."
+  },
+  {
+   "slug": "exit-settlement-calculator",
+   "name": "Exit Settlement Calculator",
+   "cluster": "hr",
+   "path": "apps/exit-settlement-calculator/index.html",
+   "keywords": [
+    "exit settlement",
+    "full and final settlement",
+    "फुल एंड फाइनल"
+   ],
+   "description": "Full and final settlement netting, printable."
+  },
+  {
+   "slug": "pf-compliance-checker",
+   "name": "PF Compliance Checker",
+   "cluster": "hr",
+   "path": "apps/pf-compliance-checker/index.html",
+   "keywords": [
+    "PF compliance",
+    "पीएफ कंप्लायंस",
+    "EPF compliance checklist"
+   ],
+   "description": "EPF compliance self-check with current 25000 ceiling."
+  },
+  {
+   "slug": "esi-compliance-checker",
+   "name": "ESI Compliance Checker",
+   "cluster": "hr",
+   "path": "apps/esi-compliance-checker/index.html",
+   "keywords": [
+    "ESI compliance",
+    "ईएसआई कंप्लायंस",
+    "ESIC checklist"
+   ],
+   "description": "ESIC compliance self-check with rates and due dates."
+  },
+  {
+   "slug": "minimum-wage-checker",
+   "name": "Minimum Wage Checker",
+   "cluster": "hr",
+   "path": "apps/minimum-wage-checker/index.html",
+   "keywords": [
+    "minimum wage checker",
+    "न्यूनतम वेतन",
+    "minimum wage India"
+   ],
+   "description": "Verified-dataset minimum wage comparison."
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Printable fee receipts with institute header, itemised fees, optional discount, optional GST (CGST/SGST split), auto receipt numbering and amount-in-words (Indian system), Hindi + English.",
+   "keywords": [
+    "fee receipt generator",
+    "coaching fee receipt",
+    "school fee receipt format India",
+    "GST fee receipt",
+    "शुल्क रसीद",
+    "printable fee receipt"
+   ],
+   "name": "Fee Receipt Generator",
+   "path": "apps/fee-receipt-generator/index.html",
+   "slug": "fee-receipt-generator"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Per-student fee ledger: total fee, paid, due and overdue status with automatic date-based overdue flagging, class-wise collection summary, vault-persisted (max 25 students).",
+   "keywords": [
+    "fee collection tracker",
+    "student fee ledger",
+    "school fee management",
+    "बकाया फीस ट्रैकर",
+    "fee due tracker",
+    "coaching fee collection"
+   ],
+   "name": "Fee Collection Tracker",
+   "path": "apps/fee-collection-tracker/index.html",
+   "slug": "fee-collection-tracker"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Pick overdue students and generate copy-paste WhatsApp/SMS reminder texts in Hindi and English with reminded tracking. Drafts only — never sends messages.",
+   "keywords": [
+    "fee reminder message",
+    "due fee reminder WhatsApp",
+    "फीस रिमाइंडर मैसेज",
+    "school fee reminder SMS",
+    "overdue fee message template"
+   ],
+   "name": "Due Fee Reminder Tool",
+   "path": "apps/due-fee-reminder-tool/index.html",
+   "slug": "due-fee-reminder-tool"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Daily present/absent/leave marking per batch, monthly attendance percentage report and threshold-based defaulter list; vault-persisted (max 25 students).",
+   "keywords": [
+    "student attendance register",
+    "attendance register app",
+    "school attendance tracker",
+    "छात्र उपस्थिति रजिस्टर",
+    "defaulter list attendance",
+    "monthly attendance percentage"
+   ],
+   "name": "Student Attendance Register",
+   "path": "apps/student-attendance-register/index.html",
+   "slug": "student-attendance-register"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Enter marks per subject/exam with validation (marks cannot exceed max), auto percentage and grade (A+ to F), class rank with dense tie handling.",
+   "keywords": [
+    "marks entry tool",
+    "student marks entry",
+    "grade calculator",
+    "अंक प्रविष्टि",
+    "class rank calculator",
+    "percentage grade calculator"
+   ],
+   "name": "Marks Entry Tool",
+   "path": "apps/marks-entry-tool/index.html",
+   "slug": "marks-entry-tool"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Trend analysis across exams (improving/declining/stable), subject-wise strength/weakness and class topper list — reads the Marks Entry Tool vault, no double entry.",
+   "keywords": [
+    "student performance analyzer",
+    "marks trend analysis",
+    "subject strength weakness",
+    "topper list",
+    "छात्र प्रदर्शन विश्लेषण",
+    "exam performance tracker"
+   ],
+   "name": "Student Performance Analyzer",
+   "path": "apps/student-performance-analyzer/index.html",
+   "slug": "student-performance-analyzer"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Batches with capacity, schedule days, timing and fee plan; enrollment with over-capacity blocking, nearly-full warnings and per-batch expected revenue.",
+   "keywords": [
+    "batch management tool",
+    "coaching batch management",
+    "batch capacity planner",
+    "बैच प्रबंधन",
+    "enrollment tracker",
+    "batch schedule manager"
+   ],
+   "name": "Batch Management Tool",
+   "path": "apps/batch-management-tool/index.html",
+   "slug": "batch-management-tool"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Weekly timetable grid with automatic teacher, room and batch conflict detection on overlapping times (back-to-back classes allowed).",
+   "keywords": [
+    "class scheduling tool",
+    "timetable maker",
+    "timetable conflict detection",
+    "कक्षा समय-सारणी",
+    "coaching timetable planner",
+    "teacher room clash checker"
+   ],
+   "name": "Class Scheduling Tool",
+   "path": "apps/class-scheduling-tool/index.html",
+   "slug": "class-scheduling-tool"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Class datesheet builder with same-class overlap blocking, hall seating allocation by capacity, and admit-card data list generation.",
+   "keywords": [
+    "exam management tool",
+    "datesheet builder",
+    "exam seating plan",
+    "hall allocation",
+    "admit card list",
+    "परीक्षा डेटशीट",
+    "exam time table maker"
+   ],
+   "name": "Exam Management Tool",
+   "path": "apps/exam-management-tool/index.html",
+   "slug": "exam-management-tool"
+  },
+  {
+   "cluster": "education-coaching",
+   "description": "Overdue dues grouped into 30/60/90+ day aging buckets, 0–100 recovery priority score per student, and stage-based Hindi/English follow-up scripts.",
+   "keywords": [
+    "fee recovery",
+    "overdue fee collection",
+    "aging report fees",
+    "fee follow up script",
+    "बकाया वसूली",
+    "fee collection priority",
+    "dues aging buckets"
+   ],
+   "name": "Fee Recovery Assistant",
+   "path": "apps/fee-recovery-assistant/index.html",
+   "slug": "fee-recovery-assistant"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "GST-compliant purchase orders: line items, CGST/SGST/IGST breakup, terms, printable layout and FY-based PO numbering.",
+   "keywords": [
+    "purchase order generator",
+    "पीओ जनरेटर",
+    "po format india",
+    "gst purchase order",
+    "purchase order numbering",
+    "printable po maker"
+   ],
+   "name": "Purchase Order Generator",
+   "path": "apps/purchase-order-generator/index.html",
+   "slug": "purchase-order-generator"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Compare supplier quotes side-by-side on price, lead time, warranty and rating with adjustable weighted scoring and a ranked verdict.",
+   "keywords": [
+    "vendor comparison tool",
+    "वेंडर तुलना",
+    "compare supplier quotes",
+    "supplier evaluation matrix",
+    "विक्रेता कोटेशन तुलना"
+   ],
+   "name": "Vendor Comparison Tool",
+   "path": "apps/vendor-comparison-tool/index.html",
+   "slug": "vendor-comparison-tool"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Monthly vendor ratings on quality, delivery, price and responsiveness with A+..D grades and period-over-period trends.",
+   "keywords": [
+    "vendor performance scorecard",
+    "वेंडर स्कोरकार्ड",
+    "supplier rating tool",
+    "vendor evaluation scorecard",
+    "वेंडर रेटिंग"
+   ],
+   "name": "Vendor Performance Scorecard",
+   "path": "apps/vendor-performance-scorecard/index.html",
+   "slug": "vendor-performance-scorecard"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Slab-based multi-level purchase approvals with an editable approval matrix, enforced chain order and a timestamped audit trail.",
+   "keywords": [
+    "purchase approval workflow",
+    "परचेज़ अप्रूवल",
+    "approval matrix",
+    "multi level approval",
+    "approval audit trail"
+   ],
+   "name": "Purchase Approval Workflow",
+   "path": "apps/purchase-approval-workflow/index.html",
+   "slug": "purchase-approval-workflow"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Paste/upload vendor rate history CSV: detects price hikes vs previous quotes and lowest rates, names the best vendor per item.",
+   "keywords": [
+    "vendor rate analyzer",
+    "वेंडर रेट विश्लेषण",
+    "price hike detection",
+    "supplier rate history",
+    "best vendor per item"
+   ],
+   "name": "Vendor Rate Analyzer",
+   "path": "apps/vendor-rate-analyzer/index.html",
+   "slug": "vendor-rate-analyzer"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "EOQ calculator from demand, ordering and holding costs, with quantity-discount break-even comparison to find the cheapest order quantity.",
+   "keywords": [
+    "eoq calculator",
+    "ईओक्यू कैलकुलेटर",
+    "economic order quantity",
+    "bulk purchase optimizer",
+    "quantity discount break even",
+    "optimal order quantity"
+   ],
+   "name": "Bulk Purchase Optimizer",
+   "path": "apps/bulk-purchase-optimizer/index.html",
+   "slug": "bulk-purchase-optimizer"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Payables ledger with due dates, MSME 45-day breach flags and delayed-payment interest estimated at 3x RBI bank rate (16.50% p.a.).",
+   "keywords": [
+    "vendor payment tracker",
+    "वेंडर पेमेंट ट्रैकर",
+    "msme 45 day rule",
+    "msmed act delayed payment interest",
+    "accounts payable tracker",
+    "supplier payment due dates"
+   ],
+   "name": "Vendor Payment Tracker",
+   "path": "apps/vendor-payment-tracker/index.html",
+   "slug": "vendor-payment-tracker"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Predicts reorder dates per item from purchase history, average daily usage, current stock and supplier lead time.",
+   "keywords": [
+    "repeat purchase predictor",
+    "रीऑर्डर प्रिडिक्टर",
+    "reorder date calculator",
+    "reorder point predictor",
+    "कब रीऑर्डर करें"
+   ],
+   "name": "Repeat Purchase Predictor",
+   "path": "apps/repeat-purchase-predictor/index.html",
+   "slug": "repeat-purchase-predictor"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Vendor contracts with expiry dates, auto-renewal flags and 30/60/90-day renewal alerts plus notice-period warnings.",
+   "keywords": [
+    "vendor contract tracker",
+    "वेंडर कॉन्ट्रैक्ट ट्रैकर",
+    "contract renewal alerts",
+    "contract expiry tracker",
+    "कॉन्ट्रैक्ट रिन्यूअल अलर्ट"
+   ],
+   "name": "Vendor Contract Tracker",
+   "path": "apps/vendor-contract-tracker/index.html",
+   "slug": "vendor-contract-tracker"
+  },
+  {
+   "cluster": "procurement-vendor",
+   "description": "Monthly budgets per purchase category with spend logging, budget-vs-actual variance and watch/overrun alerts.",
+   "keywords": [
+    "purchase budget control",
+    "बजट कंट्रोल",
+    "budget vs actual",
+    "purchase budget tracker",
+    "overrun alerts",
+    "खर्च बजट ट्रैकर"
+   ],
+   "name": "Purchase Budget Control Tool",
+   "path": "apps/purchase-budget-control-tool/index.html",
+   "slug": "purchase-budget-control-tool"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Auto-match bank statement rows against book entries by amount and date tolerance; lists unmatched entries on both sides.",
+   "keywords": [
+    "bank reconciliation tool",
+    "bank reconciliation statement format",
+    "how to do bank reconciliation",
+    "statement vs cash book matching",
+    "बैंक रिकंसिलिएशन",
+    "बैंक स्टेटमेंट मिलान"
+   ],
+   "name": "Bank Reconciliation Tool",
+   "path": "apps/bank-reconciliation-tool/index.html",
+   "slug": "bank-reconciliation-tool"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "MSMED Act Sec 16: compound interest with monthly rests at 3x RBI bank rate on delayed payments to MSE suppliers, with day-wise breakup.",
+   "keywords": [
+    "msmed act section 16 interest calculator",
+    "delayed payment to msme interest rate",
+    "3 times bank rate interest",
+    "msme samadhaan interest calculation",
+    "एमएसएमई ब्याज कैलकुलेटर",
+    "विलंबित भुगतान ब्याज"
+   ],
+   "name": "Delayed Payment Interest Calculator",
+   "path": "apps/delayed-payment-interest-calculator/index.html",
+   "slug": "delayed-payment-interest-calculator"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Issued/received cheque and DD register with pending encashment totals, stale-cheque (>3 months, CTS) and expiring-soon alerts.",
+   "keywords": [
+    "cheque management",
+    "cheque register format",
+    "stale cheque meaning",
+    "cheque validity 3 months",
+    "pending cheque tracker",
+    "चेक रजिस्टर",
+    "चेक वैधता"
+   ],
+   "name": "Cheque Management Tool",
+   "path": "apps/cheque-management-tool/index.html",
+   "slug": "cheque-management-tool"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Enter bank charges by type and month, benchmark against typical SME ranges, flag anomalies, and total the annual leak.",
+   "keywords": [
+    "bank charges too high",
+    "reduce bank charges business",
+    "hidden bank charges india",
+    "bank charge comparison",
+    "बैंक चार्ज कम कैसे करें",
+    "बैंक शुल्क"
+   ],
+   "name": "Bank Charge Leak Detector",
+   "path": "apps/bank-charge-leak-detector/index.html",
+   "slug": "bank-charge-leak-detector"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Denomination-wise cash count, tally against the expected closing balance, shortage/excess flag and a dated closing log.",
+   "keywords": [
+    "cash closing format",
+    "daily cash tally",
+    "denomination calculator india",
+    "cash shortage excess",
+    "कैश क्लोजिंग",
+    "रोकड़ मिलान"
+   ],
+   "name": "Daily Cash Closing Tool",
+   "path": "apps/daily-cash-closing-tool/index.html",
+   "slug": "daily-cash-closing-tool"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "From month-end cash balances: average net burn, runway in months, and the projected zero-cash date.",
+   "keywords": [
+    "cash burn rate calculator",
+    "business runway calculator",
+    "zero cash date",
+    "how long will cash last",
+    "कैश बर्न रेट",
+    "रनवे कैलकुलेटर"
+   ],
+   "name": "Cash Burn Rate Analyzer",
+   "path": "apps/cash-burn-rate-analyzer/index.html",
+   "slug": "cash-burn-rate-analyzer"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "3-month and 6-month emergency reserve targets from monthly fixed costs, with coverage and funding gap.",
+   "keywords": [
+    "emergency fund business calculator",
+    "how much cash reserve business",
+    "3 month emergency fund",
+    "business contingency fund",
+    "इमरजेंसी फंड कैलकुलेटर",
+    "कैश रिज़र्व"
+   ],
+   "name": "Emergency Cash Estimator",
+   "path": "apps/emergency-cash-estimator/index.html",
+   "slug": "emergency-cash-estimator"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Compare UPI, credit card, debit card, netbanking and cash MDR costs against your sales mix; effective cost % and annual savings.",
+   "keywords": [
+    "upi mdr charges merchant",
+    "credit card mdr rate india",
+    "payment gateway charges comparison",
+    "cheapest payment method merchant",
+    "यूपीआई एमडीआर",
+    "कार्ड शुल्क"
+   ],
+   "name": "Payment Mode Profitability Tool",
+   "path": "apps/payment-mode-profitability-tool/index.html",
+   "slug": "payment-mode-profitability-tool"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Track CC/OD/loan limits vs drawn, utilization %, estimated monthly interest and 75%/90% alerts.",
+   "keywords": [
+    "credit utilization ratio business",
+    "cash credit limit utilization",
+    "overdraft interest calculator",
+    "working capital limit tracker",
+    "क्रेडिट यूटिलाइज़ेशन",
+    "सीसी लिमिट"
+   ],
+   "name": "Credit Line Utilization Monitor",
+   "path": "apps/credit-line-utilization-monitor/index.html",
+   "slug": "credit-line-utilization-monitor"
+  },
+  {
+   "cluster": "banking-cash",
+   "description": "Sales-mix analyzer: fee drag per payment mode, settlement-lag notes, and a reconciliation checklist.",
+   "keywords": [
+    "sales mix analysis",
+    "payment mode reconciliation",
+    "fee drag calculator",
+    "upi vs card settlement",
+    "सेल्स मिक्स",
+    "फ़ी ड्रैग"
+   ],
+   "name": "Cash vs UPI vs Card Split Analyzer",
+   "path": "apps/cash-vs-upi-vs-card-split-analyzer/index.html",
+   "slug": "cash-vs-upi-vs-card-split-analyzer"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "True landed cost per unit: material + labour + overhead + freight with GST input-tax-credit treatment, plus a suggested selling price from your target margin.",
+   "keywords": [
+    "landed cost calculator",
+    "cost buildup calculator India",
+    "per unit cost calculator",
+    "लैंडेड कॉस्ट कैलकुलेटर",
+    "product costing India",
+    "input tax credit cost treatment"
+   ],
+   "name": "Cost Buildup Calculator",
+   "path": "apps/cost-buildup-calculator/index.html",
+   "slug": "cost-buildup-calculator"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Breakeven sales uplift after a discount via the d/(m-d) formula — see how many extra units you must sell to keep profit flat, and flag unrecoverable discounts.",
+   "keywords": [
+    "discount impact calculator",
+    "discount breakeven formula",
+    "sales uplift needed after discount",
+    "छूट कैलकुलेटर",
+    "discount profit analysis India"
+   ],
+   "name": "Discount Impact Analyzer",
+   "path": "apps/discount-impact-analyzer/index.html",
+   "slug": "discount-impact-analyzer"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Compare base, optimistic and pessimistic scenarios on price, volume and cost, with an exact profit waterfall splitting the delta into price, volume, cost and fixed effects.",
+   "keywords": [
+    "what if scenario analysis",
+    "profit waterfall calculator",
+    "scenario planning tool India",
+    "व्हाट इफ़ सिनेरियो",
+    "profit sensitivity analysis"
+   ],
+   "name": "What-If Scenario Simulator",
+   "path": "apps/what-if-scenario-simulator/index.html",
+   "slug": "what-if-scenario-simulator"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Per-SKU revenue, COGS, margin %, contribution share — ranked best to worst by profit rupees with a weighted average margin.",
+   "keywords": [
+    "product profitability analysis",
+    "per sku margin calculator",
+    "sku profit ranking",
+    "प्रोडक्ट प्रॉफ़िट एनालाइज़र",
+    "contribution margin by product India"
+   ],
+   "name": "Product Profit Analyzer",
+   "path": "apps/product-profit-analyzer/index.html",
+   "slug": "product-profit-analyzer"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Monthly margin % series with mean, standard deviation, ±2σ outlier flags, trend and a stability rating.",
+   "keywords": [
+    "margin volatility",
+    "profit margin std dev",
+    "2 sigma outlier detection",
+    "मार्जिन अस्थिरता ट्रैकर",
+    "margin stability analysis India"
+   ],
+   "name": "Margin Volatility Tracker",
+   "path": "apps/margin-volatility-tracker/index.html",
+   "slug": "margin-volatility-tracker"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Checklist-scored leakage across discounts, wastage, returns, shrinkage and idle staff — estimated annual leak in ₹ with a risk rating and fix-first ranking.",
+   "keywords": [
+    "profit leakage",
+    "hidden profit leaks",
+    "business profit leak calculator",
+    "प्रॉफ़िट लीकेज",
+    "shrinkage wastage returns cost India"
+   ],
+   "name": "Profit Leakage Radar",
+   "path": "apps/profit-leakage-radar/index.html",
+   "slug": "profit-leakage-radar"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Herfindahl-style concentration over customers or SKUs: HHI index, top-1/top-3 shares, effective count, risk rating and what-if-the-top-leaves impact.",
+   "keywords": [
+    "revenue concentration",
+    "customer concentration risk",
+    "herfindahl index calculator",
+    "रेवेन्यू कंसंट्रेशन",
+    "key customer risk India"
+   ],
+   "name": "Revenue Concentration Analyzer",
+   "path": "apps/revenue-concentration-analyzer/index.html",
+   "slug": "revenue-concentration-analyzer"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "12-month sales → seasonality index, peak/off-peak bands, suggested price multipliers (×1.05 / ×0.95) and an estimated revenue uplift.",
+   "keywords": [
+    "seasonal pricing",
+    "seasonality index calculator",
+    "peak off-peak pricing",
+    "सीज़नल प्राइसिंग",
+    "seasonal price strategy India"
+   ],
+   "name": "Seasonal Pricing Advisor",
+   "path": "apps/seasonal-pricing-advisor/index.html",
+   "slug": "seasonal-pricing-advisor"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Your price vs competitors per SKU: gap %, premium/par/budget positioning map and ±15% gap alerts.",
+   "keywords": [
+    "competitor price comparison",
+    "price positioning map",
+    "premium par budget pricing",
+    "कॉम्पिटिटर प्राइस तुलना",
+    "competitive pricing analysis India"
+   ],
+   "name": "Competitor Price Comparator",
+   "path": "apps/competitor-price-comparator/index.html",
+   "slug": "competitor-price-comparator"
+  },
+  {
+   "cluster": "pricing-profit",
+   "description": "Weighted scoring of business options across criteria (weights sum to 1) with a ±20% sensitivity check on whether the winner survives.",
+   "keywords": [
+    "decision support system",
+    "weighted scoring decision matrix",
+    "business decision tool India",
+    "sensitivity analysis decision",
+    "निर्णय समर्थन इंजन"
+   ],
+   "name": "Decision Support Engine",
+   "path": "apps/decision-support-engine/index.html",
+   "slug": "decision-support-engine"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Track tender submission deadlines with days-left countdown, red/orange urgency color coding (overdue / ≤3d critical / ≤7d soon), EMD & tender-fee notes, and a per-tender document checklist with completion %.",
+   "keywords": [
+    "tender deadline tracker India",
+    "tender submission countdown",
+    "GeM tender deadline",
+    "tender document checklist",
+    "टेंडर डेडलाइन ट्रैकर",
+    "टेंडर सबमिशन ट्रैकर",
+    "टेंडर दस्तावेज़ चेकलिस्ट"
+   ],
+   "name": "Tender Deadline Tracker",
+   "path": "apps/tender-deadline-tracker/index.html",
+   "slug": "tender-deadline-tracker"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Compare tender criteria (minimum turnover, experience, past contracts, EMD capacity, category, registration) against your company profile → eligible / marginal / no-go verdict with a per-criterion gap list.",
+   "keywords": [
+    "tender eligibility checker India",
+    "government tender eligibility criteria",
+    "turnover criteria tender",
+    "EMD exemption MSE startup",
+    "टेंडर एलिजिबिलिटी चेक",
+    "टेंडर योग्यता मानदंड",
+    "EMD छूट MSE"
+   ],
+   "name": "Tender Eligibility Checker",
+   "path": "apps/tender-eligibility-checker/index.html",
+   "slug": "tender-eligibility-checker"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Bid cost buildup: direct cost heads + indirect % + contingency % + margin % → bid price, with tender fee and EMD tracked as separate upfront cash (EMD refundable, not part of bid price).",
+   "keywords": [
+    "tender cost estimator India",
+    "bid price buildup",
+    "tender costing",
+    "contingency margin bid",
+    "EMD tender fee tracking",
+    "टेंडर लागत अनुमान",
+    "बोली मूल्य कैलकुलेटर",
+    "टेंडर कॉस्ट एस्टीमेटर"
+   ],
+   "name": "Tender Cost Estimator",
+   "path": "apps/tender-cost-estimator/index.html",
+   "slug": "tender-cost-estimator"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Given estimated cost and win-probability at low/high bid prices (linearly interpolated), scans the band and recommends the bid price maximizing expected value = (price − cost) × P(win).",
+   "keywords": [
+    "bid price optimizer",
+    "tender pricing strategy India",
+    "expected value bidding",
+    "win probability tender",
+    "optimal bid price",
+    "बोली मूल्य ऑप्टिमाइज़र",
+    "टेंडर प्राइसिंग स्ट्रैटेजी",
+    "अपेक्षित मूल्य बोली"
+   ],
+   "name": "Bid Price Optimizer",
+   "path": "apps/bid-price-optimizer/index.html",
+   "slug": "bid-price-optimizer"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Retention % per contract, release due dates (completion + defect liability period), released vs locked amounts, and total locked working capital across up to 25 contracts.",
+   "keywords": [
+    "retention money calculator India",
+    "retention amount contract",
+    "defect liability period release",
+    "retention working capital",
+    "रिटेंशन मनी कैलकुलेटर",
+    "रिटेंशन राशि",
+    "डिफेक्ट लायबिलिटी पीरियड"
+   ],
+   "name": "Retention Money Calculator",
+   "path": "apps/retention-money-calculator/index.html",
+   "slug": "retention-money-calculator"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Budgeted vs actual per cost head with % complete → variance %, CPI, and projected final cost (EAC = BAC/CPI), flagged on-track / watch / overrun with portfolio roll-up.",
+   "keywords": [
+    "project cost overrun detector",
+    "EAC BAC CPI",
+    "earned value management India",
+    "cost variance project",
+    "budget vs actual tracker",
+    "कॉस्ट ओवररन डिटेक्टर",
+    "EAC फॉर्मूला",
+    "प्रोजेक्ट बजट ट्रैकर"
+   ],
+   "name": "Project Cost Overrun Detector",
+   "path": "apps/project-cost-overrun-detector/index.html",
+   "slug": "project-cost-overrun-detector"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Contract milestones with due dates, % complete, weightage and linked payments; automatic delayed/due-soon flags, weighted overall progress %, and released/pending/delayed payment summary.",
+   "keywords": [
+    "contract milestone tracker India",
+    "project milestone tracking",
+    "milestone payment tracker",
+    "delay flag milestones",
+    "weighted progress project",
+    "माइलस्टोन ट्रैकर",
+    "कॉन्ट्रैक्ट माइलस्टोन",
+    "परियोजना प्रगति ट्रैकर"
+   ],
+   "name": "Contract Milestone Tracker",
+   "path": "apps/contract-milestone-tracker/index.html",
+   "slug": "contract-milestone-tracker"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Liquidated damages calculator: LD % per week of delay on contract value (part-week counts as full), capped at max % — defaults to the typical 0.5%/week, 10%-cap GeM norm with grace-day exclusion.",
+   "keywords": [
+    "liquidated damages calculator India",
+    "LD penalty delay contract",
+    "0.5% per week LD",
+    "GeM liquidated damages",
+    "delay penalty calculator",
+    "लिक्विडेटेड डैमेज कैलकुलेटर",
+    "देरी जुर्माना",
+    "LD 10% cap"
+   ],
+   "name": "Project Delay Penalty Tool (LD Calculator)",
+   "path": "apps/project-delay-penalty-tool/index.html",
+   "slug": "project-delay-penalty-tool"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "Two-bid system (technical + financial) document checklist with per-section and overall completion %, ready-to-submit flag, pending-documents list, and addable NIT-specific custom documents.",
+   "keywords": [
+    "tender submission checklist India",
+    "two bid system documents",
+    "technical bid financial bid checklist",
+    "tender documents required",
+    "bid submission checklist",
+    "टेंडर दस्तावेज़ चेकलिस्ट",
+    "टू बिड सिस्टम",
+    "तकनीकी बोली दस्तावेज़"
+   ],
+   "name": "Tender Submission Checklist",
+   "path": "apps/tender-submission-checklist/index.html",
+   "slug": "tender-submission-checklist"
+  },
+  {
+   "cluster": "tender-project",
+   "description": "RA (running account) bill register: certified vs paid per bill, holdback %, unpaid aging buckets (0–30 / 31–60 / 61–90 / 90+ days), collection summary and recovery %.",
+   "keywords": [
+    "contractor payment manager India",
+    "RA bill register",
+    "running account bill tracker",
+    "certified vs paid bills",
+    "holdback retention bill",
+    "payment aging contractor",
+    "RA बिल रजिस्टर",
+    "ठेकेदार भुगतान ट्रैकर",
+    "बकाया बिल एजिंग"
+   ],
+   "name": "Contractor Payment Manager",
+   "path": "apps/contractor-payment-manager/index.html",
+   "slug": "contractor-payment-manager"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Register business risks on a 5×5 likelihood × impact matrix, score and band them (Low/Medium/High/Critical), and surface the top risks to act on first. Self-assessment — confirm with your auditor.",
+   "keywords": [
+    "operational risk heatmap",
+    "risk matrix 5x5",
+    "likelihood impact matrix",
+    "risk register tool",
+    "business risk assessment",
+    "रिस्क हीटमैप",
+    "जोखिम मैट्रिक्स"
+   ],
+   "name": "Operational Risk Heatmap",
+   "path": "apps/operational-risk-heatmap/index.html",
+   "slug": "operational-risk-heatmap"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Tick fraud red flags (fake invoices, split purchases, ghost employees) for a fraud-risk score plus the preventive control for each gap. Diagnostic, not accusatory — a flag is a control gap, not proof.",
+   "keywords": [
+    "fraud risk indicator",
+    "fraud red flags checklist",
+    "business fraud prevention",
+    "internal fraud controls",
+    "fake invoice detection",
+    "धोखाधड़ी जोखिम"
+   ],
+   "name": "Fraud Risk Indicator",
+   "path": "apps/fraud-risk-indicator/index.html",
+   "slug": "fraud-risk-indicator"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Tick the controls you actually follow across purchase, sales, cash & bank, inventory and HR/payroll — get an overall compliance %, per-process scores and a prioritised gap list.",
+   "keywords": [
+    "internal control checklist",
+    "internal controls small business",
+    "control compliance score",
+    "purchase controls",
+    "cash controls",
+    "आंतरिक नियंत्रण चेकलिस्ट"
+   ],
+   "name": "Internal Control Checklist",
+   "path": "apps/internal-control-checklist/index.html",
+   "slug": "internal-control-checklist"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Answer 12 Yes/Partial/No questions across board oversight, compliance, transparency and financial discipline for a weighted 0–100 governance score, rating and improvement actions for weak areas.",
+   "keywords": [
+    "governance score",
+    "corporate governance assessment",
+    "SME governance",
+    "board oversight checklist",
+    "business governance rating",
+    "गवर्नेंस स्कोर"
+   ],
+   "name": "Governance Score Engine",
+   "path": "apps/governance-score-engine/index.html",
+   "slug": "governance-score-engine"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "12-item BCP checklist (backups, tested restores, alternate site, key-person cover, insurance) → readiness % and Resilient/Developing/Exposed tier with gaps to close.",
+   "keywords": [
+    "business continuity readiness",
+    "BCP checklist",
+    "business continuity plan small business",
+    "disaster recovery checklist",
+    "व्यवसाय निरंतरता"
+   ],
+   "name": "Business Continuity Readiness Tool",
+   "path": "apps/business-continuity-readiness-tool/index.html",
+   "slug": "business-continuity-readiness-tool"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "List key roles, vendors and systems with dependency and backup coverage — get a ranked SPOF list (Critical/Watch/Covered) showing where one absence stops the business.",
+   "keywords": [
+    "single point of failure",
+    "SPOF detector",
+    "key person risk",
+    "vendor dependency risk",
+    "business redundancy",
+    "सिंगल पॉइंट ऑफ फेलियर"
+   ],
+   "name": "Single Point of Failure Detector",
+   "path": "apps/single-point-of-failure-detector/index.html",
+   "slug": "single-point-of-failure-detector"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Map who has cash, bank, stock, purchase, payroll and bookkeeping access against their role — flag segregation-of-duties conflicts and rank misuse risk. Checks role design, not people.",
+   "keywords": [
+    "segregation of duties",
+    "SoD conflicts",
+    "employee access review",
+    "misuse risk",
+    "access vs role matrix",
+    "कर्तव्यों का पृथक्करण"
+   ],
+   "name": "Employee Misuse Risk Tool",
+   "path": "apps/employee-misuse-risk-tool/index.html",
+   "slug": "employee-misuse-risk-tool"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Tick vendor-side indicators (same-address vendors, round-amount invoices, single-bidder patterns, sequential invoices) for a collusion-risk score plus the checks for each pattern.",
+   "keywords": [
+    "vendor collusion risk",
+    "bid rigging indicators",
+    "procurement fraud checklist",
+    "vendor fraud detection",
+    "विक्रेता मिलीभगत",
+    "single bidder pattern"
+   ],
+   "name": "Vendor Collusion Risk Tool",
+   "path": "apps/vendor-collusion-risk-tool/index.html",
+   "slug": "vendor-collusion-risk-tool"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Answer 5 backup questions (frequency, locations, encryption, tested restores, device age) for a 0–100 data-loss risk score, RPO estimate and prioritised recommendations (3-2-1 rule).",
+   "keywords": [
+    "data loss risk",
+    "backup risk assessment",
+    "RPO calculator",
+    "3-2-1 backup rule",
+    "data loss probability",
+    "डेटा हानि"
+   ],
+   "name": "Data Loss Probability Analyzer",
+   "path": "apps/data-loss-probability-analyzer/index.html",
+   "slug": "data-loss-probability-analyzer"
+  },
+  {
+   "cluster": "risk-governance",
+   "description": "Enter entity type, headcount and turnover — get the Indian statutory compliances that likely apply (GST, PF, ESI, Shops Act, Professional Tax, Udyam, ROC) with indicative due dates, and your gap list.",
+   "keywords": [
+    "compliance checklist india",
+    "statutory compliance small business",
+    "GST PF ESI applicability",
+    "shops act registration",
+    "udyam registration",
+    "अनुपालन चेकलिस्ट"
+   ],
+   "name": "Compliance Gap Identifier",
+   "path": "apps/compliance-gap-identifier/index.html",
+   "slug": "compliance-gap-identifier"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Track software/SaaS subscriptions with 30/15/7-day renewal alerts and total yearly SaaS spend.",
+   "keywords": [
+    "subscription expiry manager",
+    "saas subscription tracker",
+    "software renewal reminder",
+    "subscription cost tracker india",
+    "सब्सक्रिप्शन रिन्यूअल ट्रैकर",
+    "saas spend calculator"
+   ],
+   "name": "Subscription Expiry Manager",
+   "path": "apps/subscription-expiry-manager/index.html",
+   "slug": "subscription-expiry-manager"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Demo license key generator (signed VQ1-PROD-BODY-CHECK format) and checksum validator. Clearly labelled demo.",
+   "keywords": [
+    "license key generator",
+    "license key validator",
+    "software license key demo",
+    "लाइसेंस की जनरेटर",
+    "license activation demo"
+   ],
+   "name": "License Activation Engine (Demo)",
+   "path": "apps/license-activation-engine/index.html",
+   "slug": "license-activation-engine"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Log API/tool usage per client, quota vs used with 80% near-quota alerts, and overage billing estimates.",
+   "keywords": [
+    "usage metering tool",
+    "api usage tracker",
+    "client quota tracker",
+    "overage billing calculator",
+    "यूसेज मीटरींग",
+    "api quota monitor"
+   ],
+   "name": "Usage Metering Tool",
+   "path": "apps/usage-metering-tool/index.html",
+   "slug": "usage-metering-tool"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Paste messy CSV: trim, dedupe, fix DD/MM/YYYY dates and ₹ numbers, normalize headers to snake_case, download clean CSV.",
+   "keywords": [
+    "csv cleaner",
+    "clean messy csv",
+    "csv deduplicate",
+    "csv date fix",
+    "गंदा csv साफ़",
+    "csv trim whitespace"
+   ],
+   "name": "Excel Chaos Cleaner",
+   "path": "apps/excel-chaos-cleaner/index.html",
+   "slug": "excel-chaos-cleaner"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "10-point IT health checklist (backups, updates, antivirus, disk, passwords, 2FA) with 0–100 score and prioritized action list.",
+   "keywords": [
+    "it health check",
+    "system health monitor",
+    "small business it audit",
+    "backup checklist",
+    "सिस्टम हेल्थ चेक"
+   ],
+   "name": "System Health Monitor",
+   "path": "apps/system-health-monitor/index.html",
+   "slug": "system-health-monitor"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Financial-year closing checklist for India (FY ends 31 March): stock count, debtor/creditor confirmations, provisions, depreciation blocks.",
+   "keywords": [
+    "year end closing checklist india",
+    "fy closing checklist",
+    "financial year end india march 31",
+    "वर्ष अंत समापन",
+    "fy closure provisions depreciation"
+   ],
+   "name": "Year-End Closure Assistant",
+   "path": "apps/year-end-closure-assistant/index.html",
+   "slug": "year-end-closure-assistant"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Backup plan builder (what/where/how often) with 3-2-1 rule checker and next-backup schedule list.",
+   "keywords": [
+    "backup scheduler",
+    "backup plan builder",
+    "3-2-1 backup rule",
+    "small business backup plan",
+    "बैकअप शेड्यूलर"
+   ],
+   "name": "Auto Backup Scheduler",
+   "path": "apps/auto-backup-scheduler/index.html",
+   "slug": "auto-backup-scheduler"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Pre-upgrade readiness checklist with risk score plus a fill-in rollback plan template (copyable).",
+   "keywords": [
+    "software upgrade checklist",
+    "pre upgrade checklist",
+    "rollback plan template",
+    "upgrade risk assessment",
+    "अपग्रेड सुरक्षा जांच"
+   ],
+   "name": "Software Upgrade Safety Checker",
+   "path": "apps/software-upgrade-safety-checker/index.html",
+   "slug": "software-upgrade-safety-checker"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Step-by-step reopening checklist after a crash or closure: licenses, staff, vendors, cash, relaunch in Day 1 / Week 1 / Month 1 phases.",
+   "keywords": [
+    "business restart checklist",
+    "reopening business after closure",
+    "restart closed business india",
+    "बंद दुकान दोबारा खोलें",
+    "business reopening plan"
+   ],
+   "name": "Business Restart Toolkit",
+   "path": "apps/business-restart-toolkit/index.html",
+   "slug": "business-restart-toolkit"
+  },
+  {
+   "cluster": "platform-lifecycle",
+   "description": "Statutory record-retention schedule for India (Companies Act 8 years, IT Act, GST 72 months) with destruction-eligibility alerts and sources.",
+   "keywords": [
+    "record retention india",
+    "document retention policy india",
+    "books of account retention 8 years",
+    "gst record retention 72 months",
+    "रिकॉर्ड संरक्षण"
+   ],
+   "name": "Long-Term Data Preservation Tool",
+   "path": "apps/long-term-data-preservation-tool/index.html",
+   "slug": "long-term-data-preservation-tool"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "0–100 business health score across cash, profit, compliance, customers and operations with grade and top 3 fixes.",
+   "keywords": [
+    "business health score",
+    "business health check",
+    "SME health score",
+    "बिज़नेस हेल्थ स्कोर",
+    "बिज़नेस हेल्थ चेक",
+    "business grade calculator"
+   ],
+   "name": "Business Health Score Engine",
+   "path": "apps/business-health-score-engine/index.html",
+   "slug": "business-health-score-engine"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "Cash in hand ÷ daily burn → survival days with runway gauge and urgency actions.",
+   "keywords": [
+    "cash runway calculator",
+    "survival days calculator",
+    "business runway",
+    "कैश रनवे कैलकुलेटर",
+    "बिज़नेस कितने दिन चलेगा",
+    "daily burn rate"
+   ],
+   "name": "Cash Survival Days Indicator",
+   "path": "apps/cash-survival-days-indicator/index.html",
+   "slug": "cash-survival-days-indicator"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "Three-method valuation range (revenue multiple, profit multiple, DCF-lite) for Indian SMEs. Labelled ESTIMATE — not financial advice.",
+   "keywords": [
+    "business valuation calculator india",
+    "small business valuation",
+    "how to value a business",
+    "बिज़नेस वैल्यूएशन",
+    "कंपनी वैल्यूएशन कैसे निकालें",
+    "DCF calculator"
+   ],
+   "name": "Business Valuation Estimator",
+   "path": "apps/business-valuation-estimator/index.html",
+   "slug": "business-valuation-estimator"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "Template-based legal notice draft for payment default with demand period and overdue computation. DRAFT ONLY — lawyer review required; not legal advice.",
+   "keywords": [
+    "legal notice format india",
+    "payment default legal notice",
+    "legal notice draft",
+    "लीगल नोटिस फॉर्मेट",
+    "पेमेंट डिफॉल्ट नोटिस",
+    "legal notice template"
+   ],
+   "name": "Legal Notice Draft Tool",
+   "path": "apps/legal-notice-draft-tool/index.html",
+   "slug": "legal-notice-draft-tool"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "Polite → firm escalation letter drafts for overdue payments in English and Hindi. Drafts only — not legal advice.",
+   "keywords": [
+    "demand letter format india",
+    "payment demand letter",
+    "overdue payment letter",
+    "डिमांड लेटर फॉर्मेट",
+    "बकाया भुगतान पत्र",
+    "payment reminder letter"
+   ],
+   "name": "Demand Letter Generator",
+   "path": "apps/demand-letter-generator/index.html",
+   "slug": "demand-letter-generator"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "30/60/90-day payment follow-up letter sequence generator: computes days overdue from the due date and drafts the right stage letter.",
+   "keywords": [
+    "payment follow up letter",
+    "overdue invoice reminder letter",
+    "30 60 90 day collection letters",
+    "पेमेंट फॉलो अप लेटर",
+    "बकाया वसूली पत्र"
+   ],
+   "name": "Payment Follow-up Letter Tool",
+   "path": "apps/payment-followup-letter-tool/index.html",
+   "slug": "payment-followup-letter-tool"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "Morning numbers on one screen: cash in hand, dues receivable/payable, net position, today's tasks (saved on-device, max 25) and money alerts.",
+   "keywords": [
+    "founder dashboard",
+    "daily business dashboard",
+    "morning business numbers",
+    "डेली बिज़नेस डैशबोर्ड",
+    "फाउंडर डैशबोर्ड"
+   ],
+   "name": "Daily Founder Dashboard",
+   "path": "apps/daily-founder-dashboard/index.html",
+   "slug": "daily-founder-dashboard"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "15-point succession readiness checklist (saved on-device) with readiness %, valuation snapshot (ESTIMATE) and handover task list.",
+   "keywords": [
+    "succession planning small business",
+    "business exit planning india",
+    "succession readiness checklist",
+    "सक्सेशन प्लानिंग",
+    "बिज़नेस एक्ज़िट प्लान"
+   ],
+   "name": "Exit & Succession Planner",
+   "path": "apps/exit-succession-planner/index.html",
+   "slug": "exit-succession-planner"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "GSTR-3B late-fee and 18% interest scenarios: pay now vs later cost comparison with verified Sep 2026 rates. Planning aid only.",
+   "keywords": [
+    "gstr-3b late fee calculator",
+    "gst late fee penalty",
+    "gstr 3b late fee interest",
+    "जीएसटी लेट फीस कैलकुलेटर",
+    "gstr-3b जुर्माना"
+   ],
+   "name": "Penalty Reduction Planner",
+   "path": "apps/penalty-reduction-planner/index.html",
+   "slug": "penalty-reduction-planner"
+  },
+  {
+   "cluster": "owner-legal",
+   "description": "Paste jargon-heavy text (notice, audit para) → plain-language bullet summary with key-numbers extraction. Comprehension aid — not legal advice.",
+   "keywords": [
+    "plain language summary",
+    "understand legal notice",
+    "simplify legal text",
+    "कानूनी भाषा आसान",
+    "नोटिस समझें",
+    "legal jargon simplifier"
+   ],
+   "name": "Plain Language Summary Generator",
+   "path": "apps/plain-language-summary-generator/index.html",
+   "slug": "plain-language-summary-generator"
+  }
+ ],
+ "planned": [
+  "invoicing-billing",
+  "gst-tax",
+  "hr-payroll",
+  "cash-banking",
+  "loans-credit",
+  "profit-analytics",
+  "inventory-stock",
+  "crm-sales",
+  "compliance-legal",
+  "documents",
+  "ecommerce",
+  "marketing-ads",
+  "devops",
+  "accounting",
+  "compliance",
+  "inventory",
+  "crm",
+  "hr"
+ ],
+ "suite": "VisionQuantech Business Suite",
+ "updated": "2026-09-26",
+ "version": "0.1.0"
+}

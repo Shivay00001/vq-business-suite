@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Scheduling Tool – Weekly Timetable with Teacher & Room Conflict Detection | VisionQuantech</title>
+  <meta name="description" content="Free class scheduling tool: weekly timetable grid for coaching institutes with automatic teacher, room and batch conflict detection. कक्षा समय-सारणी – टकराव जांच। Data stays in your browser.">
+  <meta name="keywords" content="class scheduling tool, timetable maker, timetable conflict detection, कक्षा समय-सारणी, coaching timetable planner, teacher room clash checker">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/class-scheduling-tool/">
+  <meta property="og:title" content="Class Scheduling Tool – Timetable & Conflicts | VisionQuantech">
+  <meta property="og:description" content="Build a weekly timetable with automatic teacher/room/batch conflict detection. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    #s-grid { display:grid; grid-template-columns:1fr; gap:.8rem; }
+    @media (min-width:720px){ #s-grid{ grid-template-columns:repeat(2,1fr); } }
+    @media (min-width:1100px){ #s-grid{ grid-template-columns:repeat(4,1fr); } }
+    .day-col { border:1px solid var(--line); border-radius:10px; padding:.7rem .9rem; background:var(--paper-soft); }
+    .day-col h3 { margin:.1rem 0 .5rem; }
+    .slot { background:#fff; border:1px solid var(--line); border-radius:8px; padding:.5rem .7rem; margin-bottom:.5rem; font-size:.9rem; }
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+  </style>
+</head>
+<body data-app="class-scheduling-tool">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard top slot --></div>
+
+    <div class="vq-hero">
+      <h1>Class Scheduling Tool — Weekly Timetable & Conflict Detection</h1>
+      <p>Build a weekly timetable for your institute: add classes with subject, teacher, room and batch — teacher double-bookings, room clashes and batch overlaps are detected and blocked automatically. <span lang="hi">कक्षा समय-सारणी — शिक्षक/कमरा टकराव जांच के साथ।</span></p>
+      <p class="vq-hint">Free: 20 class additions per day. Back-to-back classes don't conflict. Data stays in your browser.</p>
+    </div>
+
+    <div id="s-gate"></div>
+
+    <section class="card" aria-label="Add class">
+      <h2 class="vq-section-title" style="margin-top:0">Add class</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="s-day">Day</label>
+          <select id="s-day"></select>
+        </div>
+        <div class="vq-field">
+          <label for="s-subject">Subject</label>
+          <input id="s-subject" type="text" maxlength="120" placeholder="e.g. Mathematics">
+        </div>
+        <div class="vq-field">
+          <label for="s-start">Start time</label>
+          <input id="s-start" type="time" value="09:00">
+        </div>
+        <div class="vq-field">
+          <label for="s-end">End time</label>
+          <input id="s-end" type="time" value="10:00">
+        </div>
+        <div class="vq-field">
+          <label for="s-teacher">Teacher</label>
+          <input id="s-teacher" type="text" maxlength="120" placeholder="e.g. Meera Iyer">
+        </div>
+        <div class="vq-field">
+          <label for="s-room">Room</label>
+          <input id="s-room" type="text" maxlength="120" placeholder="e.g. Room 2">
+        </div>
+        <div class="vq-field">
+          <label for="s-batch">Batch</label>
+          <input id="s-batch" type="text" maxlength="120" placeholder="e.g. Class 10 – Morning">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-add-slot" class="vq-btn" type="button">Add class</button>
+        <button id="f-clear" class="vq-btn warn" type="button">Clear timetable</button>
+      </div>
+      <p id="s-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Weekly timetable">
+      <h2 class="vq-section-title" style="margin-top:0">Weekly timetable</h2>
+      <div id="s-grid"></div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard bottom slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Class scheduling tool — FAQs</h2>
+      <details><summary>How does conflict detection work?</summary><p>When you add a class, the tool checks for overlapping times on the same day: a teacher double-booked, a room double-booked, or a batch given two classes at once are all blocked.</p></details>
+      <details><summary lang="hi">क्या एक शिक्षक के दो बैच एक साथ लग सकते हैं?</summary><p lang="hi">नहीं — एक ही समय पर एक ही शिक्षक दो बैच नहीं पढ़ा सकता। टूल ऐसी एंट्री को teacher conflict बताकर रोक देता है।</p></details>
+      <details><summary>Do back-to-back classes conflict?</summary><p>No — a class ending at 10:00 and another starting at 10:00 do not overlap. Only true time overlaps are flagged.</p></details>
+      <details><summary>Where is the timetable stored?</summary><p>Only in your browser vault. Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loyalty Points Manager — लॉयल्टी पॉइंट्स | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free loyalty points manager for Indian SMEs: per-customer points ledger — earn (1 pt per ₹X, configurable) & redeem entries, balance, redemption value, CSV export. लॉयल्टी पॉइंट्स मुफ्त में मैनेज करें।">
+  <meta name="keywords" content="loyalty points manager, लॉयल्टी पॉइंट्स, loyalty program India, customer points ledger, reward points tracker, loyalty points calculator, redeem points">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-earn { background: #e6f6ec; color: #1a7f37; }
+    .p-redeem { background: #fff1e0; color: #b45309; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    .row-actions { white-space: nowrap; }
+    .type-row { display: flex; gap: .6rem; margin-bottom: 1rem; }
+    .type-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem 1rem; cursor: pointer; font-weight: 600; background: #fff; flex: 1; text-align: center; }
+    .type-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    .balance-hero { text-align: center; padding: 1rem; border: 2px solid var(--brand); border-radius: var(--radius); margin-bottom: 1rem; }
+    .balance-hero .big { font-size: 2rem; font-weight: 800; color: var(--brand); }
+    .balance-hero .lbl { color: var(--ink-soft); font-size: .9rem; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem; font-size: .9rem; }
+    .formula code { background: #eef2ff; padding: .1rem .4rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="loyalty-points-manager">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Loyalty Points Manager</h1>
+    <p class="lede">लॉयल्टी पॉइंट्स — har customer ka <strong>points ledger</strong>: <strong>earn</strong> (1 point per ₹X, aap set karein) / <strong>redeem</strong> entries, balance, redemption value, <strong>CSV export</strong>. <strong>Export: 20/day free · snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Program settings</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="lp-earnrate">Earn: ₹ per 1 point *</label><input id="lp-earnrate" type="number" min="1" step="1" inputmode="numeric" value="100"></div>
+        <div class="vq-field"><label for="lp-redeemval">Redeem value: ₹ per 1 point *</label><input id="lp-redeemval" type="number" min="0.01" step="0.01" inputmode="decimal" value="1"></div>
+      </div>
+      <p class="vq-hint">Example: earn rate ₹100 = ₹100 ki khareed par 1 point. Redeem value ₹1 = 1 point wapas ₹1 ke barabar.</p>
+      <p class="err" id="cfg-error" role="alert"></p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add customer / ग्राहक जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="lp-name">Customer name *</label><input id="lp-name" type="text" placeholder="e.g. Sharma Traders" maxlength="120"></div>
+        <div class="vq-field"><label for="lp-phone">Phone</label><input id="lp-phone" type="tel" placeholder="e.g. 98765 43210" maxlength="20"></div>
+      </div>
+      <button class="vq-btn go" id="addCustBtn" type="button">Add customer</button>
+      <p class="err" id="lp-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <h2>Points balance</h2>
+      <div class="vq-field no-print" style="max-width:320px">
+        <label for="sel-cust">Select customer</label><select id="sel-cust"></select>
+      </div>
+      <div class="balance-hero">
+        <div class="lbl">Points balance — <span id="balName"></span></div>
+        <div class="big" id="balPoints">—</div>
+        <div class="lbl">Redemption value: <strong id="balValue">—</strong></div>
+      </div>
+      <div class="formula">
+        <strong>Formulas (on-screen):</strong><br>
+        <code>earned points = floor(purchase ₹ ÷ earn-rate ₹)</code> ·
+        <code>balance = total earned − total redeemed</code> ·
+        <code>redemption value = balance × redeem-value ₹</code>
+      </div>
+    </div>
+
+    <div class="card no-print">
+      <h2>Record entry / एंट्री दर्ज करें</h2>
+      <div class="type-row">
+        <label><input type="radio" name="etype" value="earn" checked> Earn (खरीद पर +)</label>
+        <label><input type="radio" name="etype" value="redeem"> Redeem (छूट पर −)</label>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-cust">Customer *</label><select id="e-cust"></select></div>
+        <div class="vq-field"><label for="e-date">Date *</label><input id="e-date" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-amount">Purchase amount (₹) — earn ke liye *</label><input id="e-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 2500"></div>
+        <div class="vq-field"><label for="e-points">Points — redeem ke liye *</label><input id="e-points" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 10"></div>
+      </div>
+      <div class="vq-field"><label for="e-note">Note</label><input id="e-note" type="text" placeholder="e.g. Bill #4521" maxlength="200"></div>
+      <button class="vq-btn go" id="addEntryBtn" type="button">Record entry</button>
+      <p class="err" id="e-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <h2>Ledger — <span id="ledgerName"></span></h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Date</th><th>Type</th><th>Note</th><th class="r">Points in</th><th class="r">Points out</th><th class="r">Balance</th></tr></thead>
+        <tbody id="ledgerBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn secondary" id="exportBtn" type="button">Export CSV</button>
+      <button class="vq-btn secondary" id="saveBtn" type="button">Save snapshot</button>
+      <button class="vq-btn ghost" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="lp-saved"></p>
+    <p class="vq-hint no-print">Ledger dekhna free hai — sirf CSV export (20/day) aur snapshots (25/day) par limit hai.</p>
+    <div id="lp-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Loyalty points program kaise kaam karta hai?</summary>
+        <p>Aap <strong>earn rate</strong> set karte hain (jaise 1 point per ₹100). Customer ki har khareed par points judte hain. Customer chahe to points <strong>redeem</strong> karke discount pa sakta hai — 1 point = aapke set kiye <strong>redeem value</strong> (₹) ke barabar.</p>
+      </details>
+      <details>
+        <summary>Points balance kaise nikalta hai?</summary>
+        <p><strong>Balance = total earned − total redeemed.</strong> Redemption value = balance × redeem-value. Redeem balance se zyada nahi ho sakta — app ise rok deti hai.</p>
+      </details>
+      <details>
+        <summary>Redeem balance se zyada ho to kya hota hai?</summary>
+        <p>App entry reject kar deti hai aur error dikhati hai — negative balance possible nahi hai.</p>
+      </details>
+      <details>
+        <summary>लॉयल्टी प्रोग्राम क्यों ज़रूरी है?</summary>
+        <p>Loyalty points se customers wapas aate hain — unhe lagta hai unki har khareed ka kuchh fayda mil raha hai. Chhoti dukano ke liye ye repeat business ka sabse sasta tareeka hai.</p>
+      </details>
+      <details>
+        <summary>Kya mera data safe hai?</summary>
+        <p>Haan — saara data sirf aapke browser ke vault me store hota hai. Passphrase se encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

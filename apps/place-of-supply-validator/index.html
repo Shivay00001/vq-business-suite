@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Place of Supply Checker — CGST+SGST vs IGST Verdict (IGST Act) | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free place of supply checker for Indian GST: supplier & recipient states + goods/services type → CGST+SGST vs IGST verdict with IGST Act sections (10/12/13) in plain words. No signup. प्लेस ऑफ सप्लाई चेकर।">
+  <meta name="keywords" content="place of supply checker, प्लेस ऑफ सप्लाई, CGST SGST vs IGST, IGST Act section 10 12 13, place of supply of goods, place of supply of services, inter state vs intra state GST">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.02rem; margin: 0 0 .7rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+    .verdict { border-radius: 12px; padding: 1.1rem; margin: .8rem 0; }
+    .verdict.intra { background: #e6f4ea; border: 1.5px solid #1a7f37; }
+    .verdict.inter { background: #eef4ff; border: 1.5px solid #1a56db; }
+    .verdict.export { background: #fff4e0; border: 1.5px solid #a15c00; }
+    .verdict h2 { margin: 0 0 .4rem; font-size: 1.25rem; }
+    .rule-box { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 10px; padding: .8rem .9rem; font-size: .92rem; margin-top: .7rem; }
+    .rule-box strong { display: block; margin-bottom: .25rem; }
+    select, input { min-height: 44px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body data-app="place-of-supply-validator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Place of Supply Checker</h1>
+    <p class="lede">प्लेस ऑफ सप्लाई चेकर — supplier state, recipient state aur supply type batayein: tool <strong>place of supply</strong> nikalega aur batayega ki <strong>CGST+SGST</strong> lagega ya <strong>IGST</strong> — IGST Act ki <strong>Section 10/12/13</strong> seedhe shabdon me cite karke. <strong>Free: 20 checks/day.</strong></p>
+
+    <div class="card">
+      <h2>Parties / पक्ष</h2>
+      <div class="two-col">
+        <div class="vq-field">
+          <label for="supState">Supplier state (location of supplier)</label>
+          <select id="supState"></select>
+        </div>
+        <div class="vq-field">
+          <label for="recState">Recipient state (location of recipient)</label>
+          <select id="recState"></select>
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="recType">Recipient type</label>
+        <select id="recType">
+          <option value="registered">Registered person (B2B) — GSTIN available</option>
+          <option value="unregistered">Unregistered person (B2C)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Supply type / सप्लाई का प्रकार</h2>
+      <div class="vq-field">
+        <label for="nature">Nature of supply</label>
+        <select id="nature">
+          <option value="goods">Goods</option>
+          <option value="services">Services</option>
+        </select>
+      </div>
+      <div class="vq-field" id="goodsScenWrap">
+        <label for="goodsScen">Goods scenario</label>
+        <select id="goodsScen">
+          <option value="movement">Goods move to the recipient (normal sale)</option>
+          <option value="billtoshipto">Bill-to / ship-to — delivered on direction of a third person</option>
+          <option value="nomovement">No movement — over-the-counter / ex-factory delivery</option>
+          <option value="onboard">Goods taken on board a conveyance (vessel/aircraft/train)</option>
+        </select>
+      </div>
+      <div class="vq-field hidden" id="thirdWrap">
+        <label for="thirdState">Third person's principal place of business (bill-to party)</label>
+        <select id="thirdState"></select>
+      </div>
+      <div class="vq-field hidden" id="svcScenWrap">
+        <label for="svcScen">Service scenario</label>
+        <select id="svcScen">
+          <option value="general">General service (consulting, IT, agency…)</option>
+          <option value="immovable">Related to immovable property (rent, construction, brokerage of land)</option>
+          <option value="restaurant">Restaurant / catering service</option>
+          <option value="goodstransport">Transportation of goods</option>
+          <option value="passtransport">Passenger transportation</option>
+          <option value="onboard">Service supplied on board a conveyance</option>
+        </select>
+      </div>
+      <div class="vq-field hidden" id="propWrap">
+        <label for="propState">State where the immovable property is located</label>
+        <select id="propState"></select>
+      </div>
+    </div>
+
+    <button class="vq-btn go" id="posCheckBtn" type="button">Check place of supply</button>
+    <p class="vq-hint">Free: 20 checks per day.</p>
+    <p class="err" id="pos-error" role="alert"></p>
+    <div id="pos-upsell"></div>
+
+    <div class="vq-result" id="pos-result" style="display:none">
+      <div class="verdict" id="posVerdict"></div>
+      <div class="rule-box" id="posRule"></div>
+      <div class="vq-notice" style="margin-top:.8rem">
+        <strong>Remember:</strong> place of supply decides the <em>tax type</em>, not whether tax applies. Same state as supplier → <strong>CGST + SGST</strong> (each half the rate); different state → full <strong>IGST</strong>. Exports are zero-rated. Unusual cases (SEZ, imports, OIDAR, e-commerce) have special rules — confirm with your CA.
+      </div>
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Place of supply ka matlab kya hai?</summary>
+        <p>GST destination-based tax hai — tax us state ko milta hai jahan supply <em>consume</em> hoti hai. Place of supply wahi "destination" hai; iske hisaab se decide hota hai ki CGST+SGST lagega ya IGST.</p>
+      </details>
+      <details>
+        <summary>IGST kab lagta hai aur CGST+SGST kab? (When is IGST vs CGST+SGST charged?)</summary>
+        <p>Supplier ka state aur place of supply same ho → <strong>CGST + SGST</strong> (rate aadha-aadha). Alag-alag state ho → poora <strong>IGST</strong>. Ye Sections 7 (inter-state) aur 8 (intra-state), IGST Act ke tahat hai.</p>
+      </details>
+      <details>
+        <summary>Services me B2B aur B2C me kya farak hai?</summary>
+        <p>General rule (Sec 12(2)): <strong>B2B</strong> me place of supply recipient ka location hota hai; <strong>B2C</strong> me recipient ka address record par ho to wahi, warna supplier ka location.</p>
+      </details>
+      <details>
+        <summary>Bill-to / ship-to case me place of supply kya hoga?</summary>
+        <p>Sec 10(1)(b): agar supplier third person ke direction par goods deliver karta hai, to mana jata hai ki third person ne goods receive kiye — place of supply <strong>third person ke principal place of business</strong> wala state hota hai.</p>
+      </details>
+      <details>
+        <summary>Kya ye tool har case cover karta hai?</summary>
+        <p>Nahi — common domestic cases cover hote hain. SEZ supplies, imports, OIDAR/e-commerce aur kuch special services ke alag rules hain; doubt ho to CA se confirm karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

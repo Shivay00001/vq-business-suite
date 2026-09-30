@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dead Stock Analyzer — Free डेड स्टॉक एनालाइज़र | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free dead stock analyzer for Indian SMEs: no movement in 90/180/365 days → dead-stock list, locked value, % of total inventory value, plain-language clearance suggestions. डेड स्टॉक एनालाइज़र फ्री।">
+  <meta name="keywords" content="dead stock, डेड स्टॉक, dead stock analysis, slow moving inventory, non moving stock, dead stock clearance, stock aging report, फंसा हुआ माल, inventory aging India">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; } .p-in { background: #e6f6ec; color: #1a7f37; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.dead td { background: #fef2f2; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); }
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .kpis { grid-template-columns: 1fr; } }
+    .kpi { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; }
+    .kpi .n { font-size: 1.25rem; font-weight: 800; } .kpi .l { font-size: .8rem; color: var(--ink-soft); }
+    .kpi.bad .n { color: #b42318; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    .tip { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius); padding: .7rem .9rem; margin: .5rem 0; font-size: .92rem; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="dead-stock-analyzer">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Dead Stock Analyzer</h1>
+    <p class="lede">डेड स्टॉक एनालाइज़र — har item ki <strong>last movement date</strong> darj karein. <strong>90 / 180 / 365 din</strong> se na hile maal ki dead-stock list, <strong>locked value</strong>, kul inventory ka <strong>%</strong>, aur simple bhasha me <strong>clearance suggestions</strong>. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add item / आइटम जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="d-name">Item name *</label><input id="d-name" type="text" placeholder="e.g. Old Model Charger"></div>
+        <div class="vq-field"><label for="d-move">Last movement date * (sale/purchase/issue)</label><input id="d-move" type="date"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="d-qty">Qty on hand *</label><input id="d-qty" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 150"></div>
+        <div class="vq-field"><label for="d-val">Unit value (₹) *</label><input id="d-val" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 80"></div>
+      </div>
+      <button class="vq-btn go" id="addItemBtn" type="button">Add item</button>
+      <p class="err" id="d-error" role="alert"></p>
+    </div>
+
+    <div class="card no-print">
+      <div class="vq-field" style="max-width:320px"><label for="threshSel">Dead-stock threshold</label>
+        <select id="threshSel">
+          <option value="90">90 days — no movement</option>
+          <option value="180">180 days — no movement</option>
+          <option value="365">365 days — no movement</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi bad"><div class="n" id="kDead">0</div><div class="l">Dead items</div></div>
+      <div class="kpi bad"><div class="n" id="kLocked">₹0</div><div class="l">Locked value</div></div>
+      <div class="kpi"><div class="n" id="kPct">0%</div><div class="l">Of total inventory value</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Dead-stock list</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th>Last movement</th><th class="r">Days idle</th><th class="r">Qty</th><th class="r">Locked value</th><th class="no-print"></th></tr></thead>
+        <tbody id="deadBody"></tbody>
+        <tfoot><tr class="grand"><td colspan="4">Total locked</td><td class="r" id="deadTotal">₹0</td><td class="no-print"></td></tr></tfoot>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Active items (movement within threshold)</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th>Last movement</th><th class="r">Days idle</th><th class="r">Value</th></tr></thead>
+        <tbody id="activeBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Clearance suggestions — क्या करें?</h2>
+      <div id="suggestions"></div>
+    </div>
+
+    <div class="card">
+      <h2>Formula — गणना कैसे होती है</h2>
+      <div class="formula">
+        <p><code>Days idle = Today − Last movement date</code></p>
+        <p><strong>Dead stock:</strong> <code>Days idle ≥ Threshold</code> (90 / 180 / 365, selectable)</p>
+        <p><strong>Locked value</strong> <code>= Qty on hand × Unit value</code> (per dead item)</p>
+        <p><strong>Dead %</strong> <code>= (Total dead value ÷ Total inventory value) × 100</code></p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Dead stock kya hota hai?</summary>
+        <p>Woh maal jo lambe samay (90/180/365 din) se na bika ho, na khareeda gaya ho, na issue hua ho — usme fasa paisa "locked value" kehlata hai.</p>
+      </details>
+      <details>
+        <summary>Threshold 90, 180 ya 365 me se kaun sa chunein?</summary>
+        <p>Fast-moving goods (kirana, pharma) ke liye 90 din, general trading ke liye 180, aur machinery/slow items ke liye 365 din theek rehta hai.</p>
+      </details>
+      <details>
+        <summary>Dead stock se kaise chhutkara payein?</summary>
+        <p>Discount sale, bundle offer, supplier ko return, staff purchase scheme, ya scrap/liquidation — item ki condition ke hisaab se sabse kam nuksaan wala option chunein.</p>
+      </details>
+      <details>
+        <summary>डेड स्टॉक से क्या नुकसान है?</summary>
+        <p>Paisa fasta hai, godown ki jagah ghirti hai, aur kuch items (expiry wale) ki value zero ho jaati hai — isliye dead stock ko jaldi pehchanna zaroori hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESI Compliance Checker – ESIC Employer Checklist India | VisionQuantech</title>
+  <meta name="description" content="Free ESI compliance checker for Indian employers: 10+ employee applicability, ₹21,000 wage ceiling (₹25,000 for disabled), 0.75%/3.25% rates, 15th due date — pass/fail with explanations. ईएसआई कंप्लायंस चेक।">
+  <meta name="keywords" content="ESI compliance checker, ESIC compliance checklist, ESI wage ceiling 21000, ESI contribution rate 0.75 3.25, ESIC registration 10 employees, ईएसआई कंप्लायंस, ESIC नियम">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/esi-compliance-checker/">
+  <meta property="og:title" content="ESI Compliance Checker – ESIC Checklist | VisionQuantech">
+  <meta property="og:description" content="Check your ESI compliance: applicability, wage ceiling, rates, due dates. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .chk { border:1px solid var(--line); border-radius:10px; padding:.9rem 1rem; margin-bottom:.8rem; }
+    .chk h3 { margin:.2rem 0 .4rem; font-size:1rem; }
+    .chk p { margin:.25rem 0; font-size:.9rem; }
+    .pass { border-left:5px solid #1d7a3f; } .fail { border-left:5px solid #b3261e; } .warn { border-left:5px solid #8a6100; }
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-pass{ background:#d9f2e3; color:#1d7a3f; } .b-fail{ background:#fde3e3; color:#b3261e; } .b-warn{ background:#fff3d6; color:#8a6100; }
+    .score { font-size:1.4rem; font-weight:800; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+  </style>
+</head>
+<body data-app="esi-compliance-checker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>ESI Compliance Checker — ESIC Employer Checklist</h1>
+      <p>Free ESI compliance self-check for Indian employers: 10+ employee applicability, ₹21,000 wage ceiling (₹25,000 for persons with disabilities), 0.75% employee / 3.25% employer rates, 15th-of-month due date — each with pass/fail and a plain-English explanation. <span lang="hi">ईएसआई कंप्लायंस चेक — नियोक्ता जाँच सूची।</span></p>
+      <p class="vq-hint">Free: 20 checks per day. Nothing is stored — all checks run in your browser.</p>
+    </div>
+
+    <div id="esi-gate"></div>
+
+    <section class="card" aria-label="Compliance inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your establishment</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="esi-empcount">Total employees</label><input id="esi-empcount" type="number" min="0" max="1000000" step="1" value="12" inputmode="numeric"></div>
+        <div class="vq-field"><label for="esi-area">In an ESI-notified (implemented) area?</label>
+          <select id="esi-area"><option value="yes">Yes</option><option value="no">No</option><option value="unsure">Not sure</option></select></div>
+        <div class="vq-field"><label for="esi-registered">Registered on the ESIC portal?</label>
+          <select id="esi-registered"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="vq-field"><label for="esi-ceiling-ok">Do you cover every employee with gross wages ≤ ₹21,000/mo (≤ ₹25,000 for persons with disabilities)?</label>
+          <select id="esi-ceiling-ok"><option value="yes">Yes</option><option value="no">No / not sure</option></select></div>
+        <div class="vq-field"><label for="esi-gross">Sample gross monthly wage for rate math (₹)</label><input id="esi-gross" type="number" min="0" max="10000000" step="0.01" value="15000" inputmode="decimal"><p class="vq-hint">Only employees within the wage ceiling are covered.</p></div>
+        <div class="vq-field"><label for="esi-rates-ok">Do you deduct 0.75% (employee) and pay 3.25% (employer) on gross wages?</label>
+          <select id="esi-rates-ok"><option value="yes">Yes</option><option value="no">No / not sure</option></select></div>
+        <div class="vq-field"><label for="esi-duedate">Monthly contributions deposited by the 15th of next month?</label>
+          <select id="esi-duedate"><option value="yes">Yes</option><option value="no">No / sometimes late</option></select></div>
+        <div class="vq-field"><label for="esi-joiner">New joiners registered as IPs within 10 days of joining?</label>
+          <select id="esi-joiner"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="vq-field"><label for="esi-returns">Half-yearly returns filed? (11 Nov for Apr–Sep, 12 May for Oct–Mar)</label>
+          <select id="esi-returns"><option value="yes">Yes</option><option value="no">No / not sure</option></select></div>
+      </div>
+      <button id="esi-run" class="vq-btn" type="button">Run compliance check</button>
+      <p id="esi-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="esi-result-card" aria-label="Check results" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Results</h2>
+      <p><span class="score" id="esi-score"></span> <span class="vq-hint" id="esi-verdict"></span></p>
+      <div id="esi-sample" style="margin-bottom:1rem"></div>
+      <div id="esi-results"></div>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>ESI Act, 1948 — 10+ employees (20 in some states, e.g. Maharashtra/Chandigarh for certain establishments), notified areas — <a href="https://www.thepeoplesboard.com/hr-compliance/esic-compliance-for-employers-guide/" rel="noopener">thepeoplesboard.com ESIC guide</a>; <a href="https://support.taxaj.com/portal/en/kb/articles/esi-registration-applicability" rel="noopener">TAXAJ</a></li>
+        <li>Wage ceiling ₹21,000 (₹25,000 for persons with disabilities); rates 0.75% / 3.25% since July 2019; ₹176/day employee-share exemption; due 15th; returns 11 Nov / 12 May — <a href="https://careers.myflowsoft.com/guide-for-esi-rate" rel="noopener">Myflowsoft ESI guide</a>; <a href="https://www.thepeoplesboard.com/hr-compliance/esic-compliance-for-employers-guide/" rel="noopener">thepeoplesboard.com</a></li>
+        <li>Rates unchanged in Budget 2025-26 — <a href="https://medium.com/@sandeepofficial333/the-employees-state-insurance-act-1948-must-know-compliance-guide-for-indian-employers-in-2025-0968fc436af4" rel="noopener">2025 compliance guide</a></li>
+      </ul>
+      <p class="vq-hint">This is a self-check, not legal advice. Confirm with your CA / ESI consultant.</p>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">ESI compliance — FAQs</h2>
+      <details><summary>When is ESI registration mandatory?</summary><p>Non-seasonal factories/establishments with 10 or more employees in an ESI-notified area must register within 15 days of becoming eligible (20 in some states for certain establishments). Once registered, coverage continues even if headcount drops.</p></details>
+      <details><summary lang="hi">ईएसआई पंजीकरण कब अनिवार्य है?</summary><p lang="hi">ईएसआई-लागू क्षेत्र में 10 या अधिक कर्मचारियों वाले कारखानों/प्रतिष्ठानों के लिए पंजीकरण अनिवार्य है। एक बार पंजीकृत होने पर, संख्या घटने पर भी कवरेज जारी रहता है।</p></details>
+      <details><summary>What are the ESI contribution rates?</summary><p>0.75% of gross wages from the employee and 3.25% from the employer — 4% total, unchanged since July 2019. Employees with average daily wages up to ₹176 are exempt from the employee share (the employer still pays its part).</p></details>
+      <details><summary>Who is covered under ESI?</summary><p>Employees with gross monthly wages up to ₹21,000 (₹25,000 for persons with disabilities). Once someone crosses the ceiling, they exit from the next contribution period.</p></details>
+      <details><summary>By when must ESI be deposited?</summary><p>By the 15th of the following month through the ESIC portal, with half-yearly returns due 11 November (Apr–Sep) and 12 May (Oct–Mar).</p></details>
+      <details><summary>Is this official compliance advice?</summary><p>No — this is a self-check for awareness. Confirm your position with a CA or ESI consultant.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Low Stock Alerts — Free लो स्टॉक अलर्ट Dashboard | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free low stock alert dashboard for Indian SMEs: reorder level per item, below-reorder & out-of-stock lists, suggested order quantity (reorder level − current + buffer). Auto-reads Stock Register data. लो स्टॉक अलर्ट फ्री।">
+  <meta name="keywords" content="low stock alert, लो स्टॉक अलर्ट, reorder level, reorder point, out of stock alert, stock alert app India, माल खत्म अलर्ट, purchase order suggestion, minimum stock level">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; } .p-in { background: #e6f6ec; color: #1a7f37; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.crit td { background: #fef2f2; }
+    tr.low td { background: #fffbeb; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="low-stock-alerts">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Low Stock Alerts</h1>
+    <p class="lede">लो स्टॉक अलर्ट — har item ka <strong>reorder level</strong> set karein. <strong>Below-reorder</strong> aur <strong>out-of-stock</strong> lists, aur <strong>suggested order quantity</strong> automatic. Agar <strong>Stock Register</strong> me data hai to wohi use hoga, warna manual items chala sakte hain. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <div class="vq-field" style="max-width:320px"><label for="dataSrc">Data source</label>
+        <select id="dataSrc">
+          <option value="auto">Auto — Stock Register (agar data hai)</option>
+          <option value="manual">Manual items (yahi add karein)</option>
+        </select>
+      </div>
+      <p class="vq-hint" id="srcMsg"></p>
+      <div class="grid2">
+        <div class="vq-field"><label for="bufPct">Buffer % (order me extra safety)</label><input id="bufPct" type="number" min="0" max="100" step="1" inputmode="numeric" value="25" placeholder="e.g. 25"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="reloadBtn" type="button">↻ Stock Register se reload</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card no-print" id="manualCard" style="display:none">
+      <h2>Manual item add karein</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="m-name">Item name *</label><input id="m-name" type="text" placeholder="e.g. Sugar 1kg"></div>
+        <div class="vq-field"><label for="m-stock">Current stock *</label><input id="m-stock" type="number" step="0.01" inputmode="decimal" placeholder="e.g. 12"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="m-reorder">Reorder level *</label><input id="m-reorder" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 20"></div>
+        <div class="vq-field"><label for="m-unit">Unit</label><input id="m-unit" type="text" placeholder="e.g. pcs"></div>
+      </div>
+      <button class="vq-btn go" id="addManualBtn" type="button">Add manual item</button>
+      <p class="err" id="m-error" role="alert"></p>
+    </div>
+
+    <div class="card no-print" id="rlCard">
+      <h2>Reorder levels set / badlein</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="rl-item">Item *</label><select id="rl-item"></select></div>
+        <div class="vq-field"><label for="rl-val">Reorder level *</label><input id="rl-val" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 20"></div>
+      </div>
+      <button class="vq-btn secondary mini" id="saveRlBtn" type="button">Save reorder level</button>
+      <p class="ok-msg" id="rl-saved"></p>
+    </div>
+
+    <div class="card">
+      <h2>🚨 Out of stock (balance ≤ 0)</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th class="r">Current</th><th class="r">Reorder level</th><th class="r">Suggested order</th></tr></thead>
+        <tbody id="oosBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>⚠ Below reorder level</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th class="r">Current</th><th class="r">Reorder level</th><th class="r">Shortfall</th><th class="r">Suggested order</th></tr></thead>
+        <tbody id="lowBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>✓ Stock OK</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th class="r">Current</th><th class="r">Reorder level</th></tr></thead>
+        <tbody id="okBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Formula — गणना कैसे होती है</h2>
+      <div class="formula">
+        <p><strong>Out of stock:</strong> <code>Current stock ≤ 0</code></p>
+        <p><strong>Below reorder:</strong> <code>Current stock &lt; Reorder level</code></p>
+        <p><strong>Suggested order qty</strong> <code>= (Reorder level − Current stock) + Buffer</code>, jahan <code>Buffer = Reorder level × Buffer%</code> (round up). Suggested order kabhi 0 se kam nahi.</p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Reorder level kya hota hai?</summary>
+        <p>Reorder level woh minimum stock hai jiske neeche jaate hi order kar dena chahiye — taaki maal kabhi poori tarah khatm na ho.</p>
+      </details>
+      <details>
+        <summary>Suggested order quantity kaise nikalti hai?</summary>
+        <p>Suggested order = (Reorder level − Current stock) + Buffer, jahan Buffer = Reorder level × Buffer%. Buffer supplier delay ya achanak demand ke liye safety hai.</p>
+      </details>
+      <details>
+        <summary>Kya Stock Register ka data automatic aayega?</summary>
+        <p>Haan — agar aapne Stock Register app me items aur entries daali hain to wahi items aur unka live balance yahan dikhega. Data na ho to manual items add kar sakte hain.</p>
+      </details>
+      <details>
+        <summary>लो स्टॉक अलर्ट से क्या फायदा है?</summary>
+        <p>Stock khatm hone se pehle alert milta hai, to sale rukti nahi aur customer khaali haath nahi jaata — aur zaroorat se zyada stock rakhne ka paisa bhi nahi fasta.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

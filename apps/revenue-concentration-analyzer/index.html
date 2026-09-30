@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revenue Concentration Analyzer – HHI Risk Rating | VisionQuantech</title>
+  <meta name="description" content="Free revenue concentration analyzer: Herfindahl (HHI) index over customers or SKUs, top-1/top-3 shares, effective count, and what-if-top-leaves impact. रेवेन्यू कंसंट्रेशन एनालाइज़र।">
+  <meta name="keywords" content="revenue concentration, customer concentration risk, herfindahl index calculator, HHI calculator business, रेवेन्यू कंसंट्रेशन, key customer risk India">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/revenue-concentration-analyzer/">
+  <meta property="og:title" content="Revenue Concentration Analyzer – HHI Risk | VisionQuantech">
+  <meta property="og:description" content="One customer = how much risk? HHI, top shares, top-leaves impact. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="revenue-concentration-analyzer">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Revenue Concentration Analyzer — How Risky Is Your Customer Mix?</h1>
+      <p>Enter revenue per <strong>customer (or SKU)</strong>. Get the <strong>Herfindahl index (HHI)</strong>, top-1/top-3 shares, and the rupee impact if your top customer leaves. <span lang="hi">ग्राहक मिश्रण का जोखिम — HHI इंडेक्स में।</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Data stays on your device (max 25).</p>
+    </div>
+
+    <div id="rc-gate"></div>
+
+    <section class="card" aria-label="Revenue entry">
+      <h2 class="vq-section-title" style="margin-top:0">Revenue by customer / SKU</h2>
+      <div class="vq-field">
+        <label for="rc-mode">Analyze</label>
+        <select id="rc-mode">
+          <option value="customer">Customers</option>
+          <option value="sku">SKUs / products</option>
+        </select>
+      </div>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="rc-name" id="rc-name-label">Customer name</label>
+          <input id="rc-name" maxlength="60" placeholder="e.g. Sharma Traders">
+        </div>
+        <div class="vq-field">
+          <label for="rc-rev">Revenue (₹)</label>
+          <input id="rc-rev" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field" style="align-self:end">
+          <button id="rc-add" class="vq-btn vq-btn-secondary" type="button">Add</button>
+        </div>
+      </div>
+      <div id="rc-list" style="margin-top:1rem"></div>
+      <p style="margin-top:1rem"><button id="rc-calc" class="vq-btn" type="button">Analyze concentration</button></p>
+      <p id="rc-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="rc-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Concentration report</h2>
+      <p class="formula">HHI = Σ (share %)² · &lt; 1,500 diversified · 1,500–2,500 moderate · ≥ 2,500 high risk</p>
+      <div id="rc-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>HHI on the 0–10,000 scale</strong> (shares in %). Rating bands follow standard antitrust-style cutoffs.</li>
+        <li><strong>Effective count = 10,000 ÷ HHI</strong> — the number of equal-sized customers your mix "feels like".</li>
+        <li><strong>Top-leaves impact</strong> is gross revenue at risk; it ignores cost savings and replacement sales.</li>
+        <li><strong>Needs ≥ 2 entries;</strong> shares must reflect the same period.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Revenue concentration analyzer — FAQs</h2>
+      <details><summary>How do I measure customer concentration risk?</summary><p>Use the Herfindahl index (HHI): square each customer's revenue share % and add them up (0–10,000 scale). Under 1,500 = diversified, 1,500–2,500 = moderate, above 2,500 = high risk.</p></details>
+      <details><summary lang="hi">रेवेन्यू कंसंट्रेशन रिस्क कैसे मापें?</summary><p lang="hi">हर ग्राहक के रेवेन्यू शेयर % का वर्ग करके जोड़ें (HHI, 0–10,000)। 1,500 से कम = विविध, 1,500–2,500 = मध्यम, 2,500 से ज़्यादा = ज़्यादा जोखिम।</p></details>
+      <details><summary>What is a safe top-customer share?</summary><p>A common rule: no single customer above 15–20% of revenue. Above 30% you are effectively a captive supplier — negotiate, diversify, or build switching-cost protection.</p></details>
+      <details><summary>Can I use this for SKUs instead of customers?</summary><p>Yes — the same HHI math works for SKU/product concentration. Pick the mode and the interpretation adapts.</p></details>
+      <details><summary>Is my customer list private?</summary><p>Yes — stored only on your device (max 25 entries). Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Point of Failure Detector — Find Business SPOFs | VisionQuantech</title>
+  <meta name="description" content="Free single point of failure detector: list key roles, vendors and systems with dependency and backup coverage — get a ranked SPOF list with Critical/Watch/Covered severity. Self-assessment — confirm with your auditor. सिंगल पॉइंट ऑफ फेलियर।">
+  <meta name="keywords" content="single point of failure, SPOF detector, key person risk, vendor dependency risk, business redundancy, सिंगल पॉइंट ऑफ फेलियर, key man risk small business">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/single-point-of-failure-detector/">
+  <meta property="og:title" content="Single Point of Failure Detector | VisionQuantech">
+  <meta property="og:description" content="Rank the roles, vendors and systems your business cannot afford to lose. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .chip { display:inline-block; padding:.15rem .55rem; border-radius:999px; font-size:.8rem; font-weight:700; margin:.1rem .15rem; }
+    .b-crit { background:#fde8e8; color:#b3261e; } .b-high { background:#fff1de; color:#9a5b00; } .b-low { background:#e7f6ec; color:#1d7a3f; }
+    table.spof { width:100%; border-collapse:collapse; }
+    table.spof td, table.spof th { padding:.5rem .35rem; border-bottom:1px solid #eef1f6; font-size:.9rem; text-align:left; vertical-align:middle; }
+    table.spof td.num { text-transform:capitalize; }
+    .vq-btn.sm { padding:.35rem .7rem; font-size:.82rem; }
+    .caveat { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+  </style>
+</head>
+<body data-app="single-point-of-failure-detector">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: top leaderboard placeholder --></div>
+
+    <div class="vq-hero">
+      <h1>Single Point of Failure Detector</h1>
+      <p>If one person quits, one supplier stops, or one system dies — does your business stop too? List your <strong>key roles, vendors and systems</strong>, rate dependency and backup coverage, and get a ranked SPOF list. <span lang="hi">सिंगल पॉइंट ऑफ फेलियर — वह भूमिकाएँ और विक्रेता जिनके बिना व्यवसाय रुक जाए।</span></p>
+      <p class="vq-hint">Self-assessment aid. Free: 20 entries per day. On-device only.</p>
+    </div>
+
+    <div id="spof-gate"></div>
+
+    <section class="card" aria-label="Add a dependency">
+      <h2 class="vq-section-title" style="margin-top:0">Track a role, vendor or system</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="spof-label">Label</label>
+          <input id="spof-label" type="text" maxlength="120" placeholder="e.g. Tally operator, Packaging supplier">
+        </div>
+        <div class="vq-field">
+          <label for="spof-kind">Kind</label>
+          <select id="spof-kind">
+            <option value="role">Key role (person)</option>
+            <option value="vendor">Vendor / supplier</option>
+            <option value="system">System / equipment</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="spof-dep">Dependency (1–5)</label>
+          <select id="spof-dep">
+            <option value="1">1 — Nice to have</option>
+            <option value="2">2 — Helpful</option>
+            <option value="3" selected>3 — Important</option>
+            <option value="4">4 — Very hard to run without</option>
+            <option value="5">5 — Business stops without it</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="spof-backup">Backup coverage</label>
+          <select id="spof-backup">
+            <option value="none" selected>None — no backup at all</option>
+            <option value="partial">Partial — backup exists but untested / slow</option>
+            <option value="full">Full — tested backup ready</option>
+          </select>
+        </div>
+      </div>
+      <button id="spof-add" class="vq-btn" type="button">Add to list</button>
+      <button id="spof-save" class="vq-btn ghost" type="button" style="margin-left:.5rem">Save snapshot</button>
+      <p id="spof-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="spof-upsell"></div>
+    </section>
+
+    <section class="card" aria-label="Ranked SPOFs">
+      <h2 class="vq-section-title" style="margin-top:0">Ranked — worst first</h2>
+      <div id="spof-stats"></div>
+      <div id="spof-list"></div>
+    </section>
+
+    <section class="card" aria-label="Caveats">
+      <h2 class="vq-section-title" style="margin-top:0">Read this before you act</h2>
+      <div class="caveat">
+        <p><strong>Self-assessment estimate, not an operations audit.</strong> Start redundancy with the top-ranked Critical item — cross-train a person, qualify an alternate vendor, or add a system failover. <strong>Confirm with your operations head or auditor.</strong></p>
+      </div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: bottom leaderboard placeholder --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">SPOF detector — FAQs</h2>
+      <details><summary>What is a single point of failure in a business?</summary><p>Any role, vendor or system whose absence stops the business: the one Tally operator, the single raw-material supplier, the billing server with no backup. This tool ranks them by dependency × coverage gap.</p></details>
+      <details><summary lang="hi">सिंगल पॉइंट ऑफ फेलियर क्या है?</summary><p lang="hi">कोई भी भूमिका, विक्रेता या सिस्टम जिसके बिना व्यवसाय रुक जाए — एकमात्र लेखाकार, एकमात्र कच्चा माल आपूर्तिकर्ता। यह टूल उन्हें निर्भरता × कवरेज अंतर से रैंक करता है।</p></details>
+      <details><summary>How is the SPOF score calculated?</summary><p>Score = dependency (1–5) × coverage gap (no backup = 3, partial = 2, full = 1). Max 15. Dependency 4–5 with no backup is automatically Critical.</p></details>
+      <details><summary>What should I do about a Critical SPOF?</summary><p>Create redundancy: cross-train a backup person, qualify an alternate vendor, or add a failover/backup for the system. Start with the top-ranked one.</p></details>
+      <details><summary>Is this an operations audit?</summary><p>No — it is a self-assessment estimate. Confirm your redundancy plans with your operations head or auditor.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

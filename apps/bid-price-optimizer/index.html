@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bid Price Optimizer – Maximize Expected Value India | VisionQuantech</title>
+  <meta name="description" content="Free bid price optimizer India: enter your cost and win-probability at low/high bid prices — get the bid price that maximizes expected value (margin × win probability). बोली मूल्य ऑप्टिमाइज़र।">
+  <meta name="keywords" content="bid price optimizer, tender pricing strategy India, expected value bidding, win probability tender, optimal bid price, बोली मूल्य ऑप्टिमाइज़र, टेंडर प्राइसिंग स्ट्रैटेजी, अपेक्षित मूल्य बोली">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/bid-price-optimizer/">
+  <meta property="og:title" content="Bid Price Optimizer | VisionQuantech">
+  <meta property="og:description" content="Pick the bid price with the highest expected value: margin × win probability. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.92rem; margin:.8rem 0; }
+    .vq-table th,.vq-table td{ border:1px solid var(--line); padding:.5rem .6rem; text-align:left; }
+    .vq-table th{ background:var(--paper-soft); }
+    .best-row td{ background:#e9f6ee; font-weight:700; }
+    .formula{ font-size:1.02rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="bid-price-optimizer">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Bid Price Optimizer — Expected-Value Bidding, India</h1>
+      <p>Given your <strong>estimated cost</strong> and your honest <strong>win probability</strong> at low and high bid prices, find the price that maximizes <strong>expected value</strong>. <span lang="hi">बोली मूल्य ऑप्टिमाइज़र — मार्जिन और जीत की संभावना का संतुलन।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="b-gate"></div>
+
+    <section class="card" aria-label="Bid inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your cost &amp; win-probability curve</h2>
+      <p class="formula">Expected value = (Bid price − Cost) × P(win at that price)</p>
+      <div class="form-grid">
+        <div class="vq-field"><label for="b-cost">Your estimated cost (₹)</label><input id="b-cost" type="number" min="0" step="0.01" value="1000000" inputmode="decimal"></div>
+        <div class="vq-field"><label for="b-floor">Lowest bid price you'd quote (₹)</label><input id="b-floor" type="number" min="0" step="0.01" value="1050000" inputmode="decimal"></div>
+        <div class="vq-field"><label for="b-ceiling">Highest bid price you'd quote (₹)</label><input id="b-ceiling" type="number" min="0" step="0.01" value="1300000" inputmode="decimal"></div>
+        <div class="vq-field"><label for="b-pfloor">Win probability at lowest price (0–1)</label><input id="b-pfloor" type="number" min="0" max="1" step="0.05" value="0.8" inputmode="decimal"><p class="vq-hint">e.g. 0.8 = 80% chance</p></div>
+        <div class="vq-field"><label for="b-pceiling">Win probability at highest price (0–1)</label><input id="b-pceiling" type="number" min="0" max="1" step="0.05" value="0.2" inputmode="decimal"></div>
+      </div>
+      <button id="b-calc" class="vq-btn" type="button">Find optimal bid price</button>
+      <p id="b-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="b-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Optimal bid</h2>
+      <div id="b-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Linear probability curve:</strong> win probability is interpolated linearly between your two endpoints. Real curves are rarely linear — treat this as a first approximation.</li>
+        <li><strong>Garbage in, garbage out:</strong> the recommendation is only as good as your probability estimates. Base them on past bid records (how often you won at each price band).</li>
+        <li><strong>Lowest price must cover cost</strong> — the tool rejects a band whose floor is below your estimated cost.</li>
+        <li><strong>Decision aid, not a guarantee.</strong> Competitors and evaluation criteria decide outcomes. <strong>Confirm strategy with your consultant.</strong></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Bid price optimizer — FAQs</h2>
+      <details><summary>What bid price maximizes my expected value?</summary><p>Expected value = (bid price − your cost) × probability of winning at that price. Enter your cost, your lowest and highest plausible bid prices, and your honest win probability at each end; the tool scans the band and recommends the price with the highest expected value.</p></details>
+      <details><summary lang="hi">बोली मूल्य कैसे चुनें?</summary><p lang="hi">अपेक्षित मूल्य = (बोली − लागत) × जीतने की संभावना। अपनी लागत, न्यूनतम और अधिकतम बोली, और दोनों सिरों पर ईमानदार जीत-संभावना डालें — टूल सबसे अच्छा अपेक्षित मूल्य वाला दाम सुझाएगा।</p></details>
+      <details><summary>Should I always bid the lowest to win?</summary><p>Not necessarily. The lowest price wins most often but leaves the thinnest margin. Expected value balances both — sometimes a mid-band price earns more on average than the cheapest winning bid.</p></details>
+      <details><summary lang="hi">जीत की संभावना कैसे अनुमान लगाएँ?</summary><p lang="hi">पिछले टेंडरों का रिकॉर्ड देखें — कितनी बार किस मूल्य-स्तर पर जीते। प्रतिस्पर्धियों की संख्या और L1 प्रवृत्ति भी मायने रखती है। ईमानदार अनुमान ही उपयोगी है।</p></details>
+      <details><summary>Is the recommended price a guarantee?</summary><p>No. It is a decision aid built on your own probability estimates. Tender outcomes depend on competitors and evaluation. Confirm strategy with your consultant.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

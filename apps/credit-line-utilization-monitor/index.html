@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit Line Utilization Monitor — CC/OD Limits, Interest & Alerts | VisionQuantech</title>
+  <meta name="description" content="Free credit line utilization monitor: track CC/OD/loan limits vs drawn, utilization %, estimated monthly interest and 75%/90% alerts. क्रेडिट लाइन यूटिलाइज़ेशन मॉनिटर।">
+  <meta name="keywords" content="credit utilization ratio business, cash credit limit utilization, overdraft interest calculator, working capital limit tracker, क्रेडिट यूटिलाइज़ेशन, सीसी लिमिट">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/credit-line-utilization-monitor/">
+  <meta property="og:title" content="Credit Line Utilization Monitor | VisionQuantech">
+  <meta property="og:description" content="Limits vs drawn, utilization % and interest estimates across facilities. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .tbl-wrap{overflow-x:auto;margin:1rem 0}
+    .tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+    .tbl th,.tbl td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left}
+    .tbl th{background:var(--paper-soft)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1rem 0}
+    .kpi{background:var(--paper-soft);border-radius:10px;padding:.8rem;text-align:center}
+    .kpi-n{font-size:1.3rem;font-weight:800}
+    .kpi-l{font-size:.8rem;color:var(--ink-soft)}
+    .txt-bad{color:#b3261e}.txt-warn{color:#b26a00}.txt-ok{color:#1d7a3f}
+    .tag{display:inline-block;font-size:.75rem;font-weight:700;border-radius:20px;padding:.15rem .6rem}
+    .tag-ok{background:#e3f5e9;color:#1d7a3f}.tag-warn{background:#fdf0d5;color:#b26a00}.tag-bad{background:#fde7e5;color:#b3261e}
+    .ubar{background:#e8e8e8;border-radius:8px;height:10px;overflow:hidden;margin:.3rem 0}
+    .ufill{height:100%;border-radius:8px}
+    .bar-ok{background:#1d7a3f}.bar-warn{background:#d99a00}.bar-crit{background:#b3261e}
+    .vq-btn-sm{padding:.3rem .7rem;font-size:.8rem}
+  </style>
+</head>
+<body data-app="credit-line-utilization-monitor">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Credit Line Utilization Monitor</h1>
+      <p>Track your <strong>cash credit, overdraft, term loan and bill-discounting</strong> facilities: sanctioned limit vs drawn, <strong>utilization %</strong>, estimated monthly interest, and alerts at 75% (watch) and 90% (critical). <span lang="hi">क्रेडिट लाइन मॉनिटर — सीमा बनाम उपयोग।</span></p>
+      <p class="vq-hint">Free: 20 additions per day. Facilities stored on your device only (max 25) — nothing is uploaded.</p>
+    </div>
+
+    <div id="u-gate"></div>
+
+    <section class="card" aria-label="Add facility">
+      <h2 class="vq-section-title" style="margin-top:0">Add a facility</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="u-name">Facility name</label>
+          <input id="u-name" type="text" maxlength="60" placeholder="e.g. HDFC Cash Credit" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="u-kind">Type</label>
+          <select id="u-kind"></select>
+        </div>
+        <div class="vq-field">
+          <label for="u-limit">Sanctioned limit (₹)</label>
+          <input id="u-limit" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="u-drawn">Currently drawn / utilized (₹)</label>
+          <input id="u-drawn" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="u-rate">Interest rate (% p.a.)</label>
+          <input id="u-rate" type="number" min="0" max="60" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+      <button id="u-add" class="vq-btn" type="button">Add facility</button>
+      <p id="u-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Portfolio">
+      <h2 class="vq-section-title" style="margin-top:0">Utilization dashboard</h2>
+      <div id="u-portfolio"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Utilization</strong> = drawn ÷ sanctioned limit. <strong>Watch</strong> at ≥75%, <strong>critical</strong> at ≥90%.</li>
+        <li><strong>Monthly interest estimate</strong> = drawn × annual rate ÷ 12. Fees, penal interest, compounding frequency, minimum charges and stock-audit clauses are <strong>not</strong> modelled.</li>
+        <li><strong>Update drawn amounts monthly</strong> from your statements — this is a monitoring dashboard, not an official record.</li>
+        <li><strong>Estimate only</strong> — your sanction letter and bank statement are final. Confirm with your CA.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Credit utilization — FAQs</h2>
+      <details><summary>What is credit line utilization?</summary><p>Drawn amount ÷ sanctioned limit, as a %. High utilization (≥75–90%) signals stress to lenders, leaves no headroom, and can trigger penal charges on over-limit drawings.</p></details>
+      <details><summary lang="hi">क्रेडिट लाइन यूटिलाइज़ेशन क्या है?</summary><p lang="hi">उपयोग की गई राशि ÷ स्वीकृत सीमा। 75% से ऊपर चेतावनी, 90% से ऊपर गंभीर — हेडरूम खत्म हो जाता है और पेनल्टी लग सकती है।</p></details>
+      <details><summary>How is the interest estimated?</summary><p>On the drawn amount at your contracted annual rate ÷ 12. Fees, penal interest, compounding and minimum charges are not modelled — your sanction letter and statement are final.</p></details>
+      <details><summary>Why track utilization across facilities?</summary><p>To see total exposure, the weighted average cost of borrowed money, and which facility to repay first (usually the highest rate / highest utilization).</p></details>
+      <details><summary>Where is my facility data stored?</summary><p>On your own device (up to 25 facilities). Nothing is uploaded anywhere.</p></details>
+      <details><summary>Does this replace my bank statement?</summary><p>No — update the drawn amounts from your statements monthly; this is a monitoring dashboard, not an official record.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Charge Leak Detector — Find Hidden Bank Fees | VisionQuantech</title>
+  <meta name="description" content="Free bank charge leak detector: enter bank charges by type & month, benchmark against typical SME ranges, flag anomalies and total the annual leak. बैंक चार्ज लीक डिटेक्टर।">
+  <meta name="keywords" content="bank charges too high, reduce bank charges business, hidden bank charges india, bank charge comparison, बैंक चार्ज कम कैसे करें, बैंक शुल्क">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/bank-charge-leak-detector/">
+  <meta property="og:title" content="Bank Charge Leak Detector | VisionQuantech">
+  <meta property="og:description" content="Benchmark your bank charges, flag the leaks, total the annual cost. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .tbl-wrap{overflow-x:auto;margin:1rem 0}
+    .tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+    .tbl th,.tbl td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left}
+    .tbl th{background:var(--paper-soft)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1rem 0}
+    .kpi{background:var(--paper-soft);border-radius:10px;padding:.8rem;text-align:center}
+    .kpi-n{font-size:1.3rem;font-weight:800}
+    .kpi-l{font-size:.8rem;color:var(--ink-soft)}
+    .txt-bad{color:#b3261e}.txt-warn{color:#b26a00}.txt-ok{color:#1d7a3f}
+    .tag{display:inline-block;font-size:.75rem;font-weight:700;border-radius:20px;padding:.15rem .6rem}
+    .tag-ok{background:#e3f5e9;color:#1d7a3f}.tag-warn{background:#fdf0d5;color:#b26a00}.tag-bad{background:#fde7e5;color:#b3261e}
+    .vq-btn-sm{padding:.3rem .7rem;font-size:.8rem}
+  </style>
+</head>
+<body data-app="bank-charge-leak-detector">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Bank Charge Leak Detector</h1>
+      <p>Enter your <strong>bank charges by type and month</strong> — SMS fees, balance penalties, bounce charges, POS rent. The tool benchmarks each type against typical SME ranges, flags anomalies and totals your <strong>annual leak</strong>. <span lang="hi">बैंक चार्ज लीक डिटेक्टर — छिपे शुल्क खोजें।</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="d-gate"></div>
+
+    <section class="card" aria-label="Charge entries">
+      <h2 class="vq-section-title" style="margin-top:0">Add monthly charges</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="d-type">Charge type</label>
+          <select id="d-type"></select>
+        </div>
+        <div class="vq-field">
+          <label for="d-month">Month</label>
+          <input id="d-month" type="month">
+        </div>
+        <div class="vq-field">
+          <label for="d-amount">Amount charged (₹)</label>
+          <input id="d-amount" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+      <button id="d-add" class="vq-btn" type="button">Add entry</button>
+      <p id="d-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="d-entries" style="margin-top:1rem"></div>
+      <button id="d-run" class="vq-btn" type="button" style="margin-top:1rem">Detect leaks</button>
+    </section>
+
+    <section class="card" id="d-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Leak report</h2>
+      <div id="d-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Benchmarks are broad ranges</strong> from public bank fee schedules (Sep 2026): SMS ₹15–30/mo, NEFT/RTGS/IMPS ₹0–200/mo, cheque/DD ₹0–300/mo, card AMC ₹0–30/mo, POS rent ₹0–400/mo. Balance penalties, bounce and forex charges should ideally be <strong>zero</strong>.</li>
+        <li><strong>Verdicts:</strong> OK = within range; WATCH = above range; LEAK = ≥2× the ceiling, or any charge on a zero-benchmark type.</li>
+        <li><strong>Annualised leak</strong> = (entered total ÷ months entered) × 12.</li>
+        <li><strong>Your bank's Schedule of Charges is the final word</strong> — benchmarks are indicative only. Estimate, not financial advice.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Bank charges — FAQs</h2>
+      <details><summary>What is a bank charge leak?</summary><p>Recurring, avoidable bank charges — SMS fees, balance penalties, bounce charges, POS rent — that quietly add up. This tool benchmarks your charges against typical SME ranges and totals the annual leak.</p></details>
+      <details><summary lang="hi">बैंक चार्ज लीक क्या है?</summary><p lang="hi">छोटे-छोटे बैंक शुल्क (SMS, मिनिमम बैलेंस पेनल्टी, बाउंस चार्ज) जो हर महीने कटते रहते हैं। यह टूल इन्हें सामान्य सीमा से तुलना करके सालाना नुकसान बताता है।</p></details>
+      <details><summary>What are typical bank charges for a small business?</summary><p>Broadly: SMS alerts ₹15–30/month, NEFT/RTGS/IMPS ₹0–200/month, cheque issuance ₹0–300/month. Balance penalties, bounce and forex charges should ideally be zero. Actuals vary by bank — check your Schedule of Charges.</p></details>
+      <details><summary>How do I reduce bank charges?</summary><p>Keep the minimum balance, switch SMS alerts off if you use netbanking, use IMPS/NEFT instead of DDs, maintain ECS balances, and ask your RM to waive AMC — banks often do for good customers.</p></details>
+      <details><summary>Is my charge data uploaded anywhere?</summary><p>No — everything runs in your browser. Nothing leaves your device.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

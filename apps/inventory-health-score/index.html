@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Health Score — Free इन्वेंटरी हेल्थ स्कोर 0-100 | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free inventory health score for Indian SMEs: composite 0–100 score from stockout incidents, dead-stock %, near-expiry value %, negative-stock flags — with grade A/B/C/D and improvement tips. इन्वेंटरी हेल्थ स्कोर फ्री।">
+  <meta name="keywords" content="inventory health score, इन्वेंटरी हेल्थ स्कोर, inventory audit, stock health check, dead stock percentage, stockout rate, inventory KPI, godown audit India, inventory performance score">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-a { background: #e6f6ec; color: #1a7f37; } .p-b { background: #e3f0ff; color: #1d4ed8; }
+    .p-c { background: #fff4d6; color: #8a5a00; } .p-d { background: #fde8e8; color: #b42318; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    .score-big { font-size: 3rem; font-weight: 900; line-height: 1; }
+    .grade { font-size: 1.6rem; font-weight: 900; }
+    .bar { height: 12px; background: #eef2f7; border-radius: 999px; overflow: hidden; margin: .4rem 0; }
+    .bar > div { height: 100%; border-radius: 999px; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    .tip { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius); padding: .7rem .9rem; margin: .5rem 0; font-size: .92rem; }
+    .tip.urgent { background: #fef2f2; border-color: #fecaca; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="inventory-health-score">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Inventory Health Score</h1>
+    <p class="lede">इन्वेंटरी हेल्थ स्कोर — aapki inventory ka <strong>composite 0–100 score</strong>: stockout incidents, dead-stock %, near-expiry value %, aur negative-stock flags se. <strong>Grade (A/B/C/D)</strong> aur improvement tips ke saath. Sibling apps (Stock Register, Dead Stock Analyzer, Expiry Tracker) ka data mile to <strong>auto-detect</strong> hota hai, warna manual daalein. <strong>Score calculation: unlimited free · snapshots 25/day.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Inputs — manual ya auto-detected</h2>
+      <p class="vq-hint" id="autoMsg">Sibling apps ka data check ho raha hai…</p>
+      <div class="grid2">
+        <div class="vq-field"><label for="inIncidents">Stockout incidents (last 30 days)</label><input id="inIncidents" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 2"></div>
+        <div class="vq-field"><label for="inDeadPct">Dead-stock % (of inventory value)</label><input id="inDeadPct" type="number" min="0" max="100" step="0.01" inputmode="decimal" placeholder="e.g. 12"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="inExpiryPct">Near-expiry value % (≤90d, of inventory value)</label><input id="inExpiryPct" type="number" min="0" max="100" step="0.01" inputmode="decimal" placeholder="e.g. 8"></div>
+        <div class="vq-field"><label for="inNegFlags">Negative-stock flags (items)</label><input id="inNegFlags" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 1"></div>
+      </div>
+      <div class="btn-row">
+        <button class="vq-btn go" id="calcBtn" type="button">Calculate health score</button>
+        <button class="vq-btn secondary mini" id="refreshAutoBtn" type="button">↻ Sibling data se refresh</button>
+      </div>
+      <p class="err" id="h-error" role="alert"></p>
+    </div>
+
+    <div class="card" id="scoreCard" style="display:none">
+      <h2>Aapka inventory health score</h2>
+      <div class="grid2">
+        <div>
+          <div class="score-big" id="scoreNum">–</div>
+          <div class="grade" id="scoreGrade">–</div>
+          <div class="bar"><div id="scoreBar" style="width:0%"></div></div>
+        </div>
+        <div>
+          <table class="vq-table">
+            <thead><tr><th>Component</th><th class="r">Value</th><th class="r">Points /25</th></tr></thead>
+            <tbody id="compBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="tipsCard" style="display:none">
+      <h2>Improvement tips — सुधार के उपाय</h2>
+      <div id="tipsBody"></div>
+    </div>
+
+    <div class="card">
+      <h2>Formula — स्कोर कैसे बनता है</h2>
+      <div class="formula">
+        <p>Har component <strong>0–25 points</strong>, total <strong>0–100</strong>:</p>
+        <p><strong>Stockouts:</strong> <code>25 − (5 × incidents)</code> (min 0) — har stockout incident 5 points kaat-ta hai</p>
+        <p><strong>Dead stock:</strong> <code>max(0, 25 − dead%)</code> — har 1% dead stock = 1 point kam</p>
+        <p><strong>Near-expiry:</strong> <code>max(0, 25 − nearExpiry%)</code> — har 1% near-expiry value = 1 point kam</p>
+        <p><strong>Negative stock:</strong> <code>25 − (8 × flags)</code> (min 0) — har negative-balance item 8 points kaat-ta hai</p>
+        <p><strong>Grades:</strong> A ≥ 85 · B ≥ 70 · C ≥ 50 · D &lt; 50</p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Inventory health score kya batata hai?</summary>
+        <p>Ye 0–100 ka composite score hai jo 4 cheezon se banta hai — stockouts, dead stock %, near-expiry value %, aur negative stock flags. Score jitna zyada, inventory utni healthy.</p>
+      </details>
+      <details>
+        <summary>Grade A/B/C/D ka matlab kya hai?</summary>
+        <p>A (85+) excellent, B (70–84) good, C (50–69) needs attention, D (below 50) urgent action needed — har grade ke saath improvement tips milte hain.</p>
+      </details>
+      <details>
+        <summary>Data auto-detect kaise hota hai?</summary>
+        <p>Agar aapne Stock Register, Dead Stock Analyzer ya Expiry Date Tracker apps me data daala hai to wahan se dead-stock %, near-expiry % aur negative flags automatic liye jaate hain. Stockout incidents manual hi dene hote hain.</p>
+      </details>
+      <details>
+        <summary>इन्वेंटरी हेल्थ स्कोर क्यों ज़रूरी है?</summary>
+        <p>Ek number me poori inventory ki sehat — kahan paisa fasa hai, kahan stockout ka khatra hai, ye sab ek glance me pata chalta hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

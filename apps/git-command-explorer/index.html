@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Command Explorer — 60 Git Commands with Examples | VisionQuantech Business Suite</title>
+  <meta name="description" content="Searchable catalog of 60 git commands grouped by scenario — undo last commit, stash, rebase, branches — each with example & plain-English explanation. Free, offline.">
+  <meta name="keywords" content="git commands, git command list, git cheat sheet, git undo last commit, git stash command, git rebase example, git commands with examples">
+  <link rel="canonical" href="https://visionquantech.com/apps/git-command-explorer/">
+  <meta property="og:title" content="Git Command Explorer — 60 Commands">
+  <meta property="og:description" content="Find the right git command by scenario, with examples. Free, works offline.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .gcard { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .8rem; margin: .6rem 0; }
+    .ghead { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .gt { font-weight: 700; }
+    .star { background: none; border: none; font-size: 1.3rem; cursor: pointer; min-width: 44px; min-height: 44px; color: var(--ink-soft); }
+    .star.on { color: #d97706; }
+    .gcmd { display: block; background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: .55rem .7rem; margin: .5rem 0; font-size: .85rem; overflow-x: auto; white-space: nowrap; }
+    .gd { font-size: .9rem; color: var(--ink-soft); margin: .3rem 0 .6rem; line-height: 1.5; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .ggroup { margin-top: 1.4rem; }
+    .toolbar { display: grid; grid-template-columns: 1fr; gap: .4rem; margin-bottom: .6rem; }
+    .toolbar label { display: flex; align-items: center; gap: .5rem; font-size: .9rem; }
+    .toolbar input[type=checkbox] { width: auto; min-height: 0; }
+  </style>
+</head>
+<body data-app="git-command-explorer">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Git Command Explorer</h1>
+    <p class="lede"><strong>60 git commands</strong>, scenario ke hisaab se grouped — "undo last commit", "stash work", "rebase branch"… Search karein, example dekhein, copy karein. Star karke favorites device par save karein.</p>
+
+    <div class="toolbar">
+      <div class="vq-field" style="margin:0">
+        <label for="gitSearch">Search commands</label>
+        <input id="gitSearch" type="search" placeholder='Try "undo", "stash", "rebase", "branch"…' autocomplete="off">
+      </div>
+      <label><input type="checkbox" id="favOnly"> Show favorites only (★)</label>
+    </div>
+    <p class="vq-hint" id="git-count"></p>
+    <div id="git-upsell"></div>
+
+    <div id="git-list"></div>
+
+    <div class="vq-notice">
+      <strong>Golden rule:</strong> <code>reset --hard</code> aur <code>rebase</code> sirf un commits par jo aapne push nahi kiye. Pushed history fix karne ke liye <code>revert</code> use karein — history rewrite se teammates ke repos toot jaate hain.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Git me last commit kaise undo karein?</summary>
+        <p>Push nahi kiya to "git reset --soft HEAD~1" (changes staged rehte hain) ya "--mixed". Push kar diya to "git revert HEAD" — ye naya undo-commit banata hai, history rewrite nahi karta.</p>
+      </details>
+      <details>
+        <summary>Git stash kya hota hai?</summary>
+        <p>Stash adhoora kaam temporarily side me rakh deta hai taaki working tree clean mile — "git stash push -m wip", phir "git stash pop" se wapas layein.</p>
+      </details>
+      <details>
+        <summary>git rebase vs git merge me kya antar hai?</summary>
+        <p>Merge branch structure preserve karta hai (merge commit ke saath); rebase commits ko target ke upar replay karke linear history banata hai. Sirf local/private branches par rebase karein — pushed shared history kabhi rewrite na karein.</p>
+      </details>
+      <details>
+        <summary>Galti se delete hui file ya commit kaise wapas layein?</summary>
+        <p>"git reflog" batata hai HEAD kahan-kahan gaya — khoya commit hash mil jayega, phir "git reset --hard &lt;hash&gt;" ya "git checkout &lt;hash&gt; -- &lt;file&gt;" se restore karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

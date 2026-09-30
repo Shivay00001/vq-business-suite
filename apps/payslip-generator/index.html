@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Payslip Generator India – Salary Slip Maker with Print | VisionQuantech</title>
+  <meta name="description" content="Free online payslip generator for Indian SMEs & HR. Add earnings & deductions, auto totals, net pay in words, print a clean A4 salary slip, save payslips in your browser. पेस्लिप कैसे बनाएं – फ्री ऑनलाइन पेस्लिप जनरेटर।">
+  <meta name="keywords" content="payslip generator, salary slip format India, free payslip maker, पेस्लिप कैसे बनाएं, salary slip download, pay slip generator online, HR payslip format">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .form-grid { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 1.2rem; margin: 1.2rem 0; box-shadow: var(--shadow); }
+    .prow { display: grid; grid-template-columns: 1fr 110px 40px; gap: .5rem; margin-bottom: .5rem; }
+    .prow input { padding: .6rem .7rem; font-size: .95rem; border: 1.5px solid var(--line); border-radius: 8px; }
+    .prow-del { border: 1.5px solid var(--line); background: #fff; border-radius: 8px; cursor: pointer;
+      font-size: 1.2rem; color: #b91c1c; }
+    .totals-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .6rem; margin: 1rem 0; }
+    .totals-bar > div { background: var(--paper-soft); border-radius: 10px; padding: .7rem; text-align: center; }
+    .totals-bar span { display: block; font-size: .75rem; color: var(--ink-soft); }
+    .totals-bar strong { font-size: 1.05rem; }
+    #net-words-live { font-size: .85rem; color: var(--ink-soft); text-align: center; margin-top: .3rem; }
+    .btn-row { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .6rem; }
+    .vq-btn.sm { padding: .45rem .9rem; min-height: 0; font-size: .88rem; }
+    .vq-btn.danger { color: #b91c1c; }
+    .saved-row { display: flex; justify-content: space-between; align-items: center; gap: .8rem;
+      border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem; margin-bottom: .6rem; flex-wrap: wrap; }
+    .row-actions { display: flex; gap: .5rem; }
+    /* ---- payslip document ---- */
+    .psheet { border: 2px solid var(--ink); border-radius: 6px; padding: 1.4rem; background: #fff;
+      max-width: 800px; margin: 1.2rem auto; }
+    .phead { display: flex; gap: 1rem; align-items: center; border-bottom: 2px solid var(--ink); padding-bottom: .9rem; }
+    .plogo { width: 64px; height: 64px; border-radius: 12px; background: var(--brand); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4rem; flex: none; }
+    .phead h2 { margin: 0; font-size: 1.35rem; }
+    .phead p { margin: .15rem 0; font-size: .85rem; color: var(--ink-soft); }
+    .psub { font-weight: 700; color: var(--ink) !important; }
+    .pdetails { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem 1.4rem; padding: .9rem 0; font-size: .9rem; }
+    @media (min-width: 640px) { .pdetails { grid-template-columns: 1fr 1fr 1fr; } }
+    .pdet span { display: block; font-size: .72rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
+    .pcols { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    @media (min-width: 640px) { .pcols { grid-template-columns: 1fr 1fr; } }
+    .pcols h3 { margin: .4rem 0; font-size: 1rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
+    .ptab { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    .ptab td { padding: .4rem .2rem; border-bottom: 1px dotted var(--line); }
+    .ptab .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .ptotal td { font-weight: 800; border-bottom: none; border-top: 2px solid var(--ink); }
+    .pnet { display: flex; justify-content: space-between; align-items: center; background: var(--brand-soft);
+      border-radius: 10px; padding: .8rem 1rem; margin-top: 1rem; font-size: 1.1rem; }
+    .pnet strong { font-size: 1.5rem; color: var(--brand); }
+    .pwords { font-style: italic; font-size: .92rem; }
+    .psign { display: flex; justify-content: space-between; margin-top: 2.2rem; font-size: .85rem; color: var(--ink-soft); }
+    .psign div { border-top: 1px solid var(--ink); padding-top: .3rem; min-width: 160px; text-align: center; }
+    .pfoot { font-size: .75rem; color: var(--ink-soft); text-align: center; margin-top: 1rem; }
+    @media print {
+      body * { visibility: hidden; }
+      #payslip-doc, #payslip-doc * { visibility: visible; }
+      #payslip-doc { position: absolute; left: 0; top: 0; width: 100%; margin: 0; }
+      .psheet { border: 2px solid #000; margin: 0; max-width: none; border-radius: 0; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body data-app="payslip-generator">
+  <main class="vq-main">
+    <div id="ad-top" class="no-print"></div>
+
+    <div class="vq-hero no-print">
+      <h1>Payslip Generator — Free Salary Slip Maker</h1>
+      <p>Create professional Indian salary slips in seconds: earnings &amp; deductions, auto totals, net pay in words, printable A4 payslip. <span lang="hi">पेस्लिप कैसे बनाएं — फ्री ऑनलाइन पेस्लिप जनरेटर, प्रिंट के साथ।</span></p>
+    </div>
+
+    <div id="p-gate" class="no-print"></div>
+
+    <section class="card no-print" aria-label="Payslip inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Company &amp; employee details</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="p-company">Company name</label><input id="p-company" type="text" value="VisionQuantech Pvt. Ltd." maxlength="80"></div>
+        <div class="vq-field"><label for="p-logo">Logo text (initials)</label><input id="p-logo" type="text" value="VQ" maxlength="4"></div>
+        <div class="vq-field"><label for="p-caddr">Company address</label><input id="p-caddr" type="text" value="Mumbai, Maharashtra" maxlength="120"></div>
+        <div class="vq-field"><label for="p-ename">Employee name</label><input id="p-ename" type="text" placeholder="e.g. Rahul Sharma" maxlength="80"></div>
+        <div class="vq-field"><label for="p-eid">Employee ID</label><input id="p-eid" type="text" placeholder="e.g. VQ-001" maxlength="30"></div>
+        <div class="vq-field"><label for="p-desig">Designation</label><input id="p-desig" type="text" placeholder="e.g. Sales Executive" maxlength="60"></div>
+        <div class="vq-field"><label for="p-dept">Department</label><input id="p-dept" type="text" placeholder="e.g. Sales" maxlength="60"></div>
+        <div class="vq-field"><label for="p-pan">PAN</label><input id="p-pan" type="text" placeholder="e.g. ABCDE1234F" maxlength="10" style="text-transform:uppercase"></div>
+        <div class="vq-field"><label for="p-bank">Bank / UAN (optional)</label><input id="p-bank" type="text" maxlength="60"></div>
+        <div class="vq-field"><label>Pay month / year</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+            <select id="p-month">
+              <option>January</option><option>February</option><option>March</option><option>April</option>
+              <option>May</option><option>June</option><option>July</option><option>August</option>
+              <option selected>September</option><option>October</option><option>November</option><option>December</option>
+            </select>
+            <select id="p-year"><option>2024</option><option>2025</option><option selected>2026</option><option>2027</option></select>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="vq-section-title">Earnings</h2>
+      <div id="earn-rows"></div>
+      <button id="add-earn" class="vq-btn ghost sm" type="button">+ Add earning row</button>
+
+      <h2 class="vq-section-title">Deductions</h2>
+      <div id="ded-rows"></div>
+      <button id="add-ded" class="vq-btn ghost sm" type="button">+ Add deduction row</button>
+
+      <div class="totals-bar">
+        <div><span>Gross earnings</span><strong id="earn-total">₹0</strong></div>
+        <div><span>Total deductions</span><strong id="ded-total">₹0</strong></div>
+        <div><span>Net pay</span><strong id="net-total">₹0</strong></div>
+      </div>
+      <p id="net-words-live"></p>
+
+      <div class="btn-row">
+        <button id="p-generate" class="vq-btn" type="button">Generate payslip</button>
+      </div>
+      <p class="vq-hint">Free: 10 payslips per calendar month. Data stays in your browser.</p>
+    </section>
+
+    <section id="payslip-doc" aria-live="polite"></section>
+
+    <div id="p-actions" class="btn-row no-print" style="justify-content:center">
+      <button id="p-print" class="vq-btn" type="button">Print / Save PDF</button>
+      <button id="p-save" class="vq-btn ghost" type="button">Save to vault</button>
+    </div>
+
+    <section class="card no-print" aria-label="Saved payslips">
+      <h2 class="vq-section-title" style="margin-top:0">Saved payslips</h2>
+      <div id="saved-list"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <div id="ad-bottom" class="no-print"></div>
+
+    <section class="vq-faq no-print" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Payslip generator — FAQs</h2>
+      <details><summary lang="hi">पेस्लिप कैसे बनाएं?</summary><p lang="hi">कंपनी और कर्मचारी का विवरण, माह और वर्ष चुनें, आमदनी (एर्निंग्स) और कटौती (डिडक्शन) की पंक्तियां जोड़ें — कुल योग, नेट पे और शब्दों में राशि अपने आप बन जाएगी। फिर प्रिंट बटन दबाकर A4 पेस्लिप निकालें।</p></details>
+      <details><summary>How do I create a payslip online for free in India?</summary><p>Enter company and employee details, add earning rows (basic, HRA, allowances) and deduction rows (PF, ESI, TDS, professional tax). Totals, net pay and the amount in words are calculated automatically, and you can print a clean A4 payslip.</p></details>
+      <details><summary>What should a salary slip contain?</summary><p>Company name, employee name/ID/designation/PAN, pay month, a breakup of earnings and deductions, gross pay, total deductions, net pay and the net amount in words.</p></details>
+      <details><summary>Is my payroll data uploaded anywhere?</summary><p>No. Payslips are stored only in your browser's local storage under this app's private namespace.</p></details>
+      <details><summary>How many free payslips do I get?</summary><p>10 payslips per calendar month on the free plan. Re-viewing or re-printing a saved payslip is always free.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

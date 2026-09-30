@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prometheus Alert Generator — Free Alert Rule Builder | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free Prometheus alert rule generator: metric, condition, threshold, duration & severity → alert YAML with recording-rule option and PromQL sanity hints. 100% in-browser.">
+  <meta name="keywords" content="prometheus alert generator, promql alert rule, prometheus alertmanager example, prometheus recording rule generator, promql alert example">
+  <link rel="canonical" href="https://visionquantech.com/apps/prometheus-alert-generator/">
+  <meta property="og:title" content="Prometheus Alert Generator — Free Online">
+  <meta property="og:description" content="Build Prometheus alert rules with PromQL sanity checks. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; line-height: 1.5; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    pre.code { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; overflow-x: auto; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .hints { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem; margin: .8rem 0; font-size: .9rem; }
+    .hints li { margin: .35rem 0; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2, .row3 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-app="prometheus-alert-generator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Prometheus Alert Generator</h1>
+    <p class="lede">Metric, condition, threshold, duration aur severity bharein — <strong>alert rule YAML</strong> turant payein, recording-rule option aur PromQL sanity hints ke saath.</p>
+
+    <form id="pag-form" onsubmit="return false;">
+      <div class="row2">
+        <div class="vq-field">
+          <label for="ruleName">Alert name</label>
+          <input id="ruleName" type="text" placeholder="HighErrorRate" autocapitalize="none">
+        </div>
+        <div class="vq-field">
+          <label for="severity">Severity</label>
+          <select id="severity">
+            <option value="warning">warning</option>
+            <option value="critical">critical</option>
+            <option value="info">info</option>
+          </select>
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="metric">Metric / PromQL expression</label>
+        <input id="metric" type="text" placeholder='sum(rate(http_requests_total{status=~"5.."}[5m]))' autocapitalize="none">
+        <p class="vq-hint">Counter (_total) ko raw use na karein — rate() me wrap karein.</p>
+      </div>
+      <div class="row3">
+        <div class="vq-field">
+          <label for="condOp">Condition</label>
+          <select id="condOp">
+            <option value=">">&gt; greater than</option>
+            <option value="<">&lt; less than</option>
+            <option value=">=">&gt;= at least</option>
+            <option value="<=">&lt;= at most</option>
+            <option value="==">== equals</option>
+            <option value="!=">!= not equals</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="threshold">Threshold</label>
+          <input id="threshold" type="text" placeholder="0.05" inputmode="decimal" autocapitalize="none">
+        </div>
+        <div class="vq-field">
+          <label for="duration">For (duration)</label>
+          <input id="duration" type="text" value="5m" autocapitalize="none">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="summary">Summary</label>
+          <input id="summary" type="text" placeholder="High 5xx error rate on API">
+        </div>
+        <div class="vq-field">
+          <label for="description">Description</label>
+          <input id="description" type="text" placeholder="5xx rate above 5% for 5 minutes">
+        </div>
+      </div>
+      <div class="vq-field">
+        <label><input id="recording" type="checkbox" style="width:auto;min-height:0"> Also generate a recording rule (precompute the expression)</label>
+      </div>
+      <div class="vq-field" id="recWrap" style="display:none">
+        <label for="recordName">Recording rule name</label>
+        <input id="recordName" type="text" placeholder="job:http_errors:rate5m" autocapitalize="none">
+        <p class="vq-hint">Convention: <code>level:metric:operations</code>, e.g. job:http_requests:errors_5m.</p>
+      </div>
+      <button class="vq-btn go" id="genBtn" type="button">Generate alert rule</button>
+      <p class="vq-hint">Generation unlimited &amp; free.</p>
+      <p class="err" id="pag-error" role="alert"></p>
+    </form>
+
+    <div id="pag-upsell"></div>
+
+    <div class="vq-result" id="pag-result" style="display:none">
+      <h2 class="vq-section-sub">alerts.yml</h2>
+      <pre class="code" id="pag-output"></pre>
+      <div class="btnrow">
+        <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy</button>
+        <button class="vq-btn secondary sm" id="dlBtn" type="button">Download</button>
+        <button class="vq-btn sm" id="saveBtn" type="button">Save to vault</button>
+      </div>
+      <p class="vq-hint">Free: 25 vault saves/day. Copy &amp; download always free.</p>
+      <div class="hints">
+        <strong>PromQL sanity hints</strong>
+        <ul id="pag-hints"></ul>
+      </div>
+      <p class="msg" id="pag-msg" role="status"></p>
+      <h2 class="vq-section-sub">Saved rules</h2>
+      <div id="pag-saved"></div>
+    </div>
+
+    <div class="vq-notice">
+      <strong>Validate:</strong> <code>promtool check rules alerts.yml</code> se syntax check karein. Prometheus config me <code>rule_files: ["alerts.yml"]</code> add karke reload karein.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Prometheus alert rule kaise likhein?</summary>
+        <p>Alert rule me chahiye: alert name, PromQL expr (jaise up == 0), "for:" duration, severity label, aur summary/description annotations. Ye generator YAML likh deta hai.</p>
+      </details>
+      <details>
+        <summary>Recording rule kya hota hai?</summary>
+        <p>Recording rule mehengi PromQL expression ko schedule par precompute karke nayi metric banata hai (jaise job:http_errors:rate5m), taaki alerts aur dashboards sasti precomputed series query karein.</p>
+      </details>
+      <details>
+        <summary>"for: 5m" ka matlab kya hai?</summary>
+        <p>Alert tabhi fire hoga jab expression lagataar 5 minute tak true rahe — chhote spikes par flapping nahi hota.</p>
+      </details>
+      <details>
+        <summary>Counter metrics par alert kaise lagayein?</summary>
+        <p>Raw _total counter par kabhi alert na lagayein — wo sirf badhta hai. rate() use karein, jaise sum(rate(http_requests_total{status=~"5.."}[5m])) &gt; 0.05.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

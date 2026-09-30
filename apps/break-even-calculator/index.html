@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Break-Even Calculator — ब्रेक-ईवन पॉइंट कैलकुलेटर | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free break-even calculator for Indian SMEs: break-even units & revenue, margin of safety, contribution margin, cost-vs-revenue chart and price what-if analysis. ब्रेक-ईवन कैलकुलेटर।">
+  <meta name="keywords" content="break even calculator, ब्रेक ईवन कैलकुलेटर, break even point kaise nikale, margin of safety calculator, BEP calculator India">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .8rem 0; }
+    @media (max-width: 520px) { .res-grid { grid-template-columns: 1fr; } }
+    .res-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; }
+    .res-cell .k { font-size: .8rem; color: var(--ink-soft); }
+    .res-cell .v { font-size: 1.25rem; font-weight: 800; }
+    .res-cell.hero { grid-column: 1 / -1; background: var(--paper-soft); }
+    .res-cell.hero .v { font-size: 1.9rem; color: var(--brand); }
+    .note-box { font-size: .9rem; color: var(--ink-soft); line-height: 1.55; }
+    #be-chart { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; margin: 1rem 0; }
+  </style>
+</head>
+<body data-app="break-even-calculator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Break-Even Calculator</h1>
+    <p class="lede">ब्रेक-ईवन कैलकुलेटर — kitni units bechne par na profit na loss? Fixed costs, variable cost aur selling price dalein: <strong>break-even units, break-even revenue, margin of safety</strong> aur cost-vs-revenue chart turant payein.</p>
+
+    <form onsubmit="return false;">
+      <div class="vq-field">
+        <label for="fixed">Total fixed costs (₹ / month) — किराया, salary आदि</label>
+        <input id="fixed" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 50000">
+      </div>
+      <div class="vq-field">
+        <label for="vc">Variable cost per unit (₹) — har unit ki lagat</label>
+        <input id="vc" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 200">
+      </div>
+      <div class="vq-field">
+        <label for="price">Selling price per unit (₹)</label>
+        <input id="price" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 500">
+      </div>
+      <div class="vq-field">
+        <label for="current">Current sales (units / month) — optional, margin of safety ke liye</label>
+        <input id="current" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 300">
+      </div>
+      <button class="vq-btn go" id="calcBtn" type="button">Calculate break-even</button>
+      <p class="vq-hint">Free: 20 calculations/day.</p>
+      <p class="err" id="be-error" role="alert"></p>
+    </form>
+
+    <div id="be-upsell"></div>
+
+    <div class="vq-result" id="be-result" style="display:none">
+      <h2 class="vq-section-sub">Result / परिणाम</h2>
+      <div class="res-grid">
+        <div class="res-cell hero"><div class="k">Break-even point</div><div class="v" id="r-beunits">–</div></div>
+        <div class="res-cell"><div class="k">Break-even revenue</div><div class="v" id="r-berev">–</div></div>
+        <div class="res-cell"><div class="k">Margin of safety</div><div class="v" id="r-mos">–</div></div>
+        <div class="res-cell"><div class="k">Contribution margin</div><div class="v" id="r-contrib">–</div></div>
+      </div>
+      <div class="vq-formula">
+        <strong>Formula:</strong> Break-even units = Fixed costs ÷ (Selling price − Variable cost).<br>
+        Break-even revenue = Break-even units × Selling price. Margin of safety = (Current sales − BE units) ÷ Current sales.
+      </div>
+      <p class="note-box" id="r-note"></p>
+    </div>
+
+    <div id="be-chart" aria-hidden="true"></div>
+
+    <div class="vq-notice">
+      <strong>What-if note:</strong> price me 10% ka badlav break-even ko kaafi hilata hai — isliye pricing decide karte waqt contribution margin (price − variable cost) par nazar rakhein. Ye tool planning estimate ke liye hai, financial advice nahi.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Break-even point kaise nikale?</summary>
+        <p>Break-even units = Fixed costs ÷ (Selling price − Variable cost per unit). Break-even revenue = Break-even units × Selling price. Upar values dalein — chart ke saath turant result.</p>
+      </details>
+      <details>
+        <summary>Margin of safety kya hota hai?</summary>
+        <p>Aapki current sales break-even se kitni upar hain: (Current sales − Break-even units) ÷ Current sales × 100. Jitna zyada, utna surakshit business.</p>
+      </details>
+      <details>
+        <summary>Agar selling price variable cost se kam ho to?</summary>
+        <p>Toh har unit par nuksaan hoga aur break-even kabhi nahi aayega — calculator aapko pehle price sudharne ko kahega.</p>
+      </details>
+      <details>
+        <summary>What-if analysis kya batata hai?</summary>
+        <p>Price 10% badhane ya ghatane par break-even kitna badlega — taaki aap pricing decisions data dekhkar lein, andaze par nahi.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

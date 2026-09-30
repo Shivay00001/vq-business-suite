@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CI Pipeline Generator — Free GitHub Actions &amp; Jenkinsfile Builder | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free CI pipeline generator: GitHub Actions workflow YAML or Jenkinsfile from Node/Python/Java/Go presets — install, test, build & Docker push steps. Copy & download, 100% in-browser.">
+  <meta name="keywords" content="github actions generator, jenkinsfile generator, ci pipeline generator, github actions yaml kaise banaye, jenkins pipeline example, free ci builder">
+  <link rel="canonical" href="https://visionquantech.com/apps/ci-pipeline-generator/">
+  <meta property="og:title" content="CI Pipeline Generator — Free Online">
+  <meta property="og:description" content="Generate GitHub Actions workflows or Jenkinsfiles from language presets. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    pre.code { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; overflow-x: auto; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .tabs { display: flex; gap: .5rem; margin-bottom: 1rem; }
+    .tabs .vq-btn.on { outline: 2px solid var(--brand); }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2 { grid-template-columns: 1fr; } }
+    .checks { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; margin: .6rem 0; }
+    .checks label { display: flex; align-items: center; gap: .5rem; font-size: .95rem; }
+    .checks input { width: auto; min-height: 0; }
+  </style>
+</head>
+<body data-app="ci-pipeline-generator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>CI Pipeline Generator</h1>
+    <p class="lede">Language preset chunein, steps tick karein — <strong>GitHub Actions workflow</strong> ya <strong>Jenkinsfile</strong> turant taiyaar. Secrets kabhi hardcode nahi hote.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="vq-btn secondary on" id="tabGithub" type="button">GitHub Actions</button>
+      <button class="vq-btn secondary" id="tabJenkins" type="button">Jenkins</button>
+    </div>
+
+    <form id="cip-form" onsubmit="return false;">
+      <div class="vq-field">
+        <label for="language">Language preset</label>
+        <select id="language">
+          <option value="node">Node.js (npm ci · npm test · npm run build)</option>
+          <option value="python">Python (pip · pytest · build)</option>
+          <option value="java">Java / Maven (mvn test · mvn package)</option>
+          <option value="go">Go (go test · go build)</option>
+        </select>
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="stInstall" checked> Install dependencies</label>
+        <label><input type="checkbox" id="stTest" checked> Run tests</label>
+        <label><input type="checkbox" id="stBuild" checked> Build</label>
+        <label><input type="checkbox" id="stDocker"> Docker build &amp; push</label>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="dockerImage">Docker image name</label>
+          <input id="dockerImage" type="text" placeholder="myregistry.io/team/app" autocapitalize="none">
+        </div>
+        <div class="vq-field">
+          <label for="dockerTag">Image tag</label>
+          <input id="dockerTag" type="text" placeholder="latest" autocapitalize="none">
+        </div>
+      </div>
+      <p class="vq-hint">Docker push uses secrets: GitHub <code>REGISTRY_USER</code>/<code>REGISTRY_PASSWORD</code>, Jenkins credential id <code>registry-creds</code>.</p>
+      <button class="vq-btn go" id="genBtn" type="button">Generate pipeline</button>
+      <p class="vq-hint">Generation unlimited &amp; free.</p>
+      <p class="err" id="cip-error" role="alert"></p>
+    </form>
+
+    <div id="cip-upsell"></div>
+
+    <div class="vq-result" id="cip-result" style="display:none">
+      <h2 class="vq-section-sub" id="cip-file">ci.yml</h2>
+      <pre class="code" id="cip-output"></pre>
+      <div class="btnrow">
+        <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy</button>
+        <button class="vq-btn secondary sm" id="dlBtn" type="button">Download</button>
+        <button class="vq-btn sm" id="saveBtn" type="button">Save to vault</button>
+      </div>
+      <p class="vq-hint">Free: 25 vault saves/day. Copy &amp; download always free.</p>
+      <p class="msg" id="cip-msg" role="status"></p>
+      <h2 class="vq-section-sub">Saved pipelines</h2>
+      <div id="cip-saved"></div>
+    </div>
+
+    <div class="vq-notice">
+      <strong>GitHub:</strong> file ko <code>.github/workflows/ci.yml</code> me rakhein aur push karein — Actions tab me run dikhega. <strong>Jenkins:</strong> repo root me <code>Jenkinsfile</code> rakhein aur multibranch pipeline banayein.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>GitHub Actions workflow YAML kaise likhein?</summary>
+        <p>.github/workflows/ci.yml me "on:" triggers, "jobs:" aur "steps:" likhein — checkout, language setup, install, test, build. Ye generator language preset se poori file likh deta hai.</p>
+      </details>
+      <details>
+        <summary>Jenkinsfile (Declarative Pipeline) kaise likhein?</summary>
+        <p>Declarative Jenkinsfile me "pipeline { agent any stages { stage(...) } }" structure hota hai, sh steps ke saath. Yahan Jenkins tab chunein — generator Docker push stage samet poori file likhega.</p>
+      </details>
+      <details>
+        <summary>CI me Docker image push kaise karein?</summary>
+        <p>Registry credentials secrets me rakhein (kabhi hardcode na karein), phir build aur push karein. Generated pipeline GitHub secrets ya Jenkins "registry-creds" credential use karti hai.</p>
+      </details>
+      <details>
+        <summary>GitHub Actions free hai kya?</summary>
+        <p>Haan — public repos ke liye generous free minutes, private repos ke liye free plan par 2,000 minutes/month.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

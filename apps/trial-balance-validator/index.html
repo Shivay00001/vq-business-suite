@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trial Balance Validator — ट्रायल बैलेंस चेकर | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free trial balance validator for Indian SMEs: enter account debit/credit balances, check debits = credits, flag suspense-account differences, group accounts by type, printable trial balance. ट्रायल बैलेंस फ्री में जांचें।">
+  <meta name="keywords" content="trial balance, ट्रायल बैलेंस, tally trial balance, debit credit check, suspense account, trial balance format, tally hisab, accounting validation">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .grid3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.grand td { font-weight: 800; border-top: 2px solid var(--line); font-size: 1.05rem; }
+    tr.typehead td { background: var(--paper-soft); font-weight: 700; }
+    .verdict { border-left: 4px solid #16a34a; background: #f0fdf4; padding: .9rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; margin: 1rem 0; }
+    .verdict.bad { border-color: #b42318; background: #fef2f2; }
+    .note-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: var(--radius); padding: .9rem 1rem; margin: 1rem 0; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="trial-balance-validator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Trial Balance Validator</h1>
+    <p class="lede">ट्रायल बैलेंस चेकर — account-wise <strong>debit / credit balances</strong> darj karein: app check karta hai <strong>debits = credits</strong>, farak ho to <strong>suspense account</strong> entry suggest karta hai, accounts ko <strong>type-wise</strong> group karta hai, aur printable trial balance deta hai. <strong>20 free validations/day.</strong></p>
+
+    <div class="note-box">
+      <strong>Honest note:</strong> ye tool sirf <strong>arithmetic</strong> validate karta hai (debits = credits?) — ye <strong>accounting correctness</strong> check nahi karta. Galat account me sahi rakam dalne par bhi trial balance tally ho jayega.
+    </div>
+
+    <div class="card no-print">
+      <h2>Add account balance / खाता जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="a-name">Account name *</label><input id="a-name" type="text" placeholder="e.g. Cash, Sales, Rent"></div>
+        <div class="vq-field"><label for="a-type">Account type</label><select id="a-type"><option>Asset</option><option>Liability</option><option>Equity</option><option>Income</option><option>Expense</option></select></div>
+      </div>
+      <div class="grid3">
+        <div class="vq-field"><label for="a-debit">Debit balance (₹)</label><input id="a-debit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
+        <div class="vq-field"><label for="a-credit">Credit balance (₹)</label><input id="a-credit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
+        <div class="btn-row" style="align-items:flex-end"><button class="vq-btn go mini" id="addBtn" type="button">Add account</button></div>
+      </div>
+      <p class="vq-hint">Har account ka <strong>net balance</strong> ya to debit me ya credit me dalen — dono me nahi.</p>
+      <p class="err" id="a-error" role="alert"></p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Quick load: sample chart</h2>
+      <p class="vq-hint">Demo ke liye ek sample trial balance load karein (aapki entries replace ho jayengi).</p>
+      <button class="vq-btn secondary mini" id="sampleBtn" type="button">Load sample accounts</button>
+      <button class="vq-btn ghost mini" id="clearBtn" type="button">Clear all</button>
+    </div>
+
+    <div id="resultWrap" style="display:none">
+      <div class="verdict" id="verdictBox"><strong id="verdictTitle"></strong><p id="verdictText"></p></div>
+      <div class="card">
+        <h2>Trial balance — <span id="tbDate"></span></h2>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Account</th><th>Type</th><th class="r">Debit (₹)</th><th class="r">Credit (₹)</th></tr></thead>
+          <tbody id="tbBody"></tbody>
+        </table></div>
+        <p class="vq-hint">Rule: total debits <strong>must equal</strong> total credits (double-entry ka golden rule).</p>
+      </div>
+      <div class="btn-row no-print">
+        <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+        <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+      </div>
+      <p class="ok-msg no-print" id="tb-saved"></p>
+    </div>
+
+    <div class="card no-print">
+      <button class="vq-btn go" id="validateBtn" type="button">Validate trial balance</button>
+      <p class="vq-hint no-print" id="tb-meter"></p>
+    </div>
+    <div id="tb-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Trial balance kya hota hai?</summary>
+        <p>Trial balance saare ledger accounts ke debit/credit balances ki list hai. Double-entry system me <strong>total debits hamesha total credits ke barabar</strong> hone chahiye — yehi check ye tool karta hai.</p>
+      </details>
+      <details>
+        <summary>Debits credits se match na karein to kya karein?</summary>
+        <p>Farak ki rakam <strong>Suspense Account</strong> me dal kar books temporarily tally ki jati hain, phir galti dhoondh kar sudhari jati hai. Ye tool exact difference aur suspense entry dono batata hai.</p>
+      </details>
+      <details>
+        <summary>Kya tally hona matlab hisaab sahi hai?</summary>
+        <p><strong>Nahi.</strong> Ye tool sirf arithmetic check karta hai. Galat account me entry, chhooti hui entry, ya ulta debit/credit bhi kabhi-kabhi tally ho jata hai. Final checking CA/accountant se karwayein.</p>
+      </details>
+      <details>
+        <summary>ट्रायल बैलेंस कैसे बनता है?</summary>
+        <p>Har ledger account ka closing balance nikalkar — debit balance debit column me, credit balance credit column me. Dono columns ka total barabar hona chahiye.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

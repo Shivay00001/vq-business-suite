@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Compliance Checker — GSTIN Validation &amp; Risk Flags | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free vendor compliance checker for Indian businesses: validate GSTIN format & checksum, flag risky vendor patterns, and keep a vault-saved vendor list with risk flags. 100% on-device. वेंडर GSTIN वेरिफिकेशन।">
+  <meta name="keywords" content="vendor compliance checker, GSTIN verification, जीएसटीआईएन वेरिफिकेशन, GSTIN format check, vendor GSTIN validation, GSTIN checksum validator, vendor risk check GST">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.02rem; margin: 0 0 .7rem; }
+    textarea.csv { width: 100%; min-height: 120px; font-family: monospace; font-size: .9rem; padding: .6rem; border: 1.5px solid var(--line); border-radius: 10px; text-transform: uppercase; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .9rem 0; }
+    .flag { display: inline-block; font-size: .75rem; font-weight: 700; padding: .15rem .55rem; border-radius: 999px; }
+    .flag.low { background: #e6f4ea; color: #1a7f37; }
+    .flag.med { background: #fff4e0; color: #a15c00; }
+    .flag.high { background: #fdecec; color: #b42318; }
+    .flag.bad { background: #3c4043; color: #fff; }
+    .vendor-row { display: grid; grid-template-columns: auto 1fr auto; gap: .7rem; align-items: start; padding: .7rem .2rem; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .vendor-row:last-child { border-bottom: 0; }
+    .vendor-row .g { font-family: monospace; font-weight: 800; letter-spacing: .02em; }
+    .vendor-row .why { font-size: .82rem; color: var(--ink-soft); margin-top: .2rem; }
+    .vendor-row .why li { margin: .15rem 0; }
+    .vendor-row .acts { display: flex; gap: .4rem; }
+    .sum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .7rem; margin: .8rem 0; }
+    .sum-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; }
+    .sum-cell .k { font-size: .78rem; color: var(--ink-soft); }
+    .sum-cell .v { font-size: 1.4rem; font-weight: 800; }
+  </style>
+</head>
+<body data-app="vendor-compliance-checker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Vendor Compliance Checker</h1>
+    <p class="lede">वेंडर कंप्लायंस चेकर — vendor <strong>GSTINs</strong> paste karein (ek line me ek). Tool <strong>format + checksum validate</strong> karega, state/PAN/entity patterns check karega aur <strong>risk flags</strong> lagayega. Vendor list <strong>vault me save</strong> hoti hai (max 25). <strong>Free: 20 validation batches/day.</strong></p>
+
+    <div class="card">
+      <h2>Vendor GSTINs / वेंडर जीएसटीआईएन</h2>
+      <textarea class="csv" id="gstinInput" placeholder="27AAPFU0939F1ZV&#10;29AAACH7409R1ZX&#10;07AAKCS1234F1Z5"></textarea>
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.7rem">
+        <div class="vq-field"><label for="vendorName">Vendor name (optional, saved with the GSTIN)</label><input id="vendorName" type="text" placeholder="e.g. Sharma Suppliers"></div>
+        <div class="vq-field"><label for="vendorNote">Note (optional)</label><input id="vendorNote" type="text" placeholder="e.g. packaging vendor"></div>
+      </div>
+      <div class="btn-row">
+        <button class="vq-btn ghost" id="addVendorBtn" type="button">+ Add to list</button>
+        <button class="vq-btn go" id="validateBtn" type="button">Validate all</button>
+        <button class="vq-btn ghost" id="clearInputBtn" type="button">Clear input</button>
+      </div>
+      <p class="vq-hint">Free: 20 validation batches/day · Vault list: max 25 vendors.</p>
+      <p class="err" id="vc-error" role="alert"></p>
+      <p class="ok-msg" id="vc-saved"></p>
+      <div id="vc-upsell"></div>
+    </div>
+
+    <div class="vq-result" id="vc-result" style="display:none">
+      <h2 class="vq-section-sub">Validation results / परिणाम</h2>
+      <div class="sum-grid" id="vcSummary"></div>
+      <div id="vcList"></div>
+      <div class="btn-row" style="margin-top:.8rem">
+        <button class="vq-btn secondary" id="saveVendorsBtn" type="button">Save list to vault</button>
+      </div>
+    </div>
+
+    <h2 class="vq-section-title">Saved vendor list</h2>
+    <div id="savedVendors"><p class="vq-hint">Loading…</p></div>
+
+    <div class="vq-notice" style="margin-top:1rem">
+      <strong>Honest note / ईमानदार नोट:</strong> ye tool sirf GSTIN ka <strong>format aur checksum</strong> validate karta hai (structure: 2-digit state code + 10-char PAN + entity code + 'Z' + check digit). Ye <strong>live GSTN status nahi check kar sakta</strong> — cancelled/suspended registration ka pata sirf <strong>gst.gov.in → Search Taxpayer</strong> par lagta hai. Risk score ek <strong>heuristic</strong> hai, final nahi: high-risk flag ka matlab hai "verify on the portal", "vendor kharab hai" nahi.
+    </div>
+    <div class="vq-formula" style="margin-top:.8rem">
+      <strong>Checks run:</strong> 15-char length · state code valid (01–38, merged UT 26) · PAN structure (5 letters + 4 digits + entity-type letter) · entity code ≠ 0 · position 14 = 'Z' · <strong>mod-36 Luhn check digit</strong> (each of first 14 chars mapped 0–9/A–Z → 0–35, alternating ×1/×2 with base-36 digit-sum folding; check digit = (36 − total mod 36) mod 36). Risky patterns: checksum fail, PAN serial "0000", unknown entity-type letter, duplicate GSTINs in your list.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>GSTIN ka format kya hota hai?</summary>
+        <p>15 characters: <strong>2-digit state code</strong> (e.g. 27 = Maharashtra) + <strong>10-character PAN</strong> + <strong>1 entity code</strong> (usually 1) + letter <strong>'Z'</strong> + <strong>1 check digit</strong> (checksum se banta hai, typo pakadne ke liye).</p>
+      </details>
+      <details>
+        <summary>Checksum fail ka matlab vendor fake hai?</summary>
+        <p>Nahi — zyada-tar cases me ye <strong>typing mistake</strong> hoti hai. Check digit galat ho to pehle GSTIN dobara verify karein (invoice ya registration certificate se), phir portal par status check karein.</p>
+      </details>
+      <details>
+        <summary>Kya ye tool vendor ka live GST status batata hai?</summary>
+        <p>Nahi. Live status (active/cancelled/suspended) sirf <strong>gst.gov.in → Search Taxpayer</strong> par milta hai — iske liye GSTN API chahiye jo ek static offline tool me nahi ho sakta. Ye tool format-level validation + risk heuristics deta hai.</p>
+      </details>
+      <details>
+        <summary>Vendor list kahan save hoti hai?</summary>
+        <p>Sirf aapke browser ke local vault me (passphrase se encrypt ho sakti hai). Maximum 25 vendors; delete kabhi bhi kar sakte hain.</p>
+      </details>
+      <details>
+        <summary>Risk score kaise banta hai?</summary>
+        <p>Checksum fail ya format error → <strong>high/invalid</strong>; PAN/entity pattern issues ya duplicate entries → <strong>medium</strong>; sab checks pass → <strong>low (format OK)</strong>. Ye heuristic hai — high flag ka matlab "portal par verify karein" hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

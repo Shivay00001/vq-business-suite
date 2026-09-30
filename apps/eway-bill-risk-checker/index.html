@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Way Bill Risk Checker — Required? Validity Days Calculator | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free e-way bill risk checker for Indian transporters & traders: is an e-way bill required, validity days (1 day per 200 km, ODC 20 km), Part A/B checklist & common rejection reasons. No signup. ई-वे बिल चेकर।">
+  <meta name="keywords" content="e-way bill checker, ई-वे बिल, eway bill required or not, e-way bill validity calculator, eway bill validity 200 km, e-way bill rejection reasons, eway bill part A part B checklist">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.02rem; margin: 0 0 .7rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+    .check-row { display: flex; gap: .6rem; align-items: flex-start; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+    .check-row:last-child { border-bottom: 0; }
+    .check-row input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--brand); flex: none; }
+    .verdict { border-radius: 12px; padding: 1.1rem; margin: .8rem 0; }
+    .verdict.req { background: #fff4e0; border: 1.5px solid #a15c00; }
+    .verdict.notreq { background: #e6f4ea; border: 1.5px solid #1a7f37; }
+    .verdict.exempt { background: #eef4ff; border: 1.5px solid #1a56db; }
+    .verdict h2 { margin: 0 0 .4rem; }
+    .risk-list { margin: .6rem 0 0; padding-left: 1.1rem; font-size: .92rem; }
+    .risk-list li { margin: .3rem 0; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .8rem 0; }
+    .res-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; }
+    .res-cell .k { font-size: .8rem; color: var(--ink-soft); }
+    .res-cell .v { font-size: 1.2rem; font-weight: 800; }
+  </style>
+</head>
+<body data-app="eway-bill-risk-checker">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>E-Way Bill Risk Checker</h1>
+    <p class="lede">ई-वे बिल चेकर — consignment value, distance aur transporter details batayein: tool batayega ki <strong>e-way bill required hai ya nahi</strong>, <strong>validity kitne din</strong> ki hogi (<strong>1 day per 200 km</strong>; over-dimensional cargo par 1 day per 20 km), aur <strong>common rejection reasons</strong> ki checklist dega. <strong>Free: 20 checks/day.</strong></p>
+
+    <div class="card">
+      <h2>Consignment / खेप</h2>
+      <div class="two-col">
+        <div class="vq-field">
+          <label for="consValue">Consignment value (₹, invoice value incl. tax)</label>
+          <input id="consValue" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 120000">
+        </div>
+        <div class="vq-field">
+          <label for="distance">Distance to destination (km)</label>
+          <input id="distance" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 450">
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="vq-field">
+          <label for="cargoType">Cargo type</label>
+          <select id="cargoType">
+            <option value="regular">Regular cargo</option>
+            <option value="odc">Over-dimensional cargo (ODC)</option>
+          </select>
+        </div>
+        <div class="vq-field">
+          <label for="movementType">Movement type</label>
+          <select id="movementType">
+            <option value="inter">Inter-state movement</option>
+            <option value="intra">Intra-state movement</option>
+          </select>
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="goodsType">Goods type</label>
+        <select id="goodsType">
+          <option value="normal">Normal taxable goods</option>
+          <option value="exempt14">Exempted category under Rule 138(14) (e.g. non-motorised conveyance, specified exempted goods — verify)</option>
+          <option value="seztport">From customs port/airport to ICD/CFS (under customs bond)</option>
+        </select>
+      </div>
+      <div class="vq-field">
+        <label for="docDate">Invoice/document date</label>
+        <input id="docDate" type="date">
+        <p class="vq-hint">Since 1-Jan-2025: e-way bills can only be generated for documents dated within the last <strong>180 days</strong>.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Transporter details checklist / ट्रांसपोर्टर विवरण</h2>
+      <div class="check-row"><input type="checkbox" id="ckPartA" checked><label for="ckPartA"><strong>Part A</strong> complete — supplier/recipient GSTIN, invoice no. &amp; date, HSN, value, reason for transport</label></div>
+      <div class="check-row"><input type="checkbox" id="ckPartB" checked><label for="ckPartB"><strong>Part B</strong> filled — vehicle number / transporter ID <span class="vq-hint">(validity clock starts only after Part B)</span></label></div>
+      <div class="check-row"><input type="checkbox" id="ckVehMatch" checked><label for="ckVehMatch">Vehicle number on the bill <strong>matches the actual vehicle</strong> carrying the goods</label></div>
+      <div class="check-row"><input type="checkbox" id="ckValMatch" checked><label for="ckValMatch">Consignment value on the bill <strong>matches the invoice</strong> (incl. tax)</label></div>
+      <div class="check-row"><input type="checkbox" id="ckHsn" checked><label for="ckHsn"><strong>HSN code</strong> of the goods entered correctly</label></div>
+      <div class="check-row"><input type="checkbox" id="ckDist" checked><label for="ckDist">Distance entered is the <strong>actual road distance</strong> (not under-declared)</label></div>
+    </div>
+
+    <button class="vq-btn go" id="ewayCheckBtn" type="button">Check e-way bill requirement</button>
+    <p class="vq-hint">Free: 20 checks per day.</p>
+    <p class="err" id="eway-error" role="alert"></p>
+    <div id="eway-upsell"></div>
+
+    <div class="vq-result" id="eway-result" style="display:none">
+      <div class="verdict" id="ewayVerdict"></div>
+      <h2 class="vq-section-sub">Validity / वैधता</h2>
+      <div class="res-grid" id="ewayGrid"></div>
+      <h2 class="vq-section-sub">Common rejection / detention risks</h2>
+      <ul class="risk-list" id="riskList"></ul>
+      <div class="vq-formula" style="margin-top:.8rem">
+        <strong>Rules used:</strong> Rule 138(10) CGST Rules (as amended by Notification 94/2020-CT, w.e.f. 1-Jan-2021): validity = 1 day per 200 km for regular cargo, 1 day per 20 km for ODC/multimodal-with-ship — the clock starts when <strong>Part B</strong> is filled. Extension possible within 8 hours before/after expiry (max 360 days total). Penalty for movement without a valid e-way bill: <strong>₹10,000 or the tax sought to be evaded, whichever is higher</strong> (Sec 129).
+      </div>
+      <div class="vq-notice" style="margin-top:.8rem">
+        <strong>Note:</strong> intra-state thresholds vary by state (several states set ₹1–2 lakh instead of ₹50,000) — this tool uses the standard ₹50,000 inter-state threshold. Some states also notify extra exemptions. Verify on <strong>ewaybillgst.gov.in</strong> before dispatch.
+      </div>
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>E-way bill kab mandatory hai? (When is an e-way bill mandatory?)</summary>
+        <p>Jab goods ki consignment value <strong>₹50,000 se zyada</strong> ho (inter-state; kuch states me intra-state limit zyada hai) — movement shuru hone se <strong>pehle</strong> e-way bill generate karna mandatory hai (Sec 68, Rule 138).</p>
+      </details>
+      <details>
+        <summary>E-way bill ki validity kitni hoti hai? (What is the e-way bill validity?)</summary>
+        <p>Regular cargo: <strong>har 200 km (ya uske hisse) par 1 din</strong>; over-dimensional cargo: <strong>har 20 km par 1 din</strong> (Notification 94/2020, 1-Jan-2021 se). Validity <strong>Part B</strong> bharne ke baad shuru hoti hai.</p>
+      </details>
+      <details>
+        <summary>E-way bill expire ho jaye to kya karein?</summary>
+        <p>Expiry se <strong>8 ghante pehle ya 8 ghante baad</strong> tak portal par validity extend ki ja sakti hai (reason ke saath). Window miss ho jaye to naya e-way bill banana padega.</p>
+      </details>
+      <details>
+        <summary>Bina e-way bill ke maal pakda gaya to penalty kitni hai?</summary>
+        <p>Section 129 ke tahat <strong>₹10,000 ya evade kiye gaye tax ke barabar</strong> — jo bhi zyada ho — plus goods/vehicle detention ho sakta hai.</p>
+      </details>
+      <details>
+        <summary>Kya ye tool e-way bill generate karta hai?</summary>
+        <p>Nahi — ye sirf requirement aur risk ka <strong>checker</strong> hai. Actual e-way bill <strong>ewaybillgst.gov.in</strong> par hi generate hota hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Mode Profitability — Compare UPI / Card / Netbanking MDR Cost | VisionQuantech</title>
+  <meta name="description" content="Free payment mode profitability tool: compare UPI, credit card, debit card, netbanking and cash MDR costs against your sales mix; effective cost % and annual savings. पेमेंट मोड लाभप्रदता।">
+  <meta name="keywords" content="upi mdr charges merchant, credit card mdr rate india, payment gateway charges comparison, cheapest payment method merchant, यूपीआई एमडीआर, कार्ड शुल्क">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/payment-mode-profitability-tool/">
+  <meta property="og:title" content="Payment Mode Profitability Tool | VisionQuantech">
+  <meta property="og:description" content="Which payment mode eats your margin? Compare MDR costs. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .tbl-wrap{overflow-x:auto;margin:1rem 0}
+    .tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+    .tbl th,.tbl td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left}
+    .tbl th{background:var(--paper-soft)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1rem 0}
+    .kpi{background:var(--paper-soft);border-radius:10px;padding:.8rem;text-align:center}
+    .kpi-n{font-size:1.3rem;font-weight:800}
+    .kpi-l{font-size:.8rem;color:var(--ink-soft)}
+    .txt-bad{color:#b3261e}
+  </style>
+</head>
+<body data-app="payment-mode-profitability-tool">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Payment Mode Profitability Tool</h1>
+      <p>Enter your monthly sales and <strong>sales mix</strong> across UPI, credit card, debit card, netbanking and cash. The tool computes the <strong>merchant cost of each mode</strong>, the effective cost %, and what shifting the mix could save. <span lang="hi">पेमेंट मोड लाभप्रदता — कौन सा माध्यम सस्ता?</span></p>
+      <p class="vq-hint">Free: 20 comparisons per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="p-gate"></div>
+
+    <section class="card" aria-label="Sales mix inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your sales mix</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="p-sales">Monthly sales (₹)</label>
+          <input id="p-sales" type="number" min="0" step="0.01" value="1000000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="p-ticket">Average ticket size (₹) — for netbanking</label>
+          <input id="p-ticket" type="number" min="1" step="1" value="1000" inputmode="numeric">
+        </div>
+      </div>
+      <h3 class="vq-section-title">Share of sales % (must total 100)</h3>
+      <div class="form-grid" id="p-mix"></div>
+      <h3 class="vq-section-title">Merchant rates (editable)</h3>
+      <div class="form-grid" id="p-rates"></div>
+      <button id="p-calc" class="vq-btn" type="button">Compare modes</button>
+      <p id="p-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="p-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Mode comparison</h2>
+      <div id="p-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Default rates (Sep 2026, editable):</strong> UPI 0.25% blended — NPCI MDR effective <strong>15-Oct-2026</strong>: 0% on P2M up to ₹2,000; 0.40% above ₹2,000, capped at ₹300/txn; P2PM small merchants (≤₹1L/month) and P2P stay zero. Credit card ~2.0% (typical 1.5–2.5%), debit card ~0.90% (RuPay debit zero-MDR), netbanking ~₹7 flat/txn, cash 0%.</li>
+        <li><strong>Netbanking cost</strong> = (mode sales ÷ avg ticket) × flat charge.</li>
+        <li><strong>Potential saving</strong> assumes the priciest mode's volume moves to the cheapest — before settlement-speed and customer-preference trade-offs.</li>
+        <li><strong>Actual MDR varies</strong> by acquirer, volume and card mix — confirm on your settlement statement.</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Rate sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>NPCI MDR framework — 0.4% on eligible P2M UPI above ₹2,000 from 15-Oct-2026, capped ₹300; debit ≤0.90%; credit 1.5–2.5% — <a href="https://www.business-standard.com/finance/personal-finance/upi-mdr-explained-how-new-charges-compare-with-debit-credit-cards-126091600354_1.html" rel="noopener">Business Standard</a>; <a href="https://www.financialexpress.com/money/upi-vs-debit-vs-credit-cards-will-upi-payments-with-mdr-charges-still-be-the-cheapest-4345859/" rel="noopener">Financial Express</a></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Payment mode costs — FAQs</h2>
+      <details><summary>Which payment mode is cheapest for Indian merchants?</summary><p>Cash is free; UPI is cheapest digitally — 0% up to ₹2,000 per P2M transaction and 0.40% above that (capped ₹300) under the NPCI MDR rules effective 15-Oct-2026. Debit cards cost up to 0.90% and credit cards typically 1.5–2.5%.</p></details>
+      <details><summary lang="hi">UPI, कार्ड या कैश — कौन सस्ता है?</summary><p lang="hi">कैश मुफ़्त है। UPI सबसे सस्ता डिजिटल माध्यम है — ₹2,000 तक 0%, उससे ऊपर 0.40% (अधिकतम ₹300)। क्रेडिट कार्ड 1.5–2.5% तक पड़ता है।</p></details>
+      <details><summary>What is MDR?</summary><p>Merchant Discount Rate — the fee your bank/acquirer deducts per transaction. It is a merchant cost; it cannot be passed to the customer.</p></details>
+      <details><summary>Is UPI really free for merchants now?</summary><p>Not fully. From 15-Oct-2026, eligible P2M UPI transactions above ₹2,000 carry 0.40% MDR (capped at ₹300); small merchants under the P2PM category and P2P transfers stay at zero.</p></details>
+      <details><summary>Should I push customers to the cheapest mode?</summary><p>Only partly — settlement speed, ticket size and customer preference matter too. Use this tool to see the rupee cost, then decide the trade-off consciously.</p></details>
+      <details><summary>Are these MDR rates fixed?</summary><p>No — they are editable Sep-2026 benchmarks. Your actual rates depend on your acquirer, volumes and card mix; confirm on your settlement statement.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

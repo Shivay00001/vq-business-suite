@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usage Metering Tool — Client Quota & Overage Billing | VisionQuantech</title>
+  <meta name="description" content="Free usage metering tool: log API/tool usage per client, track quota vs used with 80% near-quota alerts, and estimate overage billing. On-device. यूसेज मीटरींग टूल।">
+  <meta name="keywords" content="usage metering tool, api usage tracker, client quota tracker, overage billing calculator, यूसेज मीटरींग, api quota monitor, usage based billing">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/usage-metering-tool/">
+  <meta property="og:title" content="Usage Metering Tool | VisionQuantech">
+  <meta property="og:description" content="Log per-client usage, watch quotas, estimate overage billing. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-overdue{ background:#fdeceb; color:#b3261e; }
+    .b-warning{ background:#fff4e0; color:#9a6200; }
+    .b-watch{ background:#eef4ff; color:#1f4fa3; }
+    .b-ok{ background:#e9f7ef; color:#1d7a3f; }
+    .bar{ height:.6rem; background:#eef1f6; border-radius:999px; margin:.4rem 0; overflow:hidden; }
+    .bar-fill{ height:100%; border-radius:999px; }
+    .bar-fill.ok{ background:#2e9e5b; } .bar-fill.near{ background:#e8a13a; }
+    .bar-fill.at{ background:#4a7ddb; } .bar-fill.over{ background:#c93a32; }
+    .ghost{ background:transparent; border:1px solid var(--line); padding:.3rem .7rem; font-size:.8rem; }
+  </style>
+</head>
+<body data-app="usage-metering-tool">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Usage Metering Tool — Quota vs Used &amp; Overage Billing</h1>
+      <p>Log API or tool usage per client, watch <strong>quota vs used</strong> with 80% near-quota alerts, and estimate overage billing automatically. <span lang="hi">यूसेज मीटरींग — क्लाइंट कोटा और ओवरेज बिल।</span></p>
+      <p class="vq-hint">Free: 20 metered actions per day. Stored on this device only — nothing is uploaded.</p>
+    </div>
+
+    <div id="u-gate"></div>
+
+    <section class="card" aria-label="Add client">
+      <h2 class="vq-section-title" style="margin-top:0">Add a client</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="u-name">Client name</label>
+          <input id="u-name" type="text" maxlength="80" placeholder="e.g. Acme Retail" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="u-quota">Quota (units per period)</label>
+          <input id="u-quota" type="number" min="1" max="1000000000" step="1" inputmode="numeric" placeholder="e.g. 10000">
+        </div>
+        <div class="vq-field">
+          <label for="u-price">Overage price (₹ per unit)</label>
+          <input id="u-price" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 2">
+        </div>
+      </div>
+      <button id="u-add" class="vq-btn" type="button">Add client</button>
+    </section>
+
+    <section class="card" aria-label="Log usage">
+      <h2 class="vq-section-title" style="margin-top:0">Log usage</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="u-client">Client</label>
+          <select id="u-client"></select>
+        </div>
+        <div class="vq-field">
+          <label for="u-units">Units consumed</label>
+          <input id="u-units" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 500">
+        </div>
+      </div>
+      <button id="u-log" class="vq-btn" type="button">Log usage</button>
+      <p id="u-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Clients">
+      <h2 class="vq-section-title" style="margin-top:0">Clients &amp; quotas</h2>
+      <div id="u-list"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Usage metering — FAQs</h2>
+      <details><summary>What is usage metering for?</summary><p>If you sell API access or metered tools, log each client's consumed units against their quota, watch the 80% near-quota band, and estimate overage bills automatically.</p></details>
+      <details><summary lang="hi">यूसेज मीटरींग क्या है?</summary><p lang="hi">अगर आप API या टूल की यूसेज बेचते हैं, तो हर क्लाइंट की खपत कोटा के मुकाबले दर्ज करें और ओवरेज बिल का अनुमान पाएं।</p></details>
+      <details><summary>When is a client flagged near quota?</summary><p>At 80% of quota the status flips to "near quota"; at 100% "at quota"; above 100% "over quota" with an overage amount.</p></details>
+      <details><summary>Is usage data uploaded anywhere?</summary><p>No. Client quotas and usage logs stay in the on-device vault in your browser.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

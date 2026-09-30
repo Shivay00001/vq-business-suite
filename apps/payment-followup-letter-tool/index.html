@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Follow-up Letter Tool — 30/60/90-Day Sequence | VisionQuantech</title>
+  <meta name="description" content="Free payment follow-up letter generator: enter the due date and get the right 30/60/90-day stage letter drafted automatically. पेमेंट फॉलो-अप लेटर टूल।">
+  <meta name="keywords" content="payment follow up letter, overdue invoice reminder letter, 30 60 90 day collection letters, payment reminder sequence, पेमेंट फॉलो अप लेटर, बकाया वसूली पत्र">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/payment-followup-letter-tool/">
+  <meta property="og:title" content="Payment Follow-up Letter Tool | VisionQuantech">
+  <meta property="og:description" content="30/60/90-day follow-up letter sequence drafted from the due date. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .notice { white-space:pre-wrap; font-family:Georgia,serif; background:var(--paper-soft); border-radius:10px; padding:1rem; font-size:.95rem; }
+    .assump { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li { margin-bottom:.4rem; }
+    .assump li.cur { font-weight:700; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+  </style>
+</head>
+<body data-app="payment-followup-letter-tool">
+  <main class="vq-main">
+    <!-- ADSENSE: --><div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Payment Follow-up Letter Tool — 30/60/90-Day Sequence</h1>
+      <p>Enter the invoice due date — the tool computes <strong>days overdue</strong>, picks the right <strong>stage</strong> (first reminder / 30 / 60 / 90-day), and drafts the letter. <span lang="hi">पेमेंट फॉलो-अप — सही चरण का पत्र अपने आप।</span></p>
+      <p class="vq-hint">Free: 20 letters per day. Nothing is stored — all text is generated in your browser.</p>
+    </div>
+
+    <div id="f-gate"></div>
+
+    <section class="card" aria-label="Follow-up inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Invoice details</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="f-cust">Customer name</label>
+          <input id="f-cust" type="text" maxlength="300" value="">
+        </div>
+        <div class="vq-field">
+          <label for="f-inv">Invoice number</label>
+          <input id="f-inv" type="text" maxlength="100" value="">
+        </div>
+        <div class="vq-field">
+          <label for="f-amount">Overdue amount (₹)</label>
+          <input id="f-amount" type="number" min="0" max="1000000000" step="0.01" inputmode="decimal" value="">
+        </div>
+        <div class="vq-field">
+          <label for="f-due">Due date</label>
+          <input id="f-due" type="date" value="">
+        </div>
+        <div class="vq-field">
+          <label for="f-biz">Your business name</label>
+          <input id="f-biz" type="text" maxlength="200" value="">
+        </div>
+        <div class="vq-field">
+          <label for="f-from">Your name</label>
+          <input id="f-from" type="text" maxlength="300" value="">
+        </div>
+      </div>
+      <button id="f-calc" class="vq-btn" type="button">Draft my follow-up letter</button>
+      <p id="f-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="f-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your follow-up letter</h2>
+      <div id="f-result"></div>
+    </section>
+
+    <!-- ADSENSE: --><div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Payment follow-up — FAQs</h2>
+      <details><summary>What is the 30/60/90-day payment follow-up sequence?</summary><p>First reminder at 1–29 days overdue, firm follow-up at 30–59, escalation at 60–89, and a final notice at 90+. This tool picks the right stage from the due date and drafts the letter.</p></details>
+      <details><summary lang="hi">पेमेंट फॉलो-अप लेटर कैसे लिखें?</summary><p lang="hi">देय तिथि से दिनों की गिनती करें — 30/60/90 दिन पर टोन बढ़ाएं। यह टूल सही चरण चुनकर पत्र का ड्राफ्ट तैयार करता है।</p></details>
+      <details><summary>When should I stop following up and take legal action?</summary><p>After the 90-day final notice goes unanswered, most businesses hand the matter to counsel. A lawyer should review the final notice first.</p></details>
+      <details><summary>Should the tone differ between stages?</summary><p>Yes — start helpful (it may be an oversight), get firm at 30 days, escalate consequences at 60, and make the 90-day letter the final warning.</p></details>
+      <details><summary>Is this legal advice?</summary><p>No — these are drafts, not legal advice. Consult a lawyer for recovery action.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

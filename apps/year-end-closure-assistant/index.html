@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year-End Closure Assistant — FY Closing Checklist India (March 31) | VisionQuantech</title>
+  <meta name="description" content="Free financial year-end closing checklist for India (FY ends 31 March): stock count, debtor/creditor confirmations, provisions, depreciation blocks, TDS/GST reconciliation. Track progress. वर्ष-अंत समापन चेकलिस्ट।">
+  <meta name="keywords" content="year end closing checklist india, fy closing checklist, financial year end india march 31, year end accounting checklist, वर्ष अंत समापन, fy closure provisions depreciation">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/year-end-closure-assistant/">
+  <meta property="og:title" content="Year-End Closure Assistant | VisionQuantech">
+  <meta property="og:description" content="FY closing checklist for India (31 March): stock, confirmations, provisions, depreciation. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}
+    .mand{ color:#b3261e; font-weight:800; }
+    .bar{ height:.7rem; background:#eef1f6; border-radius:999px; margin:.6rem 0; overflow:hidden; }
+    .bar-fill{ height:100%; background:var(--brand); border-radius:999px; }
+    .blocking li{ margin-bottom:.45rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+  </style>
+</head>
+<body data-app="year-end-closure-assistant">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Year-End Closure Assistant — <span id="y-fy">FY Closing</span></h1>
+      <p>Financial-year closing checklist for India (year ends <strong>31 March</strong>): stock count, debtor/creditor confirmations, provisions, depreciation blocks, TDS &amp; GST reconciliation. <span lang="hi">वर्ष-अंत समापन चेकलिस्ट — कुछ न छूटे।</span></p>
+      <p class="vq-hint">Free: 20 progress checks per day. Planning checklist — confirm final treatment with your CA. Nothing is stored.</p>
+    </div>
+
+    <div id="y-gate"></div>
+
+    <section class="card" aria-label="Closing checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Closing checklist <span class="mand">*</span> = mandatory</h2>
+      <div id="y-checks"></div>
+      <button id="y-calc" class="vq-btn" type="button">Check closure progress</button>
+    </section>
+
+    <section class="card" id="y-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Closure status</h2>
+      <div id="y-result"></div>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory context (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>Companies Act, 2013, Sec 128(5) — books of account preserved min 8 financial years. <a href="https://taxguru.in/company-law/maintenance-books-accounts-section-128-companies-act-2013.html" rel="noopener">TaxGuru — Sec 128</a></li>
+        <li>Income-tax Act, 1961 — specified books 6 years from end of relevant AY. <a href="https://www.bcasonline.org/Referencer2016-17/Other%20Laws/period_of_preservation_of_accounts_records.html" rel="noopener">BCAS referencer</a></li>
+        <li>CGST Act, Sec 36 — records kept 72 months from annual-return due date. <a href="https://www.caclubindia.com/articles/how-long-must-you-keep-your-books-of-accounts-under-gst-54470.asp" rel="noopener">CAclubindia — GST retention</a></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Year-end closure — FAQs</h2>
+      <details><summary>When does the financial year end in India?</summary><p>31 March. This checklist covers the standard close: stock count, debtor/creditor confirmations, bank reconciliation, provisions, depreciation, TDS and GST reconciliation, and owner sign-off.</p></details>
+      <details><summary lang="hi">वित्त वर्ष कब समाप्त होता है?</summary><p lang="hi">भारत में वित्तीय वर्ष 31 मार्च को समाप्त होता है। यह चेकलिस्ट स्टॉक गिनती, देनदार/लेनदार पुष्टि, बैंक समाधान, प्रावधान, मूल्यह्रास और TDS/GST समाधान कवर करती है।</p></details>
+      <details><summary>Which items are mandatory?</summary><p>Items marked mandatory (starred) must all be done before the books can be considered closed: stock count, confirmations, bank reco, cash count, provisions, depreciation, TDS and GST reco, and sign-off.</p></details>
+      <details><summary>Is this tax advice?</summary><p>No — it is a planning checklist. Final treatment of provisions, depreciation blocks and disclosures should be confirmed with your CA.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

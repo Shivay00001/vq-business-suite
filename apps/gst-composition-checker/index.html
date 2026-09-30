@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Composition Scheme Checker — Eligibility &amp; Tax Estimate (1%/5%/6%) | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free GST composition scheme checker for Indian SMEs: check eligibility, turnover limits (₹1.5 cr / ₹75L / ₹50L), 1%/5%/6% tax estimate & quarterly CMP-08 dues. No signup. जीएसटी composition scheme eligibility check.">
+  <meta name="keywords" content="composition scheme checker, जीएसटी composition scheme, GST composition scheme eligibility, composition scheme turnover limit, CMP-08, composition scheme tax rate 1% 5% 6%, composition scheme calculator">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.02rem; margin: 0 0 .7rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+    .check-row { display: flex; gap: .6rem; align-items: flex-start; padding: .55rem 0; border-bottom: 1px solid var(--line); }
+    .check-row:last-child { border-bottom: 0; }
+    .check-row input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--brand); flex: none; }
+    .verdict { border-radius: 12px; padding: 1.1rem; margin: .8rem 0; font-size: 1.05rem; }
+    .verdict.yes { background: #e6f4ea; border: 1.5px solid #1a7f37; }
+    .verdict.no { background: #fdecec; border: 1.5px solid #b42318; }
+    .verdict h2 { margin: 0 0 .4rem; }
+    .reason { font-size: .92rem; margin: .3rem 0; }
+    .reason.block { color: #b42318; font-weight: 600; }
+    .reason.pass { color: #1a7f37; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .8rem 0; }
+    .res-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; }
+    .res-cell .k { font-size: .8rem; color: var(--ink-soft); }
+    .res-cell .v { font-size: 1.25rem; font-weight: 800; }
+    .res-cell.total { grid-column: 1 / -1; background: var(--paper-soft); }
+  </style>
+</head>
+<body data-app="gst-composition-checker">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Composition Scheme Eligibility Checker</h1>
+    <p class="lede">जीएसटी composition scheme — kya aap eligible hain? Turnover, business type, state aur supply pattern batayein: tool <strong>eligible / not-eligible verdict</strong> dega (reasons ke saath), <strong>1% / 5% / 6%</strong> par tax estimate aur quarterly dues. Sab browser me, koi data kahin nahi jata. <strong>Free: 20 checks/day.</strong></p>
+
+    <div class="card">
+      <h2>Turnover &amp; business / टर्नओवर और बिज़नेस</h2>
+      <div class="vq-field">
+        <label for="turnover">Aggregate turnover in the <strong>preceding</strong> financial year (₹)</label>
+        <input id="turnover" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 8000000 (₹80 lakh)">
+        <p class="vq-hint">Pan-India, same PAN ke sabhi GSTINs ka yog — taxable + exempt + export supplies.</p>
+      </div>
+      <div class="vq-field">
+        <label for="bizType">Business type</label>
+        <select id="bizType">
+          <option value="trader">Trader of goods — 1% of turnover</option>
+          <option value="manufacturer">Manufacturer of goods — 1% of turnover</option>
+          <option value="restaurant">Restaurant (no alcohol) — 5% of turnover</option>
+          <option value="service">Service provider (Sec 10(2A)) — 6% of turnover</option>
+        </select>
+      </div>
+      <div class="vq-field">
+        <label for="stateSel">State of registration</label>
+        <select id="stateSel">
+          <option value="general">Other state / UT (limit ₹1.5 cr for goods)</option>
+          <option value="special">Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura, Uttarakhand (limit ₹75L)</option>
+        </select>
+        <p class="vq-hint">Notification 14/2019-CT: in 8 states listed above the goods limit is ₹75 lakh; everywhere else ₹1.5 crore. Service providers: ₹50 lakh everywhere.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Disqualifying conditions / अयोग्य ठहराने वाली शर्तें</h2>
+      <p class="vq-hint">Agar inme se koi bhi <strong>Yes</strong> hai, to composition scheme nahi mil sakta.</p>
+      <div class="check-row"><input type="checkbox" id="dqInterstate"><label for="dqInterstate">Do you make <strong>inter-state outward supplies</strong> of goods? (stock transfer to own branch in another state counts)</label></div>
+      <div class="check-row"><input type="checkbox" id="dqEcom"><label for="dqEcom">Do you sell goods through an <strong>e-commerce operator</strong> who collects TCS (Sec 52)?</label></div>
+      <div class="check-row"><input type="checkbox" id="dqNonTaxable"><label for="dqNonTaxable">Do you supply goods that are <strong>not taxable</strong> under GST (e.g. petrol, alcohol for human consumption)?</label></div>
+      <div class="check-row"><input type="checkbox" id="dqMfg"><label for="dqMfg">Are you a manufacturer of <strong>ice cream, pan masala, or tobacco</strong> products?</label></div>
+      <div class="check-row"><input type="checkbox" id="dqCasual"><label for="dqCasual">Are you a <strong>casual taxable person</strong> or <strong>non-resident</strong> taxable person?</label></div>
+    </div>
+
+    <button class="vq-btn go" id="checkBtn" type="button">Check eligibility</button>
+    <p class="vq-hint">Free: 20 checks per day.</p>
+    <p class="err" id="cmp-error" role="alert"></p>
+    <div id="cmp-upsell"></div>
+
+    <div class="vq-result" id="cmp-result" style="display:none">
+      <div class="verdict" id="verdictBox"></div>
+      <h2 class="vq-section-sub">Tax estimate / टैक्स अनुमान</h2>
+      <div class="res-grid" id="estGrid"></div>
+      <div class="vq-formula">
+        <strong>Formula:</strong> Composition tax = aggregate turnover × rate (1% traders/manufacturers · 5% restaurants · 6% service providers), paid quarterly via CMP-08 (18th of the month after each quarter) + GSTR-4 annual return (30th June, from FY 2024-25).
+        Tax is on <strong>turnover</strong>, not profit — and <strong>no ITC</strong> is available.
+      </div>
+      <div class="vq-notice" style="margin-top:.8rem">
+        <strong>Please confirm with your CA</strong> before opting in/out. Key trade-offs: no ITC, no tax invoice (only Bill of Supply — customers can't claim ITC on your sales), no inter-state sales, and you must exit the scheme the moment turnover crosses the limit.
+      </div>
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Composition scheme me turnover limit kitni hai?</summary>
+        <p>Goods (traders/manufacturers/restaurants): <strong>₹1.5 crore</strong> preceding FY turnover — lekin Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura aur Uttarakhand me <strong>₹75 lakh</strong>. Service providers (Sec 10(2A)): <strong>₹50 lakh</strong> pure India me.</p>
+      </details>
+      <details>
+        <summary>Composition scheme me tax rate kitna hai? (What are the composition tax rates?)</summary>
+        <p>Traders aur manufacturers <strong>1%</strong>, restaurants (bina alcohol) <strong>5%</strong>, eligible service providers <strong>6%</strong> — ye rate <strong>total turnover</strong> par lagta hai, profit par nahi.</p>
+      </details>
+      <details>
+        <summary>Kya composition dealer ITC claim kar sakta hai?</summary>
+        <p>Nahi. Composition scheme me <strong>Input Tax Credit nahi milta</strong>, aur aap tax invoice ki jagah sirf <strong>Bill of Supply</strong> issue kar sakte hain — aapke B2B customers aapki purchase par ITC claim nahi kar payenge.</p>
+      </details>
+      <details>
+        <summary>Composition me kaunsi returns file hoti hain?</summary>
+        <p><strong>CMP-08</strong> — har quarter ke baad wale mahine ki 18 tarikh tak tax payment statement; aur <strong>GSTR-4</strong> — saal me ek baar 30 June tak annual return (FY 2024-25 se).</p>
+      </details>
+      <details>
+        <summary>Kya ye verdict final hai?</summary>
+        <p>Nahi — ye eligibility ka <strong>indicative check</strong> hai, tax advice nahi. Opt-in/out se pehle apne CA se confirm zaroor karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

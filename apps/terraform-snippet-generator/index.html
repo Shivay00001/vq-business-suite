@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terraform Snippet Generator — Free HCL Builder (EC2, S3, RDS, VPC) | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free Terraform snippet generator: EC2, S3 bucket, RDS, VPC presets with variables blocks. Copy & download HCL, review notes included. 100% in-browser.">
+  <meta name="keywords" content="terraform snippet generator, terraform hcl generator, terraform ec2 example, terraform s3 bucket example, terraform rds example, terraform vpc example">
+  <link rel="canonical" href="https://visionquantech.com/apps/terraform-snippet-generator/">
+  <meta property="og:title" content="Terraform Snippet Generator — Free Online">
+  <meta property="og:description" content="Generate Terraform HCL for EC2, S3, RDS, VPC with variables blocks. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    pre.code { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; overflow-x: auto; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .hints { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem; margin: .8rem 0; font-size: .9rem; }
+    .hints li { margin: .35rem 0; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  </style>
+</head>
+<body data-app="terraform-snippet-generator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Terraform Snippet Generator</h1>
+    <p class="lede">Resource preset chunein, fields bharein — <strong>HCL resource block + variables block</strong> turant payein. <code>terraform plan</code> se pehle review notes zaroor padhein.</p>
+
+    <form id="tfg-form" onsubmit="return false;">
+      <div class="vq-field">
+        <label for="preset">Resource preset</label>
+        <select id="preset">
+          <option value="ec2">EC2 Instance (aws_instance)</option>
+          <option value="s3">S3 Bucket (aws_s3_bucket)</option>
+          <option value="rds">RDS Database (aws_db_instance)</option>
+          <option value="vpc">VPC (aws_vpc)</option>
+        </select>
+      </div>
+      <div id="tfg-fields"></div>
+      <button class="vq-btn go" id="genBtn" type="button">Generate HCL</button>
+      <p class="vq-hint">Generation unlimited &amp; free.</p>
+    </form>
+
+    <div id="tfg-upsell"></div>
+
+    <div class="vq-result" id="tfg-result" style="display:none">
+      <h2 class="vq-section-sub">main.tf</h2>
+      <pre class="code" id="tfg-output"></pre>
+      <div class="btnrow">
+        <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy</button>
+        <button class="vq-btn secondary sm" id="dlBtn" type="button">Download .tf</button>
+        <button class="vq-btn sm" id="saveBtn" type="button">Save to vault</button>
+      </div>
+      <p class="vq-hint">Free: 25 vault saves/day. Copy &amp; download always free.</p>
+      <div class="hints">
+        <strong>Review notes</strong>
+        <ul id="tfg-notes"></ul>
+      </div>
+      <p class="msg" id="tfg-msg" role="status"></p>
+      <h2 class="vq-section-sub">Saved snippets</h2>
+      <div id="tfg-saved"></div>
+    </div>
+
+    <div class="vq-notice">
+      <strong>Workflow:</strong> <code>terraform init</code> → <code>terraform plan</code> (diff dhyaan se padhein) → <code>terraform apply</code>. Production me state ko S3 + DynamoDB lock me rakhein, local <code>terraform.tfstate</code> me nahi.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Terraform HCL snippet kaise likhein?</summary>
+        <p>Resource block is format me hota hai: resource "aws_instance" "web" { ami = ... instance_type = "t3.micro" }. Yahan preset chunein, fields bharein — generator resource ke saath variables block bhi likhega.</p>
+      </details>
+      <details>
+        <summary>Terraform variables kya hote hain?</summary>
+        <p>Variables se wahi config alag values ke saath reuse hoti hai (dev vs prod). "variable" block se declare karein, var.name se reference karein, -var flags ya .tfvars file se override karein.</p>
+      </details>
+      <details>
+        <summary>Terraform apply se pehle kya check karein?</summary>
+        <p>Hamesha pehle "terraform plan" chalakar diff padhein. Production me state remote (S3 + DynamoDB lock) me rakhein.</p>
+      </details>
+      <details>
+        <summary>RDS password Terraform me kaise secure rakhein?</summary>
+        <p>Variable ko sensitive = true mark karein, asli value git-ignored .tfvars file ya AWS Secrets Manager me rakhein — passwords kabhi git me commit na karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

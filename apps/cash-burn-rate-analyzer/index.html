@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash Burn Rate Analyzer — Net Burn, Runway & Zero-Cash Date | VisionQuantech</title>
+  <meta name="description" content="Free cash burn rate analyzer: enter monthly cash balances, get average net burn, runway in months and the projected zero-cash date. कैश बर्न रेट कैलकुलेटर।">
+  <meta name="keywords" content="cash burn rate calculator, business runway calculator, zero cash date, how long will cash last, कैश बर्न रेट, रनवे कैलकुलेटर">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/cash-burn-rate-analyzer/">
+  <meta property="og:title" content="Cash Burn Rate Analyzer | VisionQuantech">
+  <meta property="og:description" content="Net burn, runway months and zero-cash date from your balances. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1rem 0}
+    .kpi{background:var(--paper-soft);border-radius:10px;padding:.8rem;text-align:center}
+    .kpi-n{font-size:1.3rem;font-weight:800}
+    .kpi-l{font-size:.8rem;color:var(--ink-soft)}
+    .txt-bad{color:#b3261e}.txt-warn{color:#b26a00}.txt-ok{color:#1d7a3f}
+    .dyn-row{display:grid;grid-template-columns:1fr 1fr auto;gap:.5rem;margin-bottom:.5rem}
+    .dyn-row input{border:1px solid var(--line);border-radius:8px;padding:.5rem .6rem;font-size:1rem}
+    .vq-btn-sm{padding:.3rem .7rem;font-size:.8rem}
+  </style>
+</head>
+<body data-app="cash-burn-rate-analyzer">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Cash Burn Rate Analyzer</h1>
+      <p>Enter your <strong>month-end cash balances</strong>. The tool computes the average <strong>net burn</strong>, your <strong>runway in months</strong>, and the projected <strong>zero-cash date</strong>. <span lang="hi">कैश बर्न रेट कैलकुलेटर — पैसा कितने महीने चलेगा?</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="r-gate"></div>
+
+    <section class="card" aria-label="Cash balances">
+      <h2 class="vq-section-title" style="margin-top:0">Month-end cash balances (cash in hand + bank)</h2>
+      <div id="r-rows"></div>
+      <button id="r-addrow" class="vq-btn" type="button" style="margin-right:.5rem">+ Add month</button>
+      <button id="r-run" class="vq-btn" type="button">Analyze burn</button>
+      <p id="r-msg" class="vq-hint" aria-live="polite"></p>
+      <p class="vq-hint">At least 2 months; 6–12 months gives a steadier average.</p>
+    </section>
+
+    <section class="card" id="r-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Burn analysis</h2>
+      <div id="r-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Net burn</strong> = (first balance − last balance) ÷ (months − 1), i.e. the average monthly cash decrease.</li>
+        <li><strong>Runway</strong> = latest balance ÷ net burn. <strong>Zero-cash month</strong> = latest month + runway (rounded up).</li>
+        <li><strong>Assumes the average burn continues unchanged</strong> — seasonality, one-off expenses and new funding are not modelled.</li>
+        <li><strong>Cash-flow positive</strong> businesses get no burn and no zero-cash date.</li>
+        <li><strong>Simple projection, not financial advice</strong> — review monthly; confirm with your CA.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Cash burn — FAQs</h2>
+      <details><summary>What is cash burn rate?</summary><p>The average monthly decrease in your cash balance. If you had ₹10 lakh in January and ₹7 lakh in April, your net burn is ₹1 lakh per month.</p></details>
+      <details><summary lang="hi">कैश बर्न रेट क्या है?</summary><p lang="hi">आपके कैश बैलेंस में औसत मासिक कमी। रनवे = मौजूदा कैश ÷ मासिक बर्न — यह बताता है कि पैसा कितने महीने चलेगा।</p></details>
+      <details><summary>What is runway?</summary><p>Runway = current cash ÷ monthly net burn. It is the number of months you can operate at the current burn before cash hits zero.</p></details>
+      <details><summary>How many months of balances should I enter?</summary><p>At least 2; 6–12 months gives a steadier average that smooths one-off spikes.</p></details>
+      <details><summary>My balance is growing — what does the tool say?</summary><p>It reports you as cash-flow positive with no burn and no zero-cash date, and still recommends a 3–6 month emergency reserve.</p></details>
+      <details><summary>Is this a forecast?</summary><p>A simple projection, not a forecast — it assumes the average burn continues. Seasonality and new funding are not modelled.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

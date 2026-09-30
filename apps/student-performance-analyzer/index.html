@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Performance Analyzer – Trends, Subject Strengths & Topper List | VisionQuantech</title>
+  <meta name="description" content="Free student performance analyzer: marks trend across exams, subject-wise strength/weakness, class topper list. Uses your Marks Entry Tool data — no double entry. छात्र प्रदर्शन विश्लेषण।">
+  <meta name="keywords" content="student performance analyzer, marks trend analysis, subject strength weakness, topper list, छात्र प्रदर्शन विश्लेषण, exam performance tracker">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/student-performance-analyzer/">
+  <meta property="og:title" content="Student Performance Analyzer – Trends & Toppers | VisionQuantech">
+  <meta property="og:description" content="Trend analysis, subject strengths/weaknesses and topper lists from your marks data. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .vq-table { width:100%; border-collapse:collapse; margin:.6rem 0; font-size:.92rem; }
+    .vq-table th, .vq-table td { border:1px solid var(--line); padding:.45rem .6rem; }
+    .vq-table .num { text-align:right; }
+    .table-wrap { overflow-x:auto; }
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+  </style>
+</head>
+<body data-app="student-performance-analyzer">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard top slot --></div>
+
+    <div class="vq-hero">
+      <h1>Student Performance Analyzer — Trends, Strengths & Topper List</h1>
+      <p>See each student's marks trend across exams, subject-wise strengths and weaknesses, and the class topper list — computed from the same data you enter in the Marks Entry Tool, so no double entry. <span lang="hi">छात्र प्रदर्शन विश्लेषण — प्रगति, मज़बूत/कमज़ोर विषय और टॉपर सूची।</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Reads the shared browser vault. Nothing is uploaded.</p>
+    </div>
+
+    <div id="p-gate"></div>
+
+    <section class="card" aria-label="Analyze student">
+      <h2 class="vq-section-title" style="margin-top:0">Analyze a student</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="p-student">Student</label>
+          <select id="p-student"></select>
+        </div>
+        <div class="vq-field">
+          <label for="p-topn">Topper list size</label>
+          <input id="p-topn" type="number" min="1" max="25" value="5" inputmode="numeric">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-analyze" class="vq-btn" type="button">Analyze</button>
+      </div>
+      <p id="p-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="p-analysis"></div>
+    </section>
+
+    <section class="card" aria-label="Topper list">
+      <h2 class="vq-section-title" style="margin-top:0">Topper list (average % across all exams)</h2>
+      <div class="table-wrap">
+      <table class="vq-table">
+        <thead><tr><th>#</th><th>Student</th><th>Exams</th><th>Avg %</th></tr></thead>
+        <tbody id="p-topper-body"><tr><td colspan="4" class="vq-hint">Run an analysis first.</td></tr></tbody>
+      </table>
+      </div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard bottom slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Student performance analyzer — FAQs</h2>
+      <details><summary>How does the trend analysis work?</summary><p>With marks from 2+ exams it compares the first and latest exam percentages: a rise over 2 points is improving, a fall over 2 points is declining, otherwise stable.</p></details>
+      <details><summary lang="hi">मज़बूत और कमज़ोर विषय कैसे पता चलता है?</summary><p lang="hi">हर विषय का सभी परीक्षाओं का औसत प्रतिशत निकाला जाता है — सबसे ऊँचा औसत मज़बूत विषय, सबसे नीचा कमज़ोर विषय। उसी के हिसाब से पढ़ाई की प्राथमिकता तय करें।</p></details>
+      <details><summary>Where does it get marks data from?</summary><p>It reads the same browser vault used by the Marks Entry Tool, so no double entry. Data never leaves your device.</p></details>
+      <details><summary>Is the topper list official?</summary><p>No — it is an average of entered marks, not a board result. Verify before publishing any merit list.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

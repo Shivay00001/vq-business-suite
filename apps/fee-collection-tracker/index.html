@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Collection Tracker – Student Fee Ledger (Paid/Due/Overdue) | VisionQuantech</title>
+  <meta name="description" content="Free fee collection tracker: per-student fee ledger with total, paid, due and overdue status, class-wise collection summary. बकाया फीस ट्रैकर – कलेक्शन रेट और overdue सूची। Data stays in your browser.">
+  <meta name="keywords" content="fee collection tracker, student fee ledger, school fee management, बकाया फीस ट्रैकर, fee due tracker, coaching fee collection">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/fee-collection-tracker/">
+  <meta property="og:title" content="Fee Collection Tracker – Student Fee Ledger | VisionQuantech">
+  <meta property="og:description" content="Track paid, due and overdue fees per student with class-wise summaries. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:.6rem; margin:1rem 0; }
+    @media (min-width:640px){ .stats{ grid-template-columns:repeat(3,1fr); } }
+    .stat { background:var(--paper-soft); border-radius:10px; padding:.7rem .9rem; }
+    .stat span { display:block; font-size:.8rem; color:var(--ink-soft); }
+    .stat strong { font-size:1.15rem; }
+    .bad { color:#b3261e; }
+    .pill { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.8rem; font-weight:700; }
+    .pill.ok { background:#e6f4ea; color:#1d7a3f; } .pill.warn { background:#fef7e0; color:#8a6d00; } .pill.bad { background:#fdecea; color:#b3261e; }
+    .vq-table { width:100%; border-collapse:collapse; margin:.6rem 0; font-size:.92rem; }
+    .vq-table th, .vq-table td { border:1px solid var(--line); padding:.45rem .6rem; }
+    .vq-table .num { text-align:right; }
+    .table-wrap { overflow-x:auto; }
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem; }
+  </style>
+</head>
+<body data-app="fee-collection-tracker">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard top slot --></div>
+
+    <div class="vq-hero">
+      <h1>Fee Collection Tracker — Student Fee Ledger</h1>
+      <p>Per-student fee ledger: total fee, paid, due and overdue — with a class-wise collection summary. Overdue students are flagged automatically against today's date. <span lang="hi">बकाया फीस ट्रैकर — किस छात्र ने कितना दिया, कितना बाकी है।</span></p>
+      <p class="vq-hint">Free: 20 payment records per day. Data stays in your browser vault (max 25 students). Nothing is uploaded.</p>
+    </div>
+
+    <div id="c-gate"></div>
+
+    <section class="card" aria-label="Add student">
+      <h2 class="vq-section-title" style="margin-top:0">Add student</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="c-name">Student name</label>
+          <input id="c-name" type="text" maxlength="120" placeholder="e.g. Aarav Patel">
+        </div>
+        <div class="vq-field">
+          <label for="c-class">Class / Batch</label>
+          <input id="c-class" type="text" maxlength="120" placeholder="e.g. Class 10">
+        </div>
+        <div class="vq-field">
+          <label for="c-total">Total fee (₹)</label>
+          <input id="c-total" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="c-duedate">Due date</label>
+          <input id="c-duedate" type="date">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-add-student" class="vq-btn" type="button">Add student</button>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Record payment">
+      <h2 class="vq-section-title" style="margin-top:0">Record payment</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="c-pay-student">Student</label>
+          <select id="c-pay-student"></select>
+        </div>
+        <div class="vq-field">
+          <label for="c-pay-amount">Amount (₹)</label>
+          <input id="c-pay-amount" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="c-pay-date">Payment date</label>
+          <input id="c-pay-date" type="date">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button id="f-record-pay" class="vq-btn" type="button">Record payment</button>
+      </div>
+      <p id="c-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Collection summary">
+      <h2 class="vq-section-title" style="margin-top:0">Collection summary</h2>
+      <div class="stats" id="c-summary"></div>
+    </section>
+
+    <section class="card" aria-label="Student ledger">
+      <h2 class="vq-section-title" style="margin-top:0">Student ledger</h2>
+      <div class="table-wrap">
+      <table class="vq-table">
+        <thead><tr><th>Student</th><th>Class</th><th>Total</th><th>Paid</th><th>Due</th><th>Overdue by</th><th>Status</th><th></th></tr></thead>
+        <tbody id="c-ledger-body"></tbody>
+      </table>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Class-wise summary">
+      <h2 class="vq-section-title" style="margin-top:0">Class-wise summary</h2>
+      <div class="table-wrap">
+      <table class="vq-table">
+        <thead><tr><th>Class</th><th>Students</th><th>Total fee</th><th>Collected</th><th>Due</th><th>Rate</th></tr></thead>
+        <tbody id="c-class-body"></tbody>
+      </table>
+      </div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard bottom slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Fee collection tracker — FAQs</h2>
+      <details><summary>How do I track fee collection per student?</summary><p>Add each student with their total fee and due date, then record payments as they come in. The ledger shows paid, due, and overdue amounts per student with a class-wise summary.</p></details>
+      <details><summary lang="hi">क्या बकाया फीस (overdue) अपने आप दिखेगी?</summary><p lang="hi">हाँ — आज की तारीख के हिसाब से जिस छात्र की due date निकल चुकी है और बकाया बचा है, वह Overdue के रूप में लाल रंग में दिखेगा, साथ में कितने दिन overdue है।</p></details>
+      <details><summary>Can I record a payment bigger than the due amount?</summary><p>No — the tool blocks overpayments so the ledger never goes negative. Record advance payments as a separate arrangement.</p></details>
+      <details><summary>Where is the data saved?</summary><p>Only in your browser via the local vault (max 25 students). Nothing leaves your device.</p></details>
+      <details><summary>Does this replace my accounting software?</summary><p>No — it is a simple collection ledger. For GST and statutory books, use proper accounting records and confirm with your CA.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

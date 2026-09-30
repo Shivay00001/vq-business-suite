@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full &amp; Final Settlement Calculator – Exit Settlement India | VisionQuantech</title>
+  <meta name="description" content="Free full & final settlement calculator for Indian HR: unpaid salary + leave encashment + gratuity + bonus − advances/deductions = net payable, with a printable statement. फुल एंड फाइनल सेटलमेंट कैलकुलेटर।">
+  <meta name="keywords" content="full and final settlement calculator, exit settlement calculator India, FnF calculation, leave encashment calculation, gratuity in full final, फुल एंड फाइनल, एक्ज़िट सेटलमेंट">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/exit-settlement-calculator/">
+  <meta property="og:title" content="Full & Final Settlement Calculator | VisionQuantech">
+  <meta property="og:description" content="Compute exit settlements with a printable statement. Encrypted, on-device, free.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .pp-on{color:#1d7a3f;font-weight:700}
+    .btn-sm{ padding:.4rem .8rem; }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:.8rem; padding:.6rem 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    @media print {
+      .no-print { display:none !important; }
+      body { background:#fff; }
+      .card { box-shadow:none; }
+    }
+    .print-head { display:none; }
+    @media print { .print-head { display:block; text-align:center; margin-bottom:1rem; } }
+  </style>
+</head>
+<body data-app="exit-settlement-calculator">
+  <main class="vq-main">
+    <div id="ad-top" class="no-print"></div>
+
+    <div class="vq-hero no-print">
+      <h1>Full &amp; Final Settlement Calculator</h1>
+      <p>Free exit-settlement calculator for Indian HR: unpaid salary days + leave encashment + gratuity + bonus + notice pay − advances − TDS − other deductions = <strong>net payable</strong>, with a printable statement. <span lang="hi">फुल एंड फाइनल सेटलमेंट — बकाया वेतन, छुट्टी नकदीकरण, ग्रेच्युटी और कटौतियों का हिसाब।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Statements are stored <strong>only on this device, encrypted</strong> — set a passphrase below before saving.</p>
+    </div>
+
+    <div id="ex-gate" class="no-print"></div>
+
+    <section class="card no-print" aria-label="Data privacy">
+      <h2 class="vq-section-title" style="margin-top:0">Privacy — encrypt before saving</h2>
+      <p class="vq-hint">Settlement statements contain salary data. This app <strong>never writes them unencrypted</strong> and never sends them anywhere. Set a passphrase to unlock saving.</p>
+      <div class="vq-field">
+        <label for="pp-input">Passphrase</label>
+        <input id="pp-input" type="password" autocomplete="new-password" placeholder="Choose a strong passphrase">
+      </div>
+      <button id="pp-set" class="vq-btn" type="button">Set passphrase &amp; unlock</button>
+      <p id="pp-status" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card no-print" aria-label="Settlement inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Exit details</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="ex-name">Employee name</label><input id="ex-name" type="text" maxlength="120" placeholder="e.g. Suresh Yadav" autocomplete="off"></div>
+        <div class="vq-field"><label for="ex-exitdate">Last working day</label><input id="ex-exitdate" type="date"></div>
+        <div class="vq-field"><label for="ex-gross">Monthly gross salary (₹)</label><input id="ex-gross" type="number" min="0" max="100000000" step="0.01" placeholder="e.g. 45000" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ex-basic">Monthly Basic + DA (₹)</label><input id="ex-basic" type="number" min="0" max="100000000" step="0.01" placeholder="e.g. 20000" inputmode="decimal"><p class="vq-hint">Used for unpaid salary, leave encashment &amp; gratuity.</p></div>
+        <div class="vq-field"><label for="ex-unpaid-days">Unpaid salary days (0–31)</label><input id="ex-unpaid-days" type="number" min="0" max="31" step="0.5" value="0" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ex-divisor">Per-day divisor</label>
+          <select id="ex-divisor"><option value="26" selected>26 — factory / daily-rated workers</option><option value="30">30 — standard monthly salary</option></select>
+          <p class="vq-hint">Stated assumption: pick the divisor your payroll uses.</p></div>
+        <div class="vq-field"><label for="ex-el-days">Unused earned-leave days (encashment)</label><input id="ex-el-days" type="number" min="0" max="365" step="1" value="0" inputmode="numeric"><p class="vq-hint">Assumption: (Basic ÷ 26) × unused EL days.</p></div>
+        <div class="vq-field"><label for="ex-grat-yrs">Gratuity: years of service</label><input id="ex-grat-yrs" type="number" min="0" max="60" step="1" value="0" inputmode="numeric"></div>
+        <div class="vq-field"><label for="ex-grat-mths">Gratuity: extra months (0–11)</label><input id="ex-grat-mths" type="number" min="0" max="11" step="1" value="0" inputmode="numeric"><p class="vq-hint">Auto = (15/26) × Basic × billable years, capped ₹20L. Set 0 if not payable.</p></div>
+        <div class="vq-field"><label for="ex-grat-manual">Gratuity override (₹, optional)</label><input id="ex-grat-manual" type="number" min="0" max="2000000" step="0.01" placeholder="leave blank for auto" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ex-bonus">Bonus payable (₹)</label><input id="ex-bonus" type="number" min="0" max="10000000" step="0.01" value="0" inputmode="decimal"><p class="vq-hint">Payment of Bonus Act: min 8.33%, max 20% of wages (eligibility ≤ ₹21,000/mo Basic+DA; computed on wages ≤ ₹7,000/mo or the applicable minimum wage, whichever is higher) — enter the due amount.</p></div>
+        <div class="vq-field"><label for="ex-notice">Notice pay payable (₹)</label><input id="ex-notice" type="number" min="0" max="10000000" step="0.01" value="0" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ex-advances">Advances / loans outstanding (₹)</label><input id="ex-advances" type="number" min="0" max="100000000" step="0.01" value="0" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ex-tds">TDS deductible (₹)</label><input id="ex-tds" type="number" min="0" max="100000000" step="0.01" value="0" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ex-other">Other deductions (₹)</label><input id="ex-other" type="number" min="0" max="100000000" step="0.01" value="0" inputmode="decimal"></div>
+      </div>
+      <button id="ex-calc" class="vq-btn" type="button">Calculate settlement</button>
+      <p id="ex-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <div class="print-head"><h2>Full &amp; Final Settlement Statement</h2><p>VisionQuantech Business Suite · computer-generated — verify with payroll records</p></div>
+
+    <section class="card" id="ex-result-card" aria-label="Settlement result" hidden>
+      <h2 class="vq-section-title no-print" style="margin-top:0">Net payable</h2>
+      <div id="ex-result"></div>
+      <div class="no-print" style="margin-top:1rem; display:flex; gap:.6rem; flex-wrap:wrap">
+        <button id="ex-print" class="vq-btn" type="button">Print statement</button>
+        <button id="ex-save" class="vq-btn" type="button">Save statement</button>
+      </div>
+    </section>
+
+    <section class="card no-print" aria-label="Saved statements">
+      <h2 class="vq-section-title" style="margin-top:0">Saved statements (max 25)</h2>
+      <div id="ex-saved"></div>
+    </section>
+
+    <section class="card no-print" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Unpaid salary:</strong> (Basic ÷ divisor) × unpaid days. Divisor 26 for factory/daily-rated workers, 30 for standard monthly payroll — <strong>pick the one your company uses</strong>.</li>
+        <li><strong>Leave encashment:</strong> (Basic ÷ 26) × unused earned-leave days. Companies may use gross ÷ 30 — adjust the EL-day equivalent or override via bonus/notice fields.</li>
+        <li><strong>Gratuity:</strong> auto = (15 ÷ 26) × Basic × billable years (&gt;6 final-year months = 1 year), capped at ₹20,00,000; 0 if under 5 years. Manual override available.</li>
+        <li><strong>Bonus:</strong> Payment of Bonus Act, 1965 — minimum 8.33%, maximum 20% of wages earned in the accounting year; applies to employees with wages ≤ ₹21,000/month (Basic + DA) who worked ≥ 30 days; computed on wages ≤ ₹7,000/month or the applicable minimum wage, whichever is higher. Enter the actual due amount.</li>
+        <li><strong>Tax:</strong> leave encashment and gratuity above limits are taxable — TDS field is manual; <strong>confirm with your CA</strong>.</li>
+      </ul>
+    </section>
+
+    <section class="card no-print" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>Gratuity formula &amp; cap — Payment of Gratuity Act, 1972: <a href="https://www.bajajfinserv.in/payment-of-gratuity-act-1972" rel="noopener">Bajaj Finserv</a>; <a href="https://economictimes.indiatimes.com/wealth/invest/how-to-calculate-gratuity/articleshow/61913387.cms" rel="noopener">Economic Times</a></li>
+        <li>Bonus min 8.33% / max 20%, eligibility ≤ ₹21,000/mo (Basic+DA, ≥30 days worked), calculation ceiling ₹7,000/mo or minimum wage whichever higher — Payment of Bonus Act, 1965 (2015 amendment); payable within 8 months of the accounting year — <a href="https://factohr.com/bonus-act-1965/" rel="noopener">FactoHR</a>; <a href="http://banyanhr.com/wp-content/uploads/2022/03/The-Payment-of-Bonus-Act.pdf" rel="noopener">Banyan HR summary (PDF)</a>; <a href="https://www.key4comply.com/blogposts/statutory-bonus-eligibility-india-2026-do-you-qualify-at-%e2%82%b925000-salary-payment-of-bonus-act-code-on-wages-explained/" rel="noopener">Key4Comply (2026 update)</a></li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom" class="no-print"></div>
+
+    <section class="vq-faq no-print" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Exit settlement — FAQs</h2>
+      <details><summary>What goes into a full &amp; final settlement?</summary><p>Unpaid salary for days worked, leave encashment for unused earned leave, gratuity (if eligible), pro-rata bonus, notice pay — minus advances/loans, TDS and other deductions. The net is the amount payable to the employee.</p></details>
+      <details><summary lang="hi">फुल एंड फाइनल सेटलमेंट में क्या-क्या आता है?</summary><p lang="hi">बकाया वेतन, बिना ली छुट्टियों का नकदीकरण, ग्रेच्युटी, बोनस, नोटिस वेतन — इनमें से एडवांस, TDS और अन्य कटौतियाँ घटाकर शुद्ध देय राशि निकलती है।</p></details>
+      <details><summary>How is leave encashment calculated?</summary><p>There is no single statutory formula for all establishments; this calculator uses the common convention (Basic ÷ 26) × unused earned-leave days and states it on-screen. Some companies use gross ÷ 30 — use whichever your policy specifies.</p></details>
+      <details><summary>Is leave encashment taxable?</summary><p>Yes, generally — leave encashment received on resignation/termination is taxable (government employees get an exemption up to a limit). Gratuity above ₹20 lakh is also taxable. Confirm TDS with your CA.</p></details>
+      <details><summary>Is my data private?</summary><p>Yes — nothing leaves your device. Saving is locked until you set a passphrase; statements are then stored encrypted (AES-256-GCM) in this browser only.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

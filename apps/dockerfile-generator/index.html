@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dockerfile Generator — Free Online Dockerfile Builder | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free Dockerfile generator: pick a base image, add RUN/ENV/EXPOSE/CMD, toggle multi-stage builds — get a ready Dockerfile with copy, download & best-practice lint hints. 100% in-browser.">
+  <meta name="keywords" content="dockerfile generator, dockerfile kaise banaye, dockerfile online, free dockerfile builder, multi-stage dockerfile example, dockerfile best practices">
+  <link rel="canonical" href="https://visionquantech.com/apps/dockerfile-generator/">
+  <meta property="og:title" content="Dockerfile Generator — Free Online">
+  <meta property="og:description" content="Build production-ready Dockerfiles in your browser with lint hints. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    pre.code { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; overflow-x: auto; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .hints { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem; margin: .8rem 0; font-size: .9rem; }
+    .hints li { margin: .35rem 0; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body data-app="dockerfile-generator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Dockerfile Generator</h1>
+    <p class="lede">Base image, RUN steps, ENV, ports aur CMD bharein — production-ready <strong>Dockerfile</strong> turant ban jayega, best-practice lint hints ke saath. Sab kuch browser me, copy &amp; download free.</p>
+
+    <form id="dfg-form" onsubmit="return false;">
+      <div class="row2">
+        <div class="vq-field">
+          <label for="baseImage">Base image</label>
+          <select id="baseImage">
+            <option>node:20-alpine</option>
+            <option>node:20-slim</option>
+            <option>python:3.12-slim</option>
+            <option>eclipse-temurin:21-jre-alpine</option>
+            <option>golang:1.22-alpine</option>
+            <option>nginx:1.27-alpine</option>
+            <option value="custom…">Custom…</option>
+          </select>
+        </div>
+        <div class="vq-field" id="customBaseWrap" style="display:none">
+          <label for="customBase">Custom base image</label>
+          <input id="customBase" type="text" placeholder="e.g. myregistry.io/team/app:1.4.2">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="workdir">WORKDIR</label>
+          <input id="workdir" type="text" value="/app" placeholder="/app">
+        </div>
+        <div class="vq-field">
+          <label for="copySrc">COPY source (build context path)</label>
+          <input id="copySrc" type="text" value="." placeholder=".">
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="runCmds">RUN commands (one per line)</label>
+        <textarea id="runCmds" rows="3" placeholder="npm ci --only=production&#10;npm run build"></textarea>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="expose">EXPOSE ports (comma separated)</label>
+          <input id="expose" type="text" placeholder="3000, 8080">
+        </div>
+        <div class="vq-field">
+          <label for="envVars">ENV vars (KEY=VALUE, one per line)</label>
+          <textarea id="envVars" rows="3" placeholder="NODE_ENV=production&#10;PORT=3000"></textarea>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="entrypoint">ENTRYPOINT (optional)</label>
+          <input id="entrypoint" type="text" placeholder='["docker-entrypoint.sh"]'>
+        </div>
+        <div class="vq-field">
+          <label for="cmd">CMD</label>
+          <input id="cmd" type="text" placeholder='["node", "server.js"]'>
+          <p class="vq-hint">Exec (JSON-array) form preferred — signals reach your app correctly.</p>
+        </div>
+      </div>
+      <div class="vq-field">
+        <label><input id="multistage" type="checkbox" style="width:auto;min-height:0"> Multi-stage build (separate build stage, slim final image)</label>
+      </div>
+      <button class="vq-btn go" id="genBtn" type="button">Generate Dockerfile</button>
+      <p class="vq-hint">Generation unlimited &amp; free.</p>
+      <p class="err" id="dfg-error" role="alert"></p>
+    </form>
+
+    <div id="dfg-upsell"></div>
+
+    <div class="vq-result" id="dfg-result" style="display:none">
+      <h2 class="vq-section-sub">Dockerfile</h2>
+      <pre class="code" id="dfg-output"></pre>
+      <div class="btnrow">
+        <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy</button>
+        <button class="vq-btn secondary sm" id="dlBtn" type="button">Download</button>
+      </div>
+      <div class="hints">
+        <strong>Best-practice hints</strong>
+        <ul id="dfg-hints"></ul>
+      </div>
+      <div class="row2">
+        <div class="vq-field">
+          <label for="draftName">Draft name (to save on this device)</label>
+          <input id="draftName" type="text" placeholder="e.g. api-dockerfile">
+        </div>
+        <div class="vq-field" style="align-self:end">
+          <button class="vq-btn sm" id="saveBtn" type="button">Save draft to vault</button>
+          <p class="vq-hint">Free: 25 vault saves/day.</p>
+        </div>
+      </div>
+      <p class="msg" id="dfg-msg" role="status"></p>
+      <h2 class="vq-section-sub">Saved drafts</h2>
+      <div id="dfg-saved"></div>
+    </div>
+
+    <div class="vq-notice">
+      <strong>Note:</strong> generated file ko <code>docker build -t myapp .</code> se test karein. Secrets (API keys, passwords) kabhi image me bake na karein — runtime par env file ya secrets manager se inject karein.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Dockerfile kaise banaye?</summary>
+        <p>Base image chunein (jaise node:20-alpine), WORKDIR set karein, code COPY karein, RUN me install/build steps likhein, EXPOSE me port, aur ant me CMD/ENTRYPOINT. Ye generator ye sab assemble karke lint hints ke saath deta hai.</p>
+      </details>
+      <details>
+        <summary>Dockerfile me "latest" tag kyon avoid karna chahiye?</summary>
+        <p>"latest" tag samay ke saath badalta rehta hai — aaj ka build kal toot sakta hai. Hamesha explicit version pin karein, jaise node:20-alpine, taaki builds reproducible rahein.</p>
+      </details>
+      <details>
+        <summary>Multi-stage build kya hota hai?</summary>
+        <p>Ek stage me compile/install hota hai, doosri slim stage me sirf built artefacts copy hote hain. Final image chhoti rehti hai aur usme compiler ya devDependencies nahi aate.</p>
+      </details>
+      <details>
+        <summary>.dockerignore kyon zaroori hai?</summary>
+        <p>COPY . . poora build context bhejta hai. Bina .dockerignore ke node_modules, .git aur .env image me chale jaate hain — build slow hota hai aur secrets leak ho sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

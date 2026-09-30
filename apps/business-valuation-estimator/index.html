@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Valuation Estimator — Revenue, Profit & DCF Range (ESTIMATE) | VisionQuantech</title>
+  <meta name="description" content="Free business valuation estimator India: revenue multiple, profit multiple and DCF-lite methods give a value range. Clearly labelled ESTIMATE — not financial advice. बिज़नेस वैल्यूएशन एस्टीमेटर।">
+  <meta name="keywords" content="business valuation calculator india, small business valuation, how to value a business, revenue multiple, profit multiple, DCF calculator, बिज़नेस वैल्यूएशन, कंपनी वैल्यूएशन कैसे निकालें">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/business-valuation-estimator/">
+  <meta property="og:title" content="Business Valuation Estimator (ESTIMATE) | VisionQuantech">
+  <meta property="og:description" content="Three-method valuation range for Indian SMEs. Labelled estimate — not financial advice.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .est-tag { background:#fff3cd; border:1px solid #d9a400; border-radius:10px; padding:.7rem 1rem; font-weight:800; color:#7a5b00; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+  </style>
+</head>
+<body data-app="business-valuation-estimator">
+  <main class="vq-main">
+    <!-- ADSENSE: --><div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Business Valuation Estimator — Know Your Range</h1>
+      <p>Three methods — <strong>revenue multiple, profit multiple, DCF-lite</strong> — produce a valuation <strong>range</strong> for your business. <span class="est-tag">⚠ ESTIMATE — NOT FINANCIAL ADVICE</span> <span lang="hi">बिज़नेस वैल्यूएशन एस्टीमेटर — तीन तरीकों से रेंज जानें।</span></p>
+      <p class="vq-hint">Free: 20 estimates per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="v-gate"></div>
+
+    <section class="card" aria-label="Valuation inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your business numbers (annual, ₹)</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="v-revenue">Annual revenue (₹)</label>
+          <input id="v-revenue" type="number" min="0" max="100000000000" step="0.01" value="10000000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="v-pat">Annual PAT — profit after tax (₹)</label>
+          <input id="v-pat" type="number" min="0" max="100000000000" step="0.01" value="1500000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="v-growth">Revenue growth % (yearly)</label>
+          <input id="v-growth" type="number" min="-50" max="200" step="0.1" value="12" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="v-fcf">Annual free cash flow (₹)</label>
+          <input id="v-fcf" type="number" min="0" max="100000000000" step="0.01" value="1200000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="v-discount">Discount rate % (5–40)</label>
+          <input id="v-discount" type="number" min="5" max="40" step="0.1" value="15" inputmode="decimal">
+          <p class="vq-hint">Higher = riskier business. 12–18% is typical for SMEs.</p>
+        </div>
+        <div class="vq-field">
+          <label for="v-years">Projection years (1–15)</label>
+          <input id="v-years" type="number" min="1" max="15" step="1" value="5" inputmode="numeric">
+        </div>
+      </div>
+      <button id="v-calc" class="vq-btn" type="button">Estimate valuation</button>
+      <p id="v-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="v-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Estimated value range</h2>
+      <div id="v-result"></div>
+    </section>
+
+    <!-- ADSENSE: --><div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Business valuation — FAQs</h2>
+      <details><summary>How is a small business valued in India?</summary><p>Common methods: revenue multiple (0.5–2x annual revenue), profit multiple (3–6x PAT), and discounted cash flow. This tool gives a range across all three — labelled an ESTIMATE.</p></details>
+      <details><summary lang="hi">बिज़नेस की वैल्यूएशन कैसे निकालें?</summary><p lang="hi">तीन तरीकों से — रेवेन्यू मल्टिपल, प्रॉफिट मल्टिपल और DCF — रेंज के रूप में। यह केवल अनुमान (ESTIMATE) है, फाइनेंशियल एडवाइस नहीं।</p></details>
+      <details><summary>What multiple should I use for revenue?</summary><p>Indian SMEs typically trade at 0.5–2x annual revenue depending on growth, margins and assets. This tool adjusts the multiple band by your growth rate.</p></details>
+      <details><summary>What is DCF-lite?</summary><p>A simplified discounted cash flow: your free cash flow projected for up to 15 years and discounted to today. Terminal value is excluded, so it is conservative.</p></details>
+      <details><summary>Is this official financial advice?</summary><p>No — a negotiation starting point. Selling or raising money needs a registered valuer and due diligence.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

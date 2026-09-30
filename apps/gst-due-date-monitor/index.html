@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Due Date Monitor — GSTR-1, GSTR-3B, CMP-08 ड्यू डेट कैलेंडर | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free GST due date tracker for Indian SMEs: GSTR-1 (11th), GSTR-3B (20th), QRMP, CMP-08, GSTR-9 due dates with live countdown, overdue alerts and late-fee estimates. जीएसटी ड्यू डेट मॉनिटर।">
+  <meta name="keywords" content="GST due dates, जीएसटी ड्यू डेट, GSTR-3B due date, GSTR-1 last date, GST return due date monitor, CMP-08 due date, GST compliance calendar India">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .scheme-row { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .scheme-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem .9rem; cursor: pointer; font-weight: 600; font-size: .93rem; background: #fff; }
+    .scheme-row input { margin-right: .4rem; }
+    .scheme-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    .pill { display: inline-block; padding: .25rem .7rem; border-radius: 999px; font-size: .82rem; font-weight: 700; background: #eef2f7; }
+    tr.st-over .pill { background: #fde8e8; color: #b42318; }
+    tr.st-today .pill { background: #fff3d6; color: #8a5a00; }
+    tr.st-soon .pill { background: #fff3d6; color: #8a5a00; }
+    tr.st-filed .pill { background: #e6f6ec; color: #1a7f37; }
+    tr.st-over td { background: #fff5f5; }
+    tr.st-filed td { color: var(--ink-soft); }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .6rem 0; }
+  </style>
+</head>
+<body data-app="gst-due-date-monitor">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>GST Due Date &amp; Penalty Monitor</h1>
+    <p class="lede">जीएसटी ड्यू डेट मॉनिटर — GSTR-1, GSTR-3B, PMT-06, CMP-08, GSTR-9 ki due dates, live countdown, overdue alerts aur late-fee estimate. Apni scheme chunein, GSTIN profile save karein, aur har return ko "filed" mark karein.</p>
+
+    <div class="vq-field">
+      <label>Your filing scheme / आपकी फाइलिंग स्कीम</label>
+      <div class="scheme-row">
+        <label><input type="radio" name="scheme" value="monthly" checked> Monthly (turnover &gt; ₹5 cr)</label>
+        <label><input type="radio" name="scheme" value="qrmp"> QRMP — Quarterly (turnover ≤ ₹5 cr)</label>
+        <label><input type="radio" name="scheme" value="composition"> Composition dealer</label>
+      </div>
+    </div>
+
+    <div class="vq-field" id="qrmpRow" style="display:none">
+      <label for="qrmpGroup">QRMP state group (GSTR-3B due 22nd vs 24th)</label>
+      <select id="qrmpGroup">
+        <option value="A">Group A — due 22nd</option>
+        <option value="B">Group B — due 24th</option>
+      </select>
+      <p class="vq-hint" id="groupAuto"></p>
+    </div>
+
+    <div class="vq-field">
+      <label for="bizName">Business name (optional)</label>
+      <input id="bizName" type="text" placeholder="e.g. Sharma Traders">
+    </div>
+    <div class="vq-field">
+      <label for="gstin">GSTIN (optional — auto-detects QRMP group)</label>
+      <input id="gstin" type="text" maxlength="15" placeholder="e.g. 27ABCDE1234F1Z5" style="text-transform:uppercase">
+    </div>
+    <div class="vq-field">
+      <label for="turnover">Annual aggregate turnover (₹) — for late-fee caps</label>
+      <input id="turnover" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 4000000 (optional)">
+    </div>
+
+    <div class="btn-row">
+      <button class="vq-btn go" id="saveProfileBtn" type="button">Save profile</button>
+      <button class="vq-btn ghost" id="refreshBtn" type="button">Refresh countdown</button>
+    </div>
+    <p class="err" id="gdm-error" role="alert"></p>
+    <p class="ok-msg" id="gdm-saved"></p>
+    <div id="gdm-upsell"></div>
+
+    <h2 class="vq-section-title">Upcoming due dates</h2>
+    <div id="gdm-table"><p class="vq-hint">Loading…</p></div>
+
+    <div class="vq-notice">
+      <strong>Honest note on reminders:</strong> ye tool 100% aapke browser me chalta hai — iska koi server nahi hai, isliye ye SMS, email ya push notification <strong>nahi bhej sakta</strong>. Page ko bookmark/pin karke hafte me ek baar check karein, ya apne phone calendar me due dates add kar lein. "Filed" tick karne par row green ho jayegi aur estimate zero.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>GSTR-3B ki due date kya hai?</summary>
+        <p>Monthly filers: agle mahine ki <strong>20 tarikh</strong>. QRMP (quarterly) filers: quarter ke baad wale mahine ki <strong>22 ya 24 tarikh</strong> (state group ke hisaab se).</p>
+      </details>
+      <details>
+        <summary>GSTR-1 kab file hota hai?</summary>
+        <p>Monthly: agle mahine ki <strong>11 tarikh</strong>. QRMP: quarter ke baad wale mahine ki <strong>13 tarikh</strong>.</p>
+      </details>
+      <details>
+        <summary>Composition dealer ki due dates kya hain?</summary>
+        <p>CMP-08 (quarterly tax payment): har quarter ke baad wale mahine ki <strong>18 tarikh</strong>. CMP-08 par late fee nahi, par late tax par 18% p.a. interest lagta hai. GSTR-4 (annual): agle financial year ki <strong>30 April</strong>.</p>
+      </details>
+      <details>
+        <summary>GSTR-9 kab file karna hota hai?</summary>
+        <p>Financial year ke baad <strong>31 December</strong> tak. ₹2 crore se kam turnover par GSTR-9 optional hai; GSTR-9C ₹5 crore se zyada turnover par lagta hai.</p>
+      </details>
+      <details>
+        <summary>Kya ye app mujhe reminder bhejega?</summary>
+        <p>Nahi — iska koi backend/server nahi hai, isliye notifications bhejna technically possible nahi. Ye live countdown dikhata hai; page bookmark karke weekly check karein.</p>
+      </details>
+      <details>
+        <summary>Late filing par kitna late fee lagega?</summary>
+        <p>₹50/day (₹25 CGST + ₹25 SGST); nil return par ₹20/day. Cap: nil ₹500 · ≤₹1.5 cr ₹2,000 · ₹1.5–5 cr ₹5,000 · &gt;₹5 cr ₹10,000.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

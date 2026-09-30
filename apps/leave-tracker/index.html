@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave Tracker – Free Employee Leave Management (CL/SL/EL) for Indian SMEs | VisionQuantech</title>
+  <meta name="description" content="Free leave tracker for Indian SMEs: CL/SL/EL quotas, apply → approve flow, per-employee balance ledger with negative-balance guard. Data stays encrypted on your device. लीव ट्रैकर – कर्मचारी छुट्टी प्रबंधन।">
+  <meta name="keywords" content="leave tracker India, employee leave management, CL SL EL leave balance, leave approval app SME, leave ledger, लीव ट्रैकर, छुट्टी प्रबंधन, CL SL EL">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/leave-tracker/">
+  <meta property="og:title" content="Leave Tracker – CL/SL/EL Balances & Approvals | VisionQuantech">
+  <meta property="og:description" content="Leave quotas, apply/approve flow and per-employee ledgers. Encrypted, on-device, free.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:.8rem; padding:.6rem 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-pending{ background:#fff3d6; color:#8a6100; } .b-approved{ background:#d9f2e3; color:#1d7a3f; } .b-rejected{ background:#fde3e3; color:#b3261e; }
+    .bal-low{ color:#b3261e; font-weight:700; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .pp-on{color:#1d7a3f;font-weight:700}
+    .btn-sm{ padding:.4rem .8rem; }
+  </style>
+</head>
+<body data-app="leave-tracker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Leave Tracker — CL / SL / EL Balances &amp; Approvals</h1>
+      <p>Free leave management for Indian SMEs: set yearly CL/SL/EL quotas, apply leaves, approve or reject them, and keep a per-employee balance ledger with a negative-balance guard. <span lang="hi">लीव ट्रैकर — छुट्टियों का कोटा, आवेदन और बैलेंस लेजर।</span></p>
+      <p class="vq-hint">Free: 20 leave actions per day. Data is stored <strong>only on this device, encrypted</strong> — set a passphrase below before saving.</p>
+    </div>
+
+    <div id="lt-gate"></div>
+
+    <section class="card" aria-label="Data privacy">
+      <h2 class="vq-section-title" style="margin-top:0">Privacy — encrypt before saving</h2>
+      <p class="vq-hint">Leave records are personal data. This app <strong>never writes them unencrypted</strong> and never sends them anywhere. Set a passphrase to unlock saving.</p>
+      <div class="vq-field">
+        <label for="pp-input">Passphrase</label>
+        <input id="pp-input" type="password" autocomplete="new-password" placeholder="Choose a strong passphrase">
+      </div>
+      <button id="pp-set" class="vq-btn" type="button">Set passphrase &amp; unlock</button>
+      <p id="pp-status" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Employees">
+      <h2 class="vq-section-title" style="margin-top:0">Employees (max 25)</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="lt-name">Employee name</label>
+          <input id="lt-name" type="text" maxlength="120" placeholder="e.g. Priya Sharma" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="lt-doj">Date of joining (optional)</label>
+          <input id="lt-doj" type="date">
+        </div>
+      </div>
+      <button id="lt-add" class="vq-btn" type="button">Add employee</button>
+      <p id="lt-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="lt-emp-list" style="margin-top:1rem"></div>
+    </section>
+
+    <section class="card" aria-label="Yearly quotas">
+      <h2 class="vq-section-title" style="margin-top:0">Yearly leave quotas (editable)</h2>
+      <p class="vq-hint">Typical Indian SME defaults: CL 12, SL 12, EL 15 days/year. Actual entitlement depends on your state Shops Act / standing orders — adjust to your policy.</p>
+      <div class="form-grid">
+        <div class="vq-field"><label for="lt-q-cl">Casual Leave (CL) / year</label><input id="lt-q-cl" type="number" min="0" max="365" step="1" value="12" inputmode="numeric"></div>
+        <div class="vq-field"><label for="lt-q-sl">Sick Leave (SL) / year</label><input id="lt-q-sl" type="number" min="0" max="365" step="1" value="12" inputmode="numeric"></div>
+        <div class="vq-field"><label for="lt-q-el">Earned Leave (EL) / year</label><input id="lt-q-el" type="number" min="0" max="365" step="1" value="15" inputmode="numeric"></div>
+      </div>
+      <button id="lt-q-save" class="vq-btn" type="button">Save quotas</button>
+    </section>
+
+    <section class="card" aria-label="Apply for leave">
+      <h2 class="vq-section-title" style="margin-top:0">Apply for leave</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="lt-emp">Employee</label><select id="lt-emp"></select></div>
+        <div class="vq-field"><label for="lt-type">Leave type</label>
+          <select id="lt-type"><option value="CL">Casual Leave (CL)</option><option value="SL">Sick Leave (SL)</option><option value="EL">Earned Leave (EL)</option></select></div>
+        <div class="vq-field"><label for="lt-from">From</label><input id="lt-from" type="date"></div>
+        <div class="vq-field"><label for="lt-to">To</label><input id="lt-to" type="date"></div>
+      </div>
+      <div class="vq-field"><label for="lt-reason">Reason (optional)</label><input id="lt-reason" type="text" maxlength="200" placeholder="e.g. Family function" autocomplete="off"></div>
+      <p class="vq-hint" id="lt-days-hint"></p>
+      <button id="lt-apply" class="vq-btn" type="button">Submit application</button>
+    </section>
+
+    <section class="card" aria-label="Pending approvals">
+      <h2 class="vq-section-title" style="margin-top:0">Pending approvals</h2>
+      <div id="lt-pending"></div>
+    </section>
+
+    <section class="card" aria-label="Balance ledger">
+      <h2 class="vq-section-title" style="margin-top:0">Balance ledger</h2>
+      <div class="vq-field"><label for="lt-ledger-emp">Employee</label><select id="lt-ledger-emp"></select></div>
+      <div class="vq-table-wrap"><table class="vq-table" id="lt-ledger"></table></div>
+      <h3 class="vq-section-sub">Leave history</h3>
+      <div id="lt-history"></div>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Leave tracker — FAQs</h2>
+      <details><summary>How does the apply → approve flow work?</summary><p>Apply creates a <em>pending</em> request. Approving deducts the days from that leave type's balance; rejecting leaves the balance untouched. Pending requests never reduce the balance, so an employee can't be double-charged.</p></details>
+      <details><summary lang="hi">छुट्टी का आवेदन और अनुमोदन कैसे काम करता है?</summary><p lang="hi">आवेदन करने पर अनुरोध “pending” रहता है। अनुमोदन (approve) पर दिनों की कटौती बैलेंस से होती है; अस्वीकृति (reject) पर बैलेंस नहीं घटता।</p></details>
+      <details><summary>What is the negative-balance guard?</summary><p>Neither applying nor approving can push a leave balance below zero — the app blocks the action and tells you how many days are actually available.</p></details>
+      <details><summary>Are the CL/SL/EL quotas fixed by law?</summary><p>No. Quotas depend on your state's Shops &amp; Establishments Act and company policy (Factories Act gives ~1 EL day per 20 days worked). The defaults (12/12/15) are typical SME practice — edit them to match your policy.</p></details>
+      <details><summary>Is my data private?</summary><p>Yes. Nothing leaves your device; saving is locked until you set a passphrase, and records are then stored encrypted (AES-256-GCM) in this browser only.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

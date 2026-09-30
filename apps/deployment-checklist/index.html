@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment Checklist — Free Pre/During/Post Deploy QA | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free interactive deployment checklist: pre-deploy, during-deploy & post-deploy steps with progress %, custom items, vault save, Markdown export & print. 100% in-browser.">
+  <meta name="keywords" content="deployment checklist, deploy checklist, production deployment checklist, pre deploy checklist, post deployment verification steps">
+  <link rel="canonical" href="https://visionquantech.com/apps/deployment-checklist/">
+  <meta property="og:title" content="Deployment Checklist — Free Online">
+  <meta property="og:description" content="Ship with confidence: interactive pre/during/post deploy checklist with progress tracking. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .pbar-wrap { background: var(--paper-soft); border: 1px solid var(--line); border-radius: 999px; height: 22px; overflow: hidden; margin: .4rem 0; }
+    #dcl-bar { height: 100%; width: 0; background: var(--brand); transition: width .3s; }
+    .pbar-meta { display: flex; justify-content: space-between; font-weight: 700; font-size: .95rem; }
+    .dsec { margin: 1.2rem 0; }
+    .ditem { display: flex; gap: .7rem; align-items: flex-start; padding: .55rem .6rem; border: 1px solid var(--line); border-radius: 10px; margin: .4rem 0; cursor: pointer; background: #fff; }
+    .ditem input { width: 22px; height: 22px; min-height: 22px; margin-top: 1px; flex-shrink: 0; }
+    .ditem.done span { text-decoration: line-through; color: var(--ink-soft); }
+    .addrow { display: flex; gap: .5rem; margin-top: .5rem; }
+    .addrow input { flex: 1; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .8rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    @media print { .btnrow, #ad-top, #ad-bottom, .addrow, .vq-field { display: none !important; } }
+  </style>
+</head>
+<body data-app="deployment-checklist">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Deployment Checklist</h1>
+    <p class="lede">Deploy se pehle, deploy ke dauraan, aur deploy ke baad — har step tick karein. Progress device par save hoti hai, export/print free hai.</p>
+
+    <div class="pbar-meta"><span id="dcl-pct">0%</span><span id="dcl-count">0 of 0 done</span></div>
+    <div class="pbar-wrap" role="progressbar" aria-label="Checklist progress"><div id="dcl-bar"></div></div>
+
+    <div id="dcl-sections"></div>
+
+    <div class="btnrow">
+      <button class="vq-btn go sm" id="saveBtn" type="button">Save progress</button>
+      <button class="vq-btn secondary sm" id="dlBtn" type="button">Export Markdown</button>
+      <button class="vq-btn secondary sm" id="printBtn" type="button">Print</button>
+      <button class="vq-btn ghost sm" id="resetBtn" type="button">Reset</button>
+    </div>
+    <p class="vq-hint">Free: 25 vault saves/day. Export &amp; print always free.</p>
+    <div id="dcl-upsell"></div>
+
+    <div class="vq-field" style="max-width: 420px">
+      <label for="dcl-pass">Vault passphrase (optional — encrypts saved progress)</label>
+      <div class="addrow">
+        <input id="dcl-pass" type="password" placeholder="Optional passphrase" autocomplete="off">
+        <button class="vq-btn sm" id="ppBtn" type="button">Set</button>
+      </div>
+      <p class="vq-hint">On plain file:// or non-HTTPS pages WebCrypto may be unavailable — the app will say so and save unencrypted.</p>
+    </div>
+
+    <p class="msg" id="dcl-msg" role="status"></p>
+
+    <div class="vq-notice">
+      <strong>Rollback yaad rakhein:</strong> har deploy me previous image tag note karein aur migration down-steps ready rakhein — 2 AM panic 5-minute routine ban jaata hai.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Deployment se pehle kya check karna chahiye?</summary>
+        <p>Code review + merge, green CI, reviewed DB migrations with rollback plan, production secrets set, version tag, changelog, aur fresh production DB backup.</p>
+      </details>
+      <details>
+        <summary>Deploy ke dauraan kya monitor karein?</summary>
+        <p>Pehle staging par deploy karke smoke test, phir migrations, phir rolling/blue-green deploy to prod. Kam se kam 15 minute tak health checks aur error rates dekhein.</p>
+      </details>
+      <details>
+        <summary>Deploy ke baad kya verify karein?</summary>
+        <p>Production par smoke tests, key user flows (login, checkout, payments), logs/metrics dashboards, backup schedules, aur stakeholders ko notification.</p>
+      </details>
+      <details>
+        <summary>Rollback plan kyon zaroori hai?</summary>
+        <p>Har deploy fail ho sakta hai. Likha hua rollback plan — previous image tag, migration down-steps, kaun decide karega — 2 AM panic ko 5-minute routine bana deta hai.</p>
+      </details>
+      <details>
+        <summary>Kya meri checklist progress save hoti hai?</summary>
+        <p>Haan — "Save progress" dabayein, ye device ke vault me store hoti hai (optional passphrase encryption ke saath). Kuch bhi browser ke bahar nahi jaata.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

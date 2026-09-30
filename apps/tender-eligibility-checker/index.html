@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tender Eligibility Checker – Turnover/Experience/EMD Criteria India | VisionQuantech</title>
+  <meta name="description" content="Free tender eligibility checker India: compare tender criteria (minimum turnover, experience, past contracts, EMD, category) against your profile → eligible, marginal or no-go verdict with a gap list. टेंडर एलिजिबिलिटी चेक।">
+  <meta name="keywords" content="tender eligibility checker India, government tender eligibility criteria, turnover criteria tender, EMD exemption MSE startup, bid qualification check, टेंडर एलिजिबिलिटी चेक, टेंडर योग्यता मानदंड, EMD छूट MSE">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/tender-eligibility-checker/">
+  <meta property="og:title" content="Tender Eligibility Checker | VisionQuantech">
+  <meta property="og:description" content="Should you bid? Compare tender criteria vs your profile → eligible / marginal / no-go. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .badge{ font-size:.8rem; font-weight:700; padding:.2rem .6rem; border-radius:999px; }
+    .b-ok{ background:#e9f6ee; color:#1d7a3f; } .b-warn{ background:#fef1e6; color:#b3541e; } .b-bad{ background:#fdeceb; color:#b3261e; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.92rem; margin:.8rem 0; }
+    .vq-table th,.vq-table td{ border:1px solid var(--line); padding:.5rem .6rem; text-align:left; vertical-align:top; }
+    .vq-table th{ background:var(--paper-soft); }
+    .col-head{ font-weight:800; margin:1rem 0 .2rem; }
+  </style>
+</head>
+<body data-app="tender-eligibility-checker">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Tender Eligibility Checker — Bid or No-Bid, India</h1>
+      <p>Enter the tender's <strong>minimum criteria</strong> and your <strong>company profile</strong> — get an <strong>eligible / marginal / no-go</strong> verdict with a per-criterion gap list. <span lang="hi">टेंडर में बोली लगाएँ या नहीं — योग्यता जाँचें।</span></p>
+      <p class="vq-hint">Free: 20 checks per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="e-gate"></div>
+
+    <section class="card" aria-label="Eligibility inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Tender criteria vs your profile</h2>
+      <p class="col-head">Tender requirements (from the NIT)</p>
+      <div class="form-grid">
+        <div class="vq-field"><label for="e-min-turn">Min. avg. annual turnover (₹)</label><input id="e-min-turn" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 10000000"></div>
+        <div class="vq-field"><label for="e-min-exp">Min. experience (years)</label><input id="e-min-exp" type="number" min="0" step="0.5" inputmode="decimal" placeholder="e.g. 3"></div>
+        <div class="vq-field"><label for="e-min-con">Min. similar past contracts (nos.)</label><input id="e-min-con" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 2"></div>
+        <div class="vq-field"><label for="e-emd">EMD required (₹, 0 if exempt)</label><input id="e-emd" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 200000"></div>
+        <div class="vq-field"><label for="e-cat">Bidder category required (optional)</label><input id="e-cat" type="text" maxlength="60" placeholder="e.g. Class A contractor"></div>
+        <div class="vq-field"><label for="e-reg">Registration required (optional)</label><input id="e-reg" type="text" maxlength="60" placeholder="e.g. MSE / NSIC"></div>
+      </div>
+      <p class="col-head">Your company profile</p>
+      <div class="form-grid">
+        <div class="vq-field"><label for="e-turn">Your avg. annual turnover (₹)</label><input id="e-turn" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 12000000"></div>
+        <div class="vq-field"><label for="e-exp">Your experience (years)</label><input id="e-exp" type="number" min="0" step="0.5" inputmode="decimal" placeholder="e.g. 5"></div>
+        <div class="vq-field"><label for="e-con">Your similar past contracts (nos.)</label><input id="e-con" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 3"></div>
+        <div class="vq-field"><label for="e-emdcap">Your EMD capacity (₹)</label><input id="e-emdcap" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 500000"></div>
+        <div class="vq-field"><label for="e-pcat">Your category (optional)</label><input id="e-pcat" type="text" maxlength="60" placeholder="e.g. Class A contractor"></div>
+        <div class="vq-field"><label for="e-preg">Your registrations (optional)</label><input id="e-preg" type="text" maxlength="60" placeholder="e.g. Udyam, NSIC"></div>
+      </div>
+      <button id="e-check" class="vq-btn" type="button">Check eligibility</button>
+      <p id="e-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="e-result-card" aria-label="Verdict" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Eligibility verdict</h2>
+      <div id="e-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Verdict logic:</strong> each numeric criterion → pass (meets requirement), marginal (within 10% shortfall — risky), fail (short by more). Any fail = <strong>no-go</strong>; any marginal (no fail) = <strong>marginal</strong>; all pass = <strong>eligible</strong>.</li>
+        <li><strong>EMD:</strong> typically 1–2% of estimated contract value (check the NIT); NSIC/MSE/Udyam/Startup India bidders are often exempt via Bid Securing Declaration.</li>
+        <li><strong>Category/registration matching</strong> is text-based — spell it like the NIT does.</li>
+        <li><strong>Heuristic only.</strong> The tender evaluation committee decides on your submitted documents — this does not guarantee qualification. <strong>Confirm with your CA/consultant before bidding.</strong></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Tender eligibility checker — FAQs</h2>
+      <details><summary>How do I check if I am eligible for a government tender?</summary><p>Compare the tender’s minimum criteria — average annual turnover, years of experience, similar past contracts, EMD capacity and category — against your profile. This tool marks each criterion pass, marginal (within 10% shortfall) or fail, and gives an overall eligible/marginal/no-go verdict.</p></details>
+      <details><summary lang="hi">टेंडर एलिजिबिलिटी कैसे चेक करें?</summary><p lang="hi">टेंडर के न्यूनतम मानदंड — औसत वार्षिक टर्नओवर, अनुभव के वर्ष, समान कार्य, EMD क्षमता और श्रेणी — अपनी प्रोफ़ाइल से मिलाएँ। टूल हर बिंदु पर pass/marginal/fail बताता है।</p></details>
+      <details><summary>What does a marginal verdict mean?</summary><p>You are within 10% of a numeric requirement — bidding is possible but risky, since evaluation committees apply criteria strictly. Consider bidding only if other strengths compensate, and confirm with your consultant.</p></details>
+      <details><summary lang="hi">क्या MSE/Startup को EMD में छूट मिलती है?</summary><p lang="hi">हाँ — कई सरकारी टेंडरों में NSIC/MSE/Udyam या Startup India पंजीकृत बोलीदाताओं को EMD छूट मिलती है (Bid Securing Declaration के साथ)। NIT में छूट शर्त ज़रूर जाँचें।</p></details>
+      <details><summary>Is this eligibility verdict official?</summary><p>No — it is a self-assessment heuristic. Only the tender evaluation committee’s decision counts. Confirm with your CA/consultant before spending on EMD and bid preparation.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

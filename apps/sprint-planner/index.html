@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprint Planner — Free Agile Sprint Planning &amp; Burndown Tool | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free sprint planner: backlog with T-shirt → story-point map, team capacity & velocity fit calculator, SVG burndown chart, scope warnings. Plans save on-device.">
+  <meta name="keywords" content="sprint planner, sprint planning tool, story points calculator, t-shirt sizing story points, burndown chart generator, agile capacity planning">
+  <link rel="canonical" href="https://visionquantech.com/apps/sprint-planner/">
+  <meta property="og:title" content="Sprint Planner — Free Online">
+  <meta property="og:description" content="Plan sprints with story points, capacity checks and burndown charts. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .fitgrid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .7rem; margin: .8rem 0; }
+    .fitcell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; text-align: center; }
+    .fitcell .k { font-size: .8rem; color: var(--ink-soft); }
+    .fitcell .v { font-size: 1.4rem; font-weight: 800; }
+    @media (max-width: 640px) { .fitgrid { grid-template-columns: 1fr 1fr 1fr; } .fitcell .v { font-size: 1.1rem; } }
+    .warnbox { display: none; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 10px; padding: .8rem; margin: .8rem 0; font-size: .92rem; line-height: 1.5; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    .row3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2, .row3 { grid-template-columns: 1fr; } }
+    .chartbox { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: .8rem; margin: .8rem 0; }
+    .sizemap { font-size: .85rem; color: var(--ink-soft); }
+  </style>
+</head>
+<body data-app="sprint-planner">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Sprint Planner</h1>
+    <p class="lede">Backlog items add karein (T-shirt size → story points), team capacity aur velocity bharein — <strong>fit calculator</strong> batayega sprint me kitna aayega, <strong>burndown chart</strong> ke saath.</p>
+    <p class="sizemap">Size map: XS=1 · S=2 · M=3 · L=5 · XL=8 · XXL=13 points</p>
+
+    <div class="row3">
+      <div class="vq-field">
+        <label for="itemTitle">Backlog item</label>
+        <input id="itemTitle" type="text" placeholder="e.g. User login with OTP">
+      </div>
+      <div class="vq-field">
+        <label for="itemSize">Size</label>
+        <select id="itemSize">
+          <option>XS</option><option>S</option><option selected>M</option>
+          <option>L</option><option>XL</option><option>XXL</option>
+        </select>
+      </div>
+      <div class="vq-field" style="align-self:end">
+        <button class="vq-btn go sm" id="addItemBtn" type="button">Add item</button>
+      </div>
+    </div>
+
+    <h2 class="vq-section-sub">Backlog</h2>
+    <div id="sp-items"></div>
+
+    <div class="row3">
+      <div class="vq-field">
+        <label for="velocityHist">Last 3 sprints completed (points, comma separated)</label>
+        <input id="velocityHist" type="text" placeholder="e.g. 32, 28, 35" inputmode="numeric">
+      </div>
+      <div class="vq-field">
+        <label for="capacity">Team capacity (points)</label>
+        <input id="capacity" type="number" min="0" step="1" placeholder="e.g. 30" inputmode="numeric">
+      </div>
+      <div class="vq-field">
+        <label for="sprintDays">Sprint length (days)</label>
+        <input id="sprintDays" type="number" min="1" max="60" step="1" value="10" inputmode="numeric">
+      </div>
+    </div>
+    <p class="vq-hint" id="sp-velnote"></p>
+
+    <h2 class="vq-section-sub">Sprint fit</h2>
+    <div class="fitgrid">
+      <div class="fitcell"><div class="k">Backlog total</div><div class="v" id="sp-total">0 pts</div></div>
+      <div class="fitcell"><div class="k">Capacity</div><div class="v" id="sp-cap">0 pts</div></div>
+      <div class="fitcell"><div class="k">Fill</div><div class="v" id="sp-fill">0%</div></div>
+    </div>
+    <div class="warnbox" id="sp-warn" role="alert"></div>
+
+    <h2 class="vq-section-sub">Burndown (ideal)</h2>
+    <div class="chartbox" id="sp-chart"></div>
+
+    <div id="sp-upsell"></div>
+    <div class="row2">
+      <div class="vq-field">
+        <label for="planName">Plan name</label>
+        <input id="planName" type="text" placeholder="e.g. Sprint 12">
+      </div>
+      <div class="vq-field" style="align-self:end">
+        <button class="vq-btn sm" id="savePlanBtn" type="button">Save plan to vault</button>
+        <p class="vq-hint">Free: 25 vault saves/day.</p>
+      </div>
+    </div>
+    <div class="vq-field" style="max-width: 420px">
+      <label for="sp-pass">Vault passphrase (optional — encrypts saved plans)</label>
+      <div class="row2">
+        <input id="sp-pass" type="password" placeholder="Optional passphrase" autocomplete="off">
+        <button class="vq-btn sm" id="ppBtn" type="button" style="align-self:end">Set</button>
+      </div>
+      <p class="vq-hint">Non-HTTPS/file:// pages par WebCrypto unavailable ho sakta hai — app batayega aur unencrypted save karega.</p>
+    </div>
+    <p class="msg" id="sp-msg" role="status"></p>
+
+    <h2 class="vq-section-sub">Saved plans</h2>
+    <div id="sp-saved"></div>
+
+    <div class="vq-notice">
+      <strong>Planning tip:</strong> commitment ko hamesha proven velocity ke aas-paas rakhein. Nayi team ke liye pehle 2–3 sprint sirf observe karein, phir capacity fix karein.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Story points kya hote hain?</summary>
+        <p>Story points effort/complexity ko relative terms me measure karte hain, hours me nahi. Teams aksar T-shirt sizes (XS=1 … XXL=13) ya Fibonacci numbers use karti hain taaki estimates comparative rahein.</p>
+      </details>
+      <details>
+        <summary>Sprint capacity kaise calculate karein?</summary>
+        <p>Average velocity (pichhle 3 sprints me complete hue points) lein aur planned leave/meetings ghata dein. Ye planner backlog ke capacity se zyada hone par warning deta hai.</p>
+      </details>
+      <details>
+        <summary>Burndown chart kya dikhata hai?</summary>
+        <p>Sprint days ke hisaab se bacha hua kaam. Ideal line total points se zero tak jaati hai; agar actual line uske upar rahe to scope ya pace par dhyaan dena chahiye.</p>
+      </details>
+      <details>
+        <summary>Velocity aur capacity me kya antar hai?</summary>
+        <p>Velocity wo hai jo aapne actually complete kiya (history); capacity wo hai jo aap lene ka plan banate hain (forecast). Healthy planning me commitment proven velocity ke paas rehta hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

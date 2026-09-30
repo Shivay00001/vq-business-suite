@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Lifetime Value Estimator — CLV कैलकुलेटर | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free customer lifetime value (CLV) calculator for Indian SMEs: avg order value × purchases/year × lifespan × margin, with retention-improvement what-if scenarios. CLV कैलकुलेटर मुफ्त में।">
+  <meta name="keywords" content="customer lifetime value, CLV calculator India, ग्राहक लाइफटाइम वैल्यू, CLV formula, retention calculator, customer value estimator, CLV kaise nikale">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .result-box { text-align: center; padding: 1.2rem; border: 2px solid var(--brand); border-radius: var(--radius); margin: 1rem 0; }
+    .result-box .big { font-size: 2rem; font-weight: 800; color: var(--brand); }
+    .result-box .lbl { color: var(--ink-soft); font-size: .9rem; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-top: .8rem; }
+    @media (max-width: 560px) { .kpi-grid { grid-template-columns: 1fr; } }
+    .kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; text-align: center; }
+    .kpi .num { font-weight: 800; font-size: 1.15rem; }
+    .kpi .lbl { font-size: .8rem; color: var(--ink-soft); }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem; font-size: .9rem; }
+    .formula code { background: #eef2ff; padding: .1rem .4rem; border-radius: 4px; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    input[type=range] { width: 100%; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="customer-lifetime-value-estimator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Customer Lifetime Value Estimator</h1>
+    <p class="lede">CLV कैलकुलेटर — <strong>average order value, purchases/year, customer lifespan, margin %</strong> se customer lifetime value nikaalein, aur <strong>retention improvement</strong> ka what-if dekhein. <strong>Calculate: 20/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card">
+      <h2>Inputs — आंकड़े डालें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="clv-aov">Average order value (₹) *</label><input id="clv-aov" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 1000"></div>
+        <div class="vq-field"><label for="clv-freq">Purchases per customer per year *</label><input id="clv-freq" type="number" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 4"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="clv-years">Customer lifespan (years) *</label><input id="clv-years" type="number" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 3"></div>
+        <div class="vq-field"><label for="clv-margin">Gross margin % *</label><input id="clv-margin" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="e.g. 40"></div>
+      </div>
+      <div class="vq-field"><label for="clv-ret">Retention improvement (what-if): <strong><span id="clv-retval">0%</span></strong></label>
+        <input id="clv-ret" type="range" min="0" max="100" step="5" value="0">
+        <p class="vq-hint">Retention badhne se customer lifespan badhta hai — slider ghumakar dekhein CLV par kya asar padta hai.</p>
+      </div>
+      <div class="btn-row no-print">
+        <button class="vq-btn go" id="calcBtn" type="button">Calculate CLV</button>
+        <button class="vq-btn ghost" id="printBtn" type="button">Print / PDF</button>
+      </div>
+      <p class="err" id="clv-error" role="alert"></p>
+    </div>
+
+    <div class="card" id="resultCard" style="display:none">
+      <h2>Result — परिणाम</h2>
+      <div class="result-box">
+        <div class="lbl">Customer Lifetime Value (CLV)</div>
+        <div class="big" id="clv-result">—</div>
+      </div>
+      <div class="formula">
+        <strong>Formula (on-screen):</strong><br>
+        <code>CLV = avg order value × purchases/year × lifespan years × (margin % ÷ 100)</code><br>
+        <code>What-if CLV = avg order value × purchases/year × (lifespan × (1 + retention improvement)) × margin</code>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="num" id="clv-annual">—</div><div class="lbl">Annual value per customer</div></div>
+        <div class="kpi"><div class="num" id="clv-wi">—</div><div class="lbl">What-if CLV (retention <span id="clv-wiret">0%</span>)</div></div>
+        <div class="kpi"><div class="num" id="clv-uplift">—</div><div class="lbl">Uplift per customer</div></div>
+      </div>
+      <div class="vq-table-wrap" style="margin-top:.8rem"><table class="vq-table">
+        <thead><tr><th>Retention improvement</th><th class="r">New lifespan</th><th class="r">CLV</th><th class="r">Uplift</th></tr></thead>
+        <tbody id="wiBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn secondary" id="saveBtn" type="button">Save result</button>
+    </div>
+    <p class="ok-msg no-print" id="clv-saved"></p>
+    <p class="vq-hint no-print">Result padhna free hai — calculation (20/day) aur saves (25/day) par limit hai.</p>
+    <div id="clv-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Customer Lifetime Value (CLV) kya hota hai?</summary>
+        <p>CLV ye batata hai ki ek customer apne poore relationship me aapke business ko <strong>kitna profit</strong> dega. Formula: <strong>CLV = avg order value × purchases/year × lifespan years × margin %</strong>.</p>
+      </details>
+      <details>
+        <summary>CLV jaankar kya fayda hai?</summary>
+        <p>CLV se pata chalta hai ki ek naya customer paane par aap <strong>kitna kharch</strong> (ads, commission) kar sakte hain. Agar CLV ₹4,800 hai to ₹500-₹1,000 customer acquisition cost profitable hai.</p>
+      </details>
+      <details>
+        <summary>Retention improvement se CLV kyon badhta hai?</summary>
+        <p>Customer jitne zyada saal judaa rahega, utne zyada orders karega. Thodi si bhi retention improvement lifespan badha kar CLV kaafi badha sakti hai — slider se khud dekhein.</p>
+      </details>
+      <details>
+        <summary>ग्राहक लाइफटाइम वैल्यू कैसे निकालें?</summary>
+        <p>Average order value ko saal me khareed ki sankhya se, phir grahak ke judne ke saalon se, aur aakhir me margin % se multiply karein. Ye app ye calculation automatic karti hai.</p>
+      </details>
+      <details>
+        <summary>Kya mera data safe hai?</summary>
+        <p>Haan — saara data sirf aapke browser me store hota hai, kahin upload nahi hota. Passphrase se encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

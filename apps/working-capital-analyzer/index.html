@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working Capital Analyzer — वर्किंग कैपिटल फॉर्मूला | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free working capital analyzer for Indian SMEs: working capital, current ratio, quick ratio, debtor/creditor/inventory days, cash conversion cycle with plain-language health verdict. Working capital formula explained.">
+  <meta name="keywords" content="working capital, working capital formula, वर्किंग कैपिटल, current ratio, quick ratio, cash conversion cycle, debtor days, creditor days, inventory days, liquidity ratio">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-bottom: 1rem; }
+    @media (max-width: 560px) { .kpi-row { grid-template-columns: 1fr; } }
+    .kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; }
+    .kpi .v { font-size: 1.3rem; font-weight: 800; }
+    .kpi .l { font-size: .8rem; color: var(--ink-soft); }
+    .kpi .f { font-size: .75rem; color: #64748b; margin-top: .3rem; font-family: monospace; }
+    .verdict { border-left: 4px solid #16a34a; background: #f0fdf4; padding: .9rem 1rem; border-radius: 0 var(--radius) var(--radius) 0; margin: 1rem 0; }
+    .verdict.bad { border-color: #b42318; background: #fef2f2; }
+    .verdict.mid { border-color: #d97706; background: #fffbeb; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="working-capital-analyzer">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Working Capital Analyzer</h1>
+    <p class="lede">वर्किंग कैपिटल एनालाइज़र — current assets/liabilities se <strong>working capital, current ratio, quick ratio</strong>, sales/COGS se <strong>debtor / creditor / inventory days</strong> aur <strong>cash conversion cycle</strong> — saare <strong>formulas ke saath</strong> aur seedhi-bhasha me health verdict. <strong>20 free analyses/day.</strong></p>
+
+    <div class="card no-print">
+      <h2>Balance sheet inputs (₹)</h2>
+      <div class="grid3">
+        <div class="vq-field"><label for="w-ca">Current assets *</label><input id="w-ca" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 800000"></div>
+        <div class="vq-field"><label for="w-cl">Current liabilities *</label><input id="w-cl" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 500000"></div>
+        <div class="vq-field"><label for="w-inv">Inventory (stock)</label><input id="w-inv" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 200000"></div>
+      </div>
+      <div class="grid3">
+        <div class="vq-field"><label for="w-rec">Receivables (debtors)</label><input id="w-rec" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 300000"></div>
+        <div class="vq-field"><label for="w-pay">Payables (creditors)</label><input id="w-pay" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 250000"></div>
+        <div class="vq-field"><label for="w-cash">Cash &amp; bank (info)</label><input id="w-cash" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 100000"></div>
+      </div>
+      <h2>Annual figures (₹) — for days ratios</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="w-sales">Annual sales (revenue)</label><input id="w-sales" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 3600000"></div>
+        <div class="vq-field"><label for="w-cogs">Annual COGS (cost of goods sold)</label><input id="w-cogs" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 2400000"></div>
+      </div>
+      <button class="vq-btn go" id="calcBtn" type="button">Analyze working capital</button>
+      <p class="err" id="w-error" role="alert"></p>
+    </div>
+
+    <div id="resultWrap" style="display:none">
+      <div class="verdict" id="verdictBox"><strong id="verdictTitle"></strong><p id="verdictText"></p></div>
+      <div class="card">
+        <h2>Liquidity ratios</h2>
+        <div class="kpi-row" id="kpiRow"></div>
+      </div>
+      <div class="card">
+        <h2>Operating cycle (days)</h2>
+        <div class="kpi-row" id="daysRow"></div>
+        <p class="vq-hint">Cash conversion cycle = inventory days + debtor days − creditor days. Kam CCC = cash jaldi wapas.</p>
+      </div>
+      <div class="btn-row no-print">
+        <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+        <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+      </div>
+      <p class="ok-msg no-print" id="w-saved"></p>
+    </div>
+    <p class="vq-hint no-print" id="w-meter"></p>
+    <div id="w-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Working capital formula kya hai?</summary>
+        <p><strong>Working capital = Current assets − Current liabilities.</strong> Positive matlab short-term me dene se zyada paane ki sthiti; negative matlab liquidity pressure.</p>
+      </details>
+      <details>
+        <summary>Current ratio aur quick ratio me kya farak hai?</summary>
+        <p>Current ratio = Current assets ÷ Current liabilities. Quick ratio = (Current assets − Inventory) ÷ Current liabilities — stock ko hatakar dekhta hai kyunki stock turant cash nahi banta.</p>
+      </details>
+      <details>
+        <summary>Cash conversion cycle (CCC) kya hota hai?</summary>
+        <p>CCC = Inventory days + Debtor days − Creditor days. Ye batata hai ki maal me laga paisa kitne dino me wapas cash banta hai. Kam CCC = behtar cash flow.</p>
+      </details>
+      <details>
+        <summary>Healthy working capital kitna hona chahiye?</summary>
+        <p>Thumb rule: current ratio 1.33 ya zyada, quick ratio 1 ya zyada, aur positive working capital. Lekin industry ke hisaab se farak hota hai — ye calculator thumb-rule verdict deta hai, CA ki salah ka replacement nahi.</p>
+      </details>
+      <details>
+        <summary>वर्किंग कैपिटल क्या होती है?</summary>
+        <p>Working capital wo paisa hai jo roz ke business chalane ke liye chahiye — current assets (cash, stock, debtors) me se current liabilities (creditors, short-term loans) ghata kar nikalti hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

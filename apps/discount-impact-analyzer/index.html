@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discount Impact Analyzer – Sales Uplift Needed After Discount | VisionQuantech</title>
+  <meta name="description" content="Free discount impact calculator: the d/(m-d) breakeven uplift formula shows how much extra sales you need after an X% discount to keep profit flat. छूट प्रभाव विश्लेषण।">
+  <meta name="keywords" content="discount impact calculator, discount breakeven formula, sales uplift needed after discount, d/(m-d) formula, छूट कैलकुलेटर, discount profit analysis India">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/discount-impact-analyzer/">
+  <meta property="og:title" content="Discount Impact Analyzer – d/(m−d) Breakeven | VisionQuantech">
+  <meta property="og:description" content="A 10% discount at 40% margin needs 33.3% more sales. Check yours. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="discount-impact-analyzer">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Discount Impact Analyzer — How Much Extra Sales After a Discount?</h1>
+      <p>A discount looks small until you do the math: <strong>required uplift = d ÷ (m − d)</strong>. A 10% discount at 40% margin needs <strong>33.3% more units</strong> just to earn the same rupees. <span lang="hi">छूट के बाद कितनी ज़्यादा बिक्री चाहिए — तुरंत जानें।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Nothing leaves your browser.</p>
+    </div>
+
+    <div id="di-gate"></div>
+
+    <section class="card" aria-label="Discount inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your numbers</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="di-price">Current selling price (₹)</label>
+          <input id="di-price" type="number" min="0" step="0.01" value="1000" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="di-cost">Unit cost (₹)</label>
+          <input id="di-cost" type="number" min="0" step="0.01" value="600" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="di-volume">Monthly volume (units)</label>
+          <input id="di-volume" type="number" min="0" step="1" value="500" inputmode="numeric">
+        </div>
+        <div class="vq-field">
+          <label for="di-discount">Planned discount (%)</label>
+          <input id="di-discount" type="number" min="0" max="100" step="0.5" value="10" inputmode="decimal">
+        </div>
+      </div>
+      <button id="di-calc" class="vq-btn" type="button">Analyze discount impact</button>
+      <p id="di-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="di-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Breakeven analysis</h2>
+      <p class="formula">Required sales uplift = d ÷ (m − d), where d = discount % and m = margin % on price</p>
+      <div id="di-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Margin is on selling price</strong> — (price − cost) ÷ price. The d ÷ (m − d) formula requires this definition.</li>
+        <li><strong>Fixed costs unchanged</strong> by the discount. If the sale needs extra ad spend or staff, add it to unit cost first.</li>
+        <li><strong>Unit cost stays constant</strong> at higher volume (no bulk discounts modelled).</li>
+        <li><strong>Loss-making flag:</strong> discount ≥ margin means every discounted unit loses money — no volume recovers it.</li>
+        <li><strong>Estimate only</strong> — confirm with your CA before running a deep-discount campaign.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Discount impact analyzer — FAQs</h2>
+      <details><summary>How much extra sales do I need after giving a discount?</summary><p>Required uplift = discount ÷ (margin − discount). A 10% discount at 40% margin needs 10 ÷ (40 − 10) = 33.3% more units to earn the same total profit.</p></details>
+      <details><summary lang="hi">छूट देने के बाद कितनी ज़्यादा बिक्री चाहिए?</summary><p lang="hi">ज़रूरी बढ़ोतरी = छूट ÷ (मार्जिन − छूट)। 40% मार्जिन पर 10% छूट के लिए 33.3% ज़्यादा यूनिट बेचनी होंगी ताकि कुल मुनाफ़ा बराबर रहे।</p></details>
+      <details><summary>When does a discount become unrecoverable?</summary><p>When the discount % equals or exceeds your margin %. Then every discounted unit loses money and no volume can fix it — the only options are a smaller discount or a lower cost.</p></details>
+      <details><summary>Does this account for fixed costs?</summary><p>The formula uses contribution margin per unit, so it holds as long as fixed costs do not change with the discount. If the discount needs extra staff or ad spend, add that to your unit cost first.</p></details>
+      <details><summary>Is this margin on price or on cost?</summary><p>Margin on selling price: (price − cost) ÷ price. The d ÷ (m − d) formula requires margin measured on price, which is the standard retail definition.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

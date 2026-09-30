@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation (Planned) — VisionQuantech Business Suite</title>
+  <meta name="description" content="Draft REST API documentation for the planned VisionQuantech Business Suite Enterprise tier: auth, endpoints per tool family, rate limits.">
+  <meta name="keywords" content="visionquantech api, business suite api docs, gst api india, invoice api">
+  <meta property="og:title" content="API Docs (Planned) — VisionQuantech Business Suite">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="core/shell.css">
+</head>
+<body data-nav="api">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+    <div class="vq-narrow">
+      <h1>Enterprise API</h1>
+      <div class="vq-notice"><strong>Documentation preview — the API does not exist yet.</strong>
+        This page documents the planned Enterprise tier so client code can be written
+        against matching shapes from day one. Nothing here is callable today.</div>
+
+      <h2>Base URL (planned)</h2>
+      <p><code>https://api.visionquantech.com/v1</code> — HTTPS only, JSON in and out.</p>
+
+      <h2>Authentication</h2>
+      <p>API keys issued per workspace, sent as a Bearer token. Keys will be
+         creatable and revocable from the (future) dashboard.</p>
+      <div class="api-endpoint"><code>Authorization: Bearer vq_live_************************</code></div>
+
+      <h2>Endpoints by tool family</h2>
+
+      <div class="api-endpoint">
+        <code>POST /v1/gst/interest</code>
+        <p>Interest on delayed GST payment.</p>
+        <pre>{
+  "principal": 50000,
+  "from": "2026-07-21",
+  "to": "2026-09-26",
+  "rate_pa": 18
+}</pre>
+      </div>
+
+      <div class="api-endpoint">
+        <code>POST /v1/loans/emi</code>
+        <p>EMI, total interest and amortisation schedule.</p>
+        <pre>{
+  "principal": 1000000,
+  "annual_rate": 9.5,
+  "tenure_months": 60
+}</pre>
+      </div>
+
+      <div class="api-endpoint">
+        <code>POST /v1/hr/salary-breakup</code>
+        <p>CTC → in-hand breakup (PF, ESI, professional tax estimates).</p>
+        <pre>{
+  "ctc_annual": 600000,
+  "state": "MH"
+}</pre>
+      </div>
+
+      <div class="api-endpoint">
+        <code>POST /v1/analytics/profit-loss</code>
+        <p>Profit &amp; loss from revenue/expense line items.</p>
+        <pre>{
+  "period": "2026-09",
+  "revenue": [{"label": "Sales", "amount": 250000}],
+  "expenses": [{"label": "Rent", "amount": 40000}]
+}</pre>
+      </div>
+
+      <div class="api-endpoint">
+        <code>POST /v1/invoicing/invoices</code>
+        <p>Create a GST invoice; returns a renderable document object.</p>
+        <pre>{
+  "seller": {"name": "Acme Traders", "gstin": "27ABCDE1234F1Z5"},
+  "items": [{"desc": "Widget", "qty": 10, "rate": 100, "gst_rate": 18}]
+}</pre>
+      </div>
+
+      <div class="api-endpoint">
+        <code>GET /v1/vault/documents &nbsp;·&nbsp; POST /v1/vault/documents</code>
+        <p>List / store encrypted documents (server-side E2E model planned).</p>
+      </div>
+
+      <h2>Rate limits (planned)</h2>
+      <div class="vq-table-wrap">
+        <table class="vq-table">
+          <thead><tr><th>Tier</th><th>Requests / day</th><th>Burst / minute</th></tr></thead>
+          <tbody>
+            <tr><td>Pro (client tools only)</td><td>— no API access —</td><td>—</td></tr>
+            <tr><td>Enterprise — Starter</td><td>10,000</td><td>120</td></tr>
+            <tr><td>Enterprise — Scale</td><td>100,000</td><td>600</td></tr>
+            <tr><td>Enterprise — Custom</td><td>Negotiated</td><td>Negotiated</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="vq-hint">Limits return <code>429</code> with a <code>Retry-After</code> header.</p>
+
+      <h2>API pricing (planned)</h2>
+      <p>Enterprise API is custom annual pricing based on volume. The client-side
+         suite stays free; only server API usage is metered.</p>
+
+      <h2>Design notes for integrators</h2>
+      <ul>
+        <li>All money fields are in <strong>paise</strong> (integers) to avoid float errors.</li>
+        <li>Dates are <strong>ISO 8601</strong> (<code>YYYY-MM-DD</code>).</li>
+        <li>Errors use <code>{"error": {"code": "...", "message": "..."}}</code>.</li>
+        <li>The calculation logic mirrors the client-side tools exactly — same formulas, same rounding.</li>
+      </ul>
+
+      <div class="vq-notice">Want early access? The Enterprise tier opens after the
+        Pro launch. Watch the <a href="pricing.html">pricing page</a> for updates.</div>
+    </div>
+  </main>
+
+  <script src="core/shell.js"></script>
+  <script src="core/ads.js"></script>
+  <script src="core/seo.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      Ads.render(document.getElementById('ad-top'), 'api-top', 'leaderboard');
+      SEO.faq([
+        { q: 'Does the VisionQuantech Business Suite have an API?', a: 'Not yet. This page documents the planned Enterprise API tier; nothing here is callable today.' },
+        { q: 'How will API authentication work?', a: 'Bearer API keys per workspace, revocable from a future dashboard.' }
+      ]);
+    })();
+  </script>
+</body>
+</html>

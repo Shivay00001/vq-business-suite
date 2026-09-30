@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplier Ledger Manager — सप्लायर खाता बही | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free supplier ledger (khata bahi) for Indian SMEs: add suppliers, record purchase & payment vouchers with due dates, running payable balance, aging, due-date reminders list, printable statement. सप्लायर खाता फ्री में बनाएं।">
+  <meta name="keywords" content="supplier ledger, सप्लायर खाता बही, purchase ledger, accounts payable tracker, due date reminder, khata bahi app, supplier payment reminder, udhar khata supplier">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; }
+    .p-zero { background: #f1f5f9; color: #475569; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.overdue td { background: #fef2f2; }
+    .type-row { display: flex; gap: .6rem; margin-bottom: 1rem; }
+    .type-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem 1rem; cursor: pointer; font-weight: 600; background: #fff; flex: 1; text-align: center; }
+    .type-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    .aging-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+    @media (max-width: 560px) { .aging-grid { grid-template-columns: 1fr 1fr; } }
+    .aging-cell { border: 1px solid var(--line); border-radius: var(--radius); padding: .7rem; text-align: center; }
+    .aging-cell .amt { font-weight: 800; font-size: 1.05rem; }
+    .aging-cell .lbl { font-size: .8rem; color: var(--ink-soft); }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+      #printArea { display: block !important; }
+    }
+  </style>
+</head>
+<body data-app="supplier-ledger-manager">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Supplier Ledger Manager</h1>
+    <p class="lede">सप्लायर खाता बही — suppliers add karein, <strong>purchase &amp; payment vouchers</strong> (due date ke saath) record karein, har supplier ka <strong>payable balance</strong>, <strong>aging</strong> aur <strong>due-date reminders</strong> automatic paayein. <strong>Statement snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div id="editorWrap" class="no-print">
+      <div class="card">
+        <h2>Add supplier / सप्लायर जोड़ें</h2>
+        <div class="grid2">
+          <div class="vq-field"><label for="s-name">Supplier name *</label><input id="s-name" type="text" placeholder="e.g. Gupta Wholesalers"></div>
+          <div class="vq-field"><label for="s-phone">Phone</label><input id="s-phone" type="tel" placeholder="e.g. 98765 43210"></div>
+        </div>
+        <button class="vq-btn go" id="addSupplierBtn" type="button">Add supplier</button>
+        <p class="err" id="s-error" role="alert"></p>
+      </div>
+
+      <div class="card">
+        <h2>Record voucher / वाउचर दर्ज करें</h2>
+        <div class="type-row">
+          <label><input type="radio" name="vtype" value="purchase" checked> Purchase (खरीद +)</label>
+          <label><input type="radio" name="vtype" value="payment"> Payment (भुगतान −)</label>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="v-supp">Supplier *</label><select id="v-supp"></select></div>
+          <div class="vq-field"><label for="v-date">Date *</label><input id="v-date" type="date"></div>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="v-amount">Amount (₹) *</label><input id="v-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 75000"></div>
+          <div class="vq-field"><label for="v-duedate">Due date (purchase only)</label><input id="v-duedate" type="date"></div>
+        </div>
+        <div class="grid2">
+          <div class="vq-field"><label for="v-mode">Mode</label><select id="v-mode"><option>Cash</option><option>UPI</option><option>Bank transfer</option><option>Cheque</option><option>Other</option></select></div>
+          <div class="vq-field"><label for="v-note">Note</label><input id="v-note" type="text" placeholder="e.g. Bill #B-221"></div>
+        </div>
+        <button class="vq-btn go" id="addVoucherBtn" type="button">Record voucher</button>
+        <p class="err" id="v-error" role="alert"></p>
+      </div>
+    </div>
+
+    <div class="card no-print">
+      <h2>⏰ Due-date reminders</h2>
+      <p class="vq-hint">Unpaid purchases, sabse pehle overdue wali — FIFO se payments adjust karke.</p>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Supplier</th><th>Purchase date</th><th>Due date</th><th class="r">Outstanding</th><th>Status</th></tr></thead>
+        <tbody id="remindersBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card no-print">
+      <div class="vq-field" style="max-width:320px">
+        <label for="sel-supp">View supplier ledger</label><select id="sel-supp"></select>
+      </div>
+    </div>
+
+    <div id="printArea">
+      <div class="card">
+        <h2>Statement — <span id="stmtName"></span></h2>
+        <p class="vq-hint" id="stmtMeta"></p>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Date</th><th>Voucher</th><th>Mode</th><th>Due date</th><th>Note</th><th class="r">Purchase (+)</th><th class="r">Payment (−)</th><th class="r">Balance</th></tr></thead>
+          <tbody id="vouchersBody"></tbody>
+        </table></div>
+      </div>
+
+      <div class="card">
+        <h2>Outstanding aging (FIFO)</h2>
+        <div class="vq-field no-print" style="max-width:240px"><label for="agingAsOf">As of</label><input id="agingAsOf" type="date"></div>
+        <div class="aging-grid" id="agingBody"></div>
+        <p class="vq-hint">Balance = total purchases − total payments. Aging un purchases ki hai jo abhi tak pay nahi hui.</p>
+      </div>
+    </div>
+
+    <div class="card no-print">
+      <h2>All suppliers — payable summary</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Supplier</th><th class="r">Purchases</th><th class="r">Payments</th><th class="r">Balance</th><th class="r">Overdue</th></tr></thead>
+        <tbody id="suppListBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveStmtBtn" type="button">Save statement snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="stmt-saved"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf statement snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="sl-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Supplier ledger kaise banaye?</summary>
+        <p>Supplier add karein, har kharid par <strong>Purchase voucher</strong> (due date ke saath) aur payment par <strong>Payment voucher</strong> record karein. App payable balance, aging aur due-date reminders automatic banata hai.</p>
+      </details>
+      <details>
+        <summary>Due-date reminders kaise kaam karte hain?</summary>
+        <p>Har purchase par due date darj karein. Payments FIFO se purani purchases me adjust hote hain. Reminders list me overdue purchases sabse upar aati hain — taaki penalty ya rishte kharab hone se pehle pay kar dein.</p>
+      </details>
+      <details>
+        <summary>Customer ledger se kya farak hai?</summary>
+        <p>Customer ledger me <strong>aapko paisa milna hai</strong> (receivable), supplier ledger me <strong>aapko paisa dena hai</strong> (payable). Dono ka hisaab alag rakhna zaroori hai.</p>
+      </details>
+      <details>
+        <summary>सप्लायर खाता बही क्या होती है?</summary>
+        <p>Supplier khata bahi me aapke suppliers ko dene wale paiso ka hisaab rehta hai — kitni kharid hui, kitna pay kiya, kitna baki hai, aur kab tak dena hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

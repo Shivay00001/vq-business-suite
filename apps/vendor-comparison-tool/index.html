@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Comparison Tool — Compare Supplier Quotes Side-by-Side | VisionQuantech</title>
+  <meta name="description" content="Free vendor comparison tool: compare supplier quotes on price, lead time, warranty and rating with weighted scoring and a ranked verdict. विक्रेता तुलना — कोटेशन तुलना करें।">
+  <meta name="keywords" content="vendor comparison tool, वेंडर तुलना, compare supplier quotes, vendor quote comparison, supplier evaluation matrix, विक्रेता कोटेशन तुलना">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/vendor-comparison-tool/">
+  <meta property="og:title" content="Vendor Comparison Tool | VisionQuantech">
+  <meta property="og:description" content="Rank vendor quotes by weighted score — price, lead time, warranty, rating. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .num{ text-align:right; white-space:nowrap; }
+    .po-table-wrap{ overflow-x:auto; }
+    .vq-table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+    .vq-table th,.vq-table td{ padding:.5rem .6rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    .c-winner td{ background:#f3f9f0; font-weight:600; }
+    .weight-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:0 1rem; }
+    @media (min-width:640px){ .weight-grid{ grid-template-columns:repeat(4,1fr); } }
+    .vq-list{ list-style:none; padding:0; margin:.4rem 0; }
+    .vq-list li{ padding:.3rem 0; border-bottom:1px dashed var(--line); }
+  </style>
+</head>
+<body data-app="vendor-comparison-tool">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: leaderboard slot --></div>
+
+    <div class="vq-hero">
+      <h1>Vendor Comparison Tool — Rank Quotes by Weighted Score</h1>
+      <p>Compare <strong>supplier quotes side-by-side</strong>: price, lead time, warranty and rating, weighted your way, with a ranked winner. <span lang="hi">विक्रेता तुलना टूल — कोटेशन की तुलना करके सबसे अच्छा सप्लायर चुनें।</span></p>
+      <p class="vq-hint">Free: 20 comparisons per day. Up to 25 comparisons saved on this device — nothing is sent anywhere.</p>
+    </div>
+
+    <div id="c-gate"></div>
+
+    <section class="card" aria-label="Criterion weights">
+      <h2 class="vq-section-title" style="margin-top:0">Weights <span class="vq-hint">(must total 100%)</span></h2>
+      <div class="weight-grid">
+        <div class="vq-field"><label for="w-price">Price %</label><input id="w-price" class="vq-input" type="number" min="0" max="100" step="1" inputmode="numeric"></div>
+        <div class="vq-field"><label for="w-lead">Lead time %</label><input id="w-lead" class="vq-input" type="number" min="0" max="100" step="1" inputmode="numeric"></div>
+        <div class="vq-field"><label for="w-warranty">Warranty %</label><input id="w-warranty" class="vq-input" type="number" min="0" max="100" step="1" inputmode="numeric"></div>
+        <div class="vq-field"><label for="w-rating">Rating %</label><input id="w-rating" class="vq-input" type="number" min="0" max="100" step="1" inputmode="numeric"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Vendor quotes">
+      <h2 class="vq-section-title" style="margin-top:0">Vendor quotes</h2>
+      <div class="po-table-wrap">
+        <table class="vq-table">
+          <thead><tr><th>Vendor</th><th class="num">Price (₹)</th><th class="num">Lead (days)</th><th class="num">Warranty (mo)</th><th class="num">Rating (1–5)</th><th></th></tr></thead>
+          <tbody id="c-vendors"></tbody>
+        </table>
+      </div>
+      <p style="margin-top:.6rem"><button id="c-add" class="vq-btn vq-btn-ghost" type="button">+ Add vendor</button></p>
+      <button id="c-compare" class="vq-btn" type="button">Compare vendors</button>
+      <p id="c-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="c-result-card" aria-label="Comparison result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Ranking</h2>
+      <div id="c-result"></div>
+    </section>
+
+    <section class="card" aria-label="Saved comparisons">
+      <h2 class="vq-section-title" style="margin-top:0">Saved comparisons (this device)</h2>
+      <div id="c-saved"><p class="vq-hint">Loading…</p></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Normalisation:</strong> each criterion is scaled 0–1 across the vendors in this comparison. For price and lead time <em>lower</em> is better; for warranty and rating <em>higher</em> is better.</li>
+        <li><strong>Score</strong> = weighted sum of normalised values (your weights), 0–100. Scores are relative to this comparison set — adding or removing a vendor changes every score.</li>
+        <li><strong>Price gap</strong> is shown against the winner for context; the winner is the best weighted trade-off, not always the cheapest.</li>
+        <li>Ratings are your own judgement (past experience, references) — the tool does not verify them.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: leaderboard slot --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Vendor comparison tool — FAQs</h2>
+      <details><summary>How do I compare vendor quotes?</summary><p>Enter each vendor quote — price, lead time in days, warranty in months and rating out of 5 — set your criterion weights (they must total 100), and the tool scores and ranks every vendor 0–100.</p></details>
+      <details><summary lang="hi">विक्रेता कोटेशन की तुलना कैसे करें?</summary><p lang="hi">हर विक्रेता का प्राइस, लीड टाइम (दिन), वारंटी (महीने) और रेटिंग (5 में से) डालें, वेटेज सेट करें — टूल हर विक्रेता को 0–100 स्कोर देकर रैंक करेगा।</p></details>
+      <details><summary>How is the vendor score calculated?</summary><p>Each criterion is normalised 0–1 across the vendors you compare: for price and lead time lower is better; for warranty and rating higher is better. The weighted sum (weights as you set them) gives the final score.</p></details>
+      <details><summary lang="hi">वेंडर स्कोर कैसे निकाला जाता है?</summary><p lang="hi">हर मानदंड को तुलना किए गए विक्रेताओं में 0–1 पर सामान्यीकृत किया जाता है: प्राइस और लीड टाइम में कम बेहतर, वारंटी और रेटिंग में ज़्यादा बेहतर। आपके वेटेज से भारित योग अंतिम स्कोर देता है।</p></details>
+      <details><summary>What weights should I use?</summary><p>Start with the defaults: price 40%, lead time 20%, warranty 15%, rating 25%. Raise price weight for commoditised items, lead time weight for urgent orders.</p></details>
+      <details><summary>Is my comparison data stored online?</summary><p>No. Up to 25 comparisons are saved in your browser vault on this device only.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing Calculator — प्रोडक्ट प्राइस कैलकुलेटर GST 2.0 | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free pricing calculator for Indian SMEs: cost + margin → selling price, GST 2.0 slabs (0/5/18/40%), GST inclusive/exclusive toggle, discount impact on margin, break-even units. प्राइस कैलकुलेटर फ्री।">
+  <meta name="keywords" content="pricing calculator, प्राइस कैलकुलेटर, product pricing India, margin calculator, GST inclusive exclusive, discount impact margin, break even units, selling price formula">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; }
+    .res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+    @media (max-width: 560px) { .res-grid { grid-template-columns: 1fr; } }
+    .res-cell { border: 1px solid var(--line); border-radius: var(--radius); padding: .8rem; }
+    .res-cell .v { font-size: 1.25rem; font-weight: 800; }
+    .res-cell .l { font-size: .8rem; color: var(--ink-soft); }
+    .mode-row { display: flex; gap: .6rem; margin-bottom: 1rem; }
+    .mode-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem 1rem; cursor: pointer; font-weight: 600; background: #fff; flex: 1; text-align: center; }
+    .mode-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="pricing-calculator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Pricing Calculator</h1>
+    <p class="lede">प्रोडक्ट प्राइस कैलकुलेटर — cost + margin → <strong>selling price</strong>, <strong>GST 2.0 slabs (0% / 5% / 18% / 40%)</strong> ke saath GST inclusive/exclusive toggle, <strong>discount impact</strong> aur <strong>break-even units</strong>. <strong>20 free calculations/day.</strong></p>
+
+    <div class="card no-print">
+      <div class="mode-row">
+        <label><input type="radio" name="pmode" value="margin" checked> Margin % se price nikalein</label>
+        <label><input type="radio" name="pmode" value="target"> Target price se margin nikalein</label>
+      </div>
+      <h2>Cost inputs (per unit)</h2>
+      <div class="grid3">
+        <div class="vq-field"><label for="c-material">Material (₹)</label><input id="c-material" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 120"></div>
+        <div class="vq-field"><label for="c-labor">Labor (₹)</label><input id="c-labor" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 40"></div>
+        <div class="vq-field"><label for="c-overhead">Overhead (₹)</label><input id="c-overhead" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 25"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="c-packaging">Packaging (₹)</label><input id="c-packaging" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 10"></div>
+        <div class="vq-field"><label for="c-delivery">Delivery (₹)</label><input id="c-delivery" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 30"></div>
+      </div>
+      <div class="grid3">
+        <div class="vq-field"><label for="c-margin">Desired margin %</label><input id="c-margin" type="number" min="0" max="99" step="0.1" inputmode="decimal" placeholder="e.g. 30"></div>
+        <div class="vq-field"><label for="c-target">Target price (₹)</label><input id="c-target" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 349"></div>
+        <div class="vq-field"><label for="c-gst">GST 2.0 slab</label><select id="c-gst"><option value="0">0% (exempt)</option><option value="5">5%</option><option value="18" selected>18%</option><option value="40">40% (luxury/sin)</option></select></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="c-gstmode">GST treatment</label><select id="c-gstmode"><option value="exclusive">Price is GST-exclusive (+GST add)</option><option value="inclusive">Price is GST-inclusive (GST inside)</option></select></div>
+        <div class="vq-field"><label for="c-fixed">Fixed cost / month (₹) — for break-even</label><input id="c-fixed" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 20000"></div>
+      </div>
+      <button class="vq-btn go" id="calcBtn" type="button">Calculate price</button>
+      <p class="err" id="p-error" role="alert"></p>
+    </div>
+
+    <div id="resultWrap" style="display:none">
+      <div class="card">
+        <h2>Price &amp; margin analysis</h2>
+        <div class="res-grid" id="resGrid"></div>
+        <p class="vq-formula" id="formulaLine"></p>
+      </div>
+      <div class="card">
+        <h2>10% discount ka asar</h2>
+        <div class="res-grid" id="discGrid"></div>
+        <p class="vq-hint" id="discNote"></p>
+      </div>
+      <div class="card">
+        <h2>Break-even</h2>
+        <div class="res-grid" id="beGrid"></div>
+        <p class="vq-hint">Assumption: overhead ko fixed cost me nahi, per-unit cost me gina gaya hai. Break-even ke liye "Fixed cost / month" wala field bharein — variable cost = material + labor + packaging + delivery.</p>
+      </div>
+      <div class="btn-row no-print">
+        <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+        <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+      </div>
+      <p class="ok-msg no-print" id="p-saved"></p>
+    </div>
+    <p class="vq-hint no-print" id="p-meter"></p>
+    <div id="p-upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Product ka selling price kaise nikalein?</summary>
+        <p>Total unit cost nikalein (material + labor + overhead + packaging + delivery), phir formula <strong>Price = Cost ÷ (1 − margin%)</strong> lagayein. 30% margin chahiye to ₹200 cost par price = ₹200 ÷ 0.70 = ₹285.71.</p>
+      </details>
+      <details>
+        <summary>GST 2.0 me kaun se slabs hain? (Sept 2025 se)</summary>
+        <p>GST 2.0 (22 Sept 2025 se) me 4 slabs hain: <strong>0%, 5%, 18% aur 40%</strong>. Purane 12% aur 28% slabs khatm ho gaye. 40% sirf luxury/sin goods (tobacco, pan masala, luxury cars) par lagta hai.</p>
+      </details>
+      <details>
+        <summary>GST inclusive aur exclusive me kya farak hai?</summary>
+        <p>Exclusive: price par GST <strong>alag se judta</strong> hai (₹100 + 18% = ₹118). Inclusive: price me GST <strong>pehle se shamil</strong> hai — tax nikalne ke liye Price × Rate ÷ (100 + Rate) ka formula lagta hai.</p>
+      </details>
+      <details>
+        <summary>10% discount margin ko kitna ghata deta hai?</summary>
+        <p>Discount seedha margin kha jata hai. 30% margin wale product par 10% discount ke baad margin ~22% reh jata hai — calculator upar exact hisaab dikhata hai.</p>
+      </details>
+      <details>
+        <summary>Break-even units kya hote hain?</summary>
+        <p>Wo units jinhe bechne par fixed cost poori cover ho jaye: <strong>Fixed cost ÷ (Price − Variable cost per unit)</strong>. Isse kam becha to nuksaan, zyada becha to munafa.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PF Compliance Checker – EPF Employer Compliance Checklist India | VisionQuantech</title>
+  <meta name="description" content="Free PF compliance checker for Indian employers: 20+ employee applicability, 12% contribution math, ₹25,000 wage ceiling (w.e.f. 17 Sep 2026), 15th due date, UAN/KYC — pass/fail with explanations. पीएफ कंप्लायंस चेक।">
+  <meta name="keywords" content="PF compliance checker, EPF compliance checklist, PF wage ceiling 25000, EPF 12% contribution, UAN KYC compliance, EPFO due date 15th, पीएफ कंप्लायंस, EPF नियम">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/pf-compliance-checker/">
+  <meta property="og:title" content="PF Compliance Checker – EPF Checklist | VisionQuantech">
+  <meta property="og:description" content="Check your EPF compliance: applicability, 12% math, wage ceiling, due dates, UAN/KYC. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .chk { border:1px solid var(--line); border-radius:10px; padding:.9rem 1rem; margin-bottom:.8rem; }
+    .chk h3 { margin:.2rem 0 .4rem; font-size:1rem; }
+    .chk p { margin:.25rem 0; font-size:.9rem; }
+    .pass { border-left:5px solid #1d7a3f; } .fail { border-left:5px solid #b3261e; } .warn { border-left:5px solid #8a6100; }
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; }
+    .b-pass{ background:#d9f2e3; color:#1d7a3f; } .b-fail{ background:#fde3e3; color:#b3261e; } .b-warn{ background:#fff3d6; color:#8a6100; }
+    .score { font-size:1.4rem; font-weight:800; }
+    .big { font-size:1.5rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .alert { background:#fff3d6; border:1px solid #8a6100; border-radius:10px; padding:.9rem 1rem; font-size:.92rem; }
+  </style>
+</head>
+<body data-app="pf-compliance-checker">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>PF Compliance Checker — EPF Employer Checklist</h1>
+      <p>Free EPF compliance self-check for Indian employers: applicability, 12% contribution math, wage ceiling, 15th-of-month due date, UAN &amp; KYC — each with pass/fail and a plain-English explanation. <span lang="hi">पीएफ कंप्लायंस चेक — नियोक्ता जाँच सूची।</span></p>
+      <div class="alert" role="note"><strong>Rule change (verified Sep 2026):</strong> the EPF statutory wage ceiling rose from <strong>₹15,000 to ₹25,000/month</strong> w.e.f. <strong>17 September 2026</strong> (Ministry of Labour &amp; Employment notification <strong>S.O. 5109(E)</strong>, under the Code on Social Security, 2020). Max contribution is now <strong>₹3,000/month each side</strong> at the ceiling.</div>
+      <p class="vq-hint">Free: 20 checks per day. Nothing is stored — all checks run in your browser.</p>
+    </div>
+
+    <div id="pf-gate"></div>
+
+    <section class="card" aria-label="Compliance inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your establishment</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="pf-empcount">Total employees (incl. contract, on rolls)</label><input id="pf-empcount" type="number" min="0" max="1000000" step="1" value="25" inputmode="numeric"></div>
+        <div class="vq-field"><label for="pf-registered">Registered on EPFO Unified Portal?</label>
+          <select id="pf-registered"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="vq-field"><label for="pf-pfwage">Typical monthly PF wages — Basic + DA (₹)</label><input id="pf-pfwage" type="number" min="0" max="10000000" step="0.01" value="22000" inputmode="decimal"><p class="vq-hint">Contributions are computed on Basic + DA only (HRA excluded).</p></div>
+        <div class="vq-field"><label for="pf-eerate">Employee contribution rate you deduct (%)</label><input id="pf-eerate" type="number" min="0" max="100" step="0.01" value="12" inputmode="decimal"></div>
+        <div class="vq-field"><label for="pf-errate">Employer contribution rate you pay (%)</label><input id="pf-errate" type="number" min="0" max="100" step="0.01" value="12" inputmode="decimal"></div>
+        <div class="vq-field"><label for="pf-split">Employer 12% split correctly? (8.33% EPS + 3.67% EPF on ceiling wages; EDLI 0.5% + admin 0.5%)</label>
+          <select id="pf-split"><option value="yes">Yes</option><option value="no">No / not sure</option></select></div>
+        <div class="vq-field"><label for="pf-duedate">ECR filed &amp; contributions deposited by the 15th of next month?</label>
+          <select id="pf-duedate"><option value="yes">Yes</option><option value="no">No / sometimes late</option></select></div>
+        <div class="vq-field"><label for="pf-uan">UAN generated for every eligible employee?</label>
+          <select id="pf-uan"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div class="vq-field"><label for="pf-kyc">KYC (Aadhaar/bank/PAN) seeded against UANs?</label>
+          <select id="pf-kyc"><option value="yes">Yes</option><option value="no">No / partial</option></select></div>
+      </div>
+      <button id="pf-run" class="vq-btn" type="button">Run compliance check</button>
+      <p id="pf-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="pf-result-card" aria-label="Check results" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Results</h2>
+      <p><span class="score" id="pf-score"></span> <span class="vq-hint" id="pf-verdict"></span></p>
+      <div id="pf-sample" style="margin-bottom:1rem"></div>
+      <div id="pf-results"></div>
+    </section>
+
+    <section class="card" aria-label="Sources">
+      <h2 class="vq-section-title" style="margin-top:0">Statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li>Wage ceiling ₹15,000 → <strong>₹25,000 w.e.f. 17 Sep 2026</strong>, S.O. 5109(E), Code on Social Security 2020 — <a href="https://mercans.com/resources/statutory-alerts/india-increase-in-statutory-wage-ceiling-for-provident-fund-17-september-2026/" rel="noopener">Mercans statutory alert</a>; <a href="https://www.sgcms.com/regulatory-updates/epfo-wage-ceiling-increased-from-15000-to-25000/" rel="noopener">SGCMS</a>; <a href="https://m.economictimes.com/wealth/legal/will/epf-wage-ceiling-at-rs-25000-what-it-means-for-employees-employers-and-take-home-pay/amp_articleshow/134408123.cms" rel="noopener">Economic Times</a></li>
+        <li>12% employer/employee, EPS 8.33% + EPF 3.67%, EDLI 0.5%, admin 0.5%, 20+ employee applicability — <a href="https://github.com/lewfkrad/openaccountants/blob/HEAD/./agent-skills/in-pf-esi-employer/SKILL.md" rel="noopener">openaccountants IN PF/ESI skill (FY 2025-26)</a>; <a href="https://3point.in/blog/epf-contribution-rules-for-employers-employees/" rel="noopener">3point.in</a></li>
+        <li>Due date 15th of following month; ECR via EPFO Unified Portal — <a href="https://trendkia.com/en/money/epf-contribution-rules-explained-understanding-deduction-limits-salary-ceilings-and-how-to-report-non-depositing-employers-32968" rel="noopener">TrendKia</a></li>
+      </ul>
+      <p class="vq-hint">This is a self-check, not legal advice. EPFO rules change — confirm with your CA / PF consultant.</p>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">PF compliance — FAQs</h2>
+      <details><summary>When is PF registration mandatory?</summary><p>Establishments with 20 or more employees (in scheduled industries) must register with EPFO. Once the Act applies, it keeps applying even if headcount later falls below 20.</p></details>
+      <details><summary lang="hi">पीएफ कब अनिवार्य है?</summary><p lang="hi">20 या अधिक कर्मचारियों वाले प्रतिष्ठानों के लिए EPFO पंजीकरण अनिवार्य है। एक बार लागू होने के बाद, कर्मचारियों की संख्या घटने पर भी यह लागू रहता है।</p></details>
+      <details><summary>What is the current PF wage ceiling?</summary><p>₹25,000/month w.e.f. 17 September 2026 (S.O. 5109(E)) — raised from ₹15,000. At the ceiling, each side contributes ₹3,000/month (12%). The employer's 12% splits into 8.33% EPS (₹2,083) + 3.67% EPF (₹917), plus 0.5% EDLI and 0.5% admin charges.</p></details>
+      <details><summary>By when must PF be deposited?</summary><p>Contributions and the Electronic Challan-cum-Return (ECR) are due by the 15th of the following month via the EPFO Unified Portal. Late payment attracts interest and damages.</p></details>
+      <details><summary>Why do UAN and KYC matter?</summary><p>Every eligible employee needs a Universal Account Number (UAN); Aadhaar/bank/PAN KYC seeded against it is required for withdrawals, transfers and claims to process.</p></details>
+      <details><summary>Is this official compliance advice?</summary><p>No — this is a self-check for awareness. Confirm your position with a CA or PF consultant.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

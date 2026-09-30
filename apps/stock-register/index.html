@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Register — Free स्टॉक रजिस्टर for Indian SMEs | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free stock register for Indian SMEs: item master (name, SKU, unit, purchase/sale price), inward/outward entries with dates, running stock per item, stock value, low & negative stock flags. स्टॉक रजिस्टर फ्री।">
+  <meta name="keywords" content="stock register, स्टॉक रजिस्टर, stock register app India, item master, inward outward register, stock ledger, माल स्टॉक हिसाब, inventory register, stock value calculator">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    .mini { padding: .35rem .7rem; min-height: 0; font-size: .85rem; }
+    .pill { display: inline-block; padding: .2rem .6rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+    .p-in { background: #e6f6ec; color: #1a7f37; } .p-out { background: #fde8e8; color: #b42318; } .p-warn { background: #fff4d6; color: #8a5a00; } .p-info { background: #e3f0ff; color: #1d4ed8; }
+    td.r, th.r { text-align: right; white-space: nowrap; }
+    tr.neg td { background: #fef2f2; }
+    tr.low td { background: #fffbeb; }
+    .formula { background: #f8fafc; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; font-size: .92rem; }
+    .formula code { background: #eef2f7; padding: .1rem .35rem; border-radius: 4px; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+    }
+  </style>
+</head>
+<body data-app="stock-register">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Stock Register</h1>
+    <p class="lede">स्टॉक रजिस्टर — <strong>item master</strong> (name, SKU, unit, purchase/sale price) aur <strong>inward/outward entries</strong> ke saath. Har item ka <strong>running stock</strong>, <strong>stock value</strong>, aur <strong>low / negative stock flags</strong> automatic. <strong>Report snapshots: 25/day free.</strong></p>
+
+    <div class="card no-print">
+      <h2>🔒 Vault encryption (optional)</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="passInput">Passphrase</label><input id="passInput" type="password" placeholder="Secret passphrase" autocomplete="off"></div>
+        <div class="btn-row" style="align-items:flex-end">
+          <button class="vq-btn secondary mini" id="passSetBtn" type="button">Encrypt vault</button>
+          <button class="vq-btn ghost mini" id="passClearBtn" type="button">Lock</button>
+        </div>
+      </div>
+      <p class="vq-hint" id="passMsg">Bina passphrase ke data sirf is device par (unencrypted) store hota hai.</p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Add item / आइटम जोड़ें</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="i-name">Item name *</label><input id="i-name" type="text" placeholder="e.g. Basmati Rice 5kg"></div>
+        <div class="vq-field"><label for="i-sku">SKU (unique)</label><input id="i-sku" type="text" placeholder="e.g. RICE-BAS-5"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="i-unit">Unit</label><input id="i-unit" type="text" placeholder="e.g. pcs, kg, box"></div>
+        <div class="vq-field"><label for="i-reorder">Reorder level (alert threshold)</label><input id="i-reorder" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 20"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="i-pprice">Purchase price (₹) *</label><input id="i-pprice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 450"></div>
+        <div class="vq-field"><label for="i-sprice">Sale price (₹)</label><input id="i-sprice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 520"></div>
+      </div>
+      <button class="vq-btn go" id="addItemBtn" type="button">Add item</button>
+      <p class="err" id="i-error" role="alert"></p>
+    </div>
+
+    <div class="card no-print">
+      <h2>Inward / Outward entry</h2>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-item">Item *</label><select id="e-item"></select></div>
+        <div class="vq-field"><label for="e-type">Entry type *</label><select id="e-type"><option value="in">Inward (stock aaya)</option><option value="out">Outward (stock gaya)</option></select></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-date">Date *</label><input id="e-date" type="date"></div>
+        <div class="vq-field"><label for="e-qty">Quantity *</label><input id="e-qty" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 50"></div>
+      </div>
+      <div class="grid2">
+        <div class="vq-field"><label for="e-rate">Rate (₹, optional — overrides default)</label><input id="e-rate" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 445"></div>
+        <div class="vq-field"><label for="e-note">Note</label><input id="e-note" type="text" placeholder="e.g. Supplier: Sharma Traders"></div>
+      </div>
+      <button class="vq-btn go" id="addEntryBtn" type="button">Add entry</button>
+      <p class="err" id="e-error" role="alert"></p>
+    </div>
+
+    <div class="card">
+      <h2>Stock position — स्टॉक स्थिति</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Item</th><th>SKU</th><th class="r">In</th><th class="r">Out</th><th class="r">Balance</th><th class="r">Value (₹)</th><th>Flag</th><th class="no-print"></th></tr></thead>
+        <tbody id="stockBody"></tbody>
+        <tfoot><tr class="grand"><td colspan="5">Total stock value</td><td class="r" id="totalValue">₹0</td><td colspan="2"></td></tr></tfoot>
+      </table></div>
+      <p class="vq-hint">Value = Balance qty × Purchase price. Balance &lt; 0 ho to outward entry inward se zyada hai — data check karein.</p>
+    </div>
+
+    <div class="card">
+      <h2>Entries ledger</h2>
+      <div class="vq-table-wrap"><table class="vq-table">
+        <thead><tr><th>Date</th><th>Item</th><th>Type</th><th class="r">Qty</th><th class="r">Rate</th><th>Note</th><th class="no-print"></th></tr></thead>
+        <tbody id="entryBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h2>Formula — गणना कैसे होती है</h2>
+      <div class="formula">
+        <p><strong>Running stock</strong> <code>Balance = Σ Inward qty − Σ Outward qty</code> (per item)</p>
+        <p><strong>Stock value</strong> <code>Value = Balance × Purchase price</code></p>
+        <p><strong>Low stock</strong> <code>Balance ≤ Reorder level</code> → ⚠ flag &nbsp;|&nbsp; <strong>Negative</strong> <code>Balance &lt; 0</code> → 🚨 flag</p>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="vq-btn go" id="saveReportBtn" type="button">Save report snapshot</button>
+      <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+    <p class="ok-msg no-print" id="savedMsg"></p>
+    <p class="vq-hint no-print">Saved data padhna free hai — sirf report snapshot save karne par daily limit (25) lagti hai.</p>
+    <div id="upsell" class="no-print"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Stock register me kya-kya record hota hai?</summary>
+        <p>Item master (name, SKU, unit, purchase/sale price) aur har inward/outward entry date ke saath. App har item ka running stock, stock value aur low/negative stock flags automatic nikaalta hai.</p>
+      </details>
+      <details>
+        <summary>Stock value kaise calculate hoti hai?</summary>
+        <p>Stock value = Balance quantity × Purchase price. FIFO/WAV jaise lot-wise valuation ke liye Inventory Valuation Tool use karein.</p>
+      </details>
+      <details>
+        <summary>Negative stock flag ka matlab kya hai?</summary>
+        <p>Iska matlab us item ki outward entries inward se zyada ho gayi hain — ya to entry miss hui hai ya data galat hai. Turant check karein.</p>
+      </details>
+      <details>
+        <summary>Reorder level kis kaam ka hai?</summary>
+        <p>Reorder level set karne par balance usse kam hote hi "Low stock" flag lagta hai — Low Stock Alerts app isi data se order suggestions banata hai.</p>
+      </details>
+      <details>
+        <summary>स्टॉक रजिस्टर क्यों ज़रूरी है?</summary>
+        <p>Stock register se pata chalta hai kaun sa maal kitna pada hai, kitne ka hai, aur kab order karna hai — bina iske overstocking ya stockout dono ka nuksaan hota hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

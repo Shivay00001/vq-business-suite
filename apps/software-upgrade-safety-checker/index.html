@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Upgrade Safety Checker — Pre-Upgrade Checklist & Rollback Plan | VisionQuantech</title>
+  <meta name="description" content="Free pre-upgrade safety checklist: risk score for software upgrades plus a fill-in rollback plan template (copyable). For small business PCs. अपग्रेड सुरक्षा जांच।">
+  <meta name="keywords" content="software upgrade checklist, pre upgrade checklist, rollback plan template, upgrade risk assessment, अपग्रेड सुरक्षा जांच, software rollback plan">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/software-upgrade-safety-checker/">
+  <meta property="og:title" content="Software Upgrade Safety Checker | VisionQuantech">
+  <meta property="og:description" content="Pre-upgrade checklist → risk score + rollback plan template. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; text-transform:capitalize; }
+    .b-low{ background:#e9f7ef; color:#1d7a3f; }
+    .b-medium{ background:#eef4ff; color:#1f4fa3; }
+    .b-high{ background:#fff4e0; color:#9a6200; }
+    .b-critical{ background:#fdeceb; color:#b3261e; }
+    .risks li{ margin-bottom:.45rem; }
+    textarea.plan { width:100%; min-height:16rem; font-family:ui-monospace,monospace; font-size:.85rem; }
+    .btn-row{ display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.8rem; }
+  </style>
+</head>
+<body data-app="software-upgrade-safety-checker">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Software Upgrade Safety Checker</h1>
+      <p>Run the <strong>pre-upgrade checklist</strong> to get an upgrade risk score — then generate a <strong>rollback plan template</strong> so you can restore the old version if anything breaks. <span lang="hi">अपग्रेड से पहले सुरक्षा जांच और रोलबैक योजना।</span></p>
+      <p class="vq-hint">Free: 20 checks per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="r-gate"></div>
+
+    <section class="card" aria-label="Pre-upgrade checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Pre-upgrade checklist — tick what is done</h2>
+      <div id="r-checks"></div>
+      <button id="r-risk" class="vq-btn" type="button">Compute upgrade risk</button>
+    </section>
+
+    <section class="card" id="r-result-card" aria-label="Risk result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Upgrade risk</h2>
+      <div id="r-result"></div>
+    </section>
+
+    <section class="card" aria-label="Rollback plan">
+      <h2 class="vq-section-title" style="margin-top:0">Rollback plan template</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="r-sys">System / software name</label>
+          <input id="r-sys" type="text" maxlength="80" placeholder="e.g. Tally Prime" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="r-owner">Owner on duty</label>
+          <input id="r-owner" type="text" maxlength="60" placeholder="e.g. Ramesh" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="r-from">Current version</label>
+          <input id="r-from" type="text" maxlength="40" placeholder="e.g. 3.1" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="r-to">Target version</label>
+          <input id="r-to" type="text" maxlength="40" placeholder="e.g. 4.0" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="r-backup">Backup location</label>
+          <input id="r-backup" type="text" maxlength="120" placeholder="e.g. External HDD → Backups/2026-09" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="r-installer">Old-version installer location</label>
+          <input id="r-installer" type="text" maxlength="120" placeholder="e.g. Pen drive, drawer 2" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="r-window">Rollback window</label>
+          <input id="r-window" type="text" maxlength="120" placeholder="e.g. Sunday 6–9 AM" autocomplete="off">
+        </div>
+      </div>
+      <button id="r-plan" class="vq-btn" type="button">Generate rollback plan</button>
+      <p id="r-plan-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="r-plan-card" aria-label="Rollback plan output" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your rollback plan</h2>
+      <textarea id="r-plan-out" class="plan" readonly></textarea>
+      <div class="btn-row">
+        <button id="r-copy" class="vq-btn" type="button">Copy plan</button>
+      </div>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Upgrade safety — FAQs</h2>
+      <details><summary>What makes a software upgrade risky?</summary><p>Upgrading without a fresh verified backup, unread release notes, untested compatibility, and no saved copy of the old installer. This checklist scores those risks and builds a rollback plan.</p></details>
+      <details><summary lang="hi">सॉफ्टवेयर अपग्रेड से पहले क्या जांचें?</summary><p lang="hi">ताज़ा बैकअप, रिलीज़ नोट्स, हार्डवेयर/OS अनुकूलता, पुराने वर्ज़न का इंस्टॉलर और रोलबैक योजना — यही चेकलिस्ट जांचती है।</p></details>
+      <details><summary>What is a rollback plan?</summary><p>A written, step-by-step plan to restore the old version and its data if the upgrade fails — trigger conditions, reinstall steps, restore location and sign-off.</p></details>
+      <details><summary>Should I upgrade on the live machine first?</summary><p>No. Test on a non-production machine first; only upgrade the live machine in a scheduled downtime window with a verified backup in hand.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

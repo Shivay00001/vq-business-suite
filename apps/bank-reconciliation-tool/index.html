@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Reconciliation Tool — Match Statement vs Books (Free) | VisionQuantech</title>
+  <meta name="description" content="Free bank reconciliation tool India: paste bank statement + book entries (CSV), auto-match by amount & date tolerance, list unmatched entries both sides. बैंक रिकंसिलिएशन टूल — स्टेटमेंट मिलान।">
+  <meta name="keywords" content="bank reconciliation tool, bank reconciliation statement format, how to do bank reconciliation, statement vs cash book matching, बैंक रिकंसिलिएशन, बैंक स्टेटमेंट मिलान">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/bank-reconciliation-tool/">
+  <meta property="og:title" content="Bank Reconciliation Tool | VisionQuantech">
+  <meta property="og:description" content="Auto-match bank statement rows with your books. Free, on-device — nothing is uploaded.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+    .tbl-wrap{overflow-x:auto;margin:1rem 0}
+    .tbl{border-collapse:collapse;width:100%;font-size:.9rem}
+    .tbl th,.tbl td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left}
+    .tbl th{background:var(--paper-soft)}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    textarea.vq-ta{width:100%;min-height:130px;font-family:monospace;font-size:.85rem;border:1px solid var(--line);border-radius:8px;padding:.6rem}
+    .check-row{display:flex;align-items:flex-start;gap:.6rem;margin:.6rem 0}
+    .check-row input{width:1.1rem;height:1.1rem;accent-color:var(--brand);margin-top:.15rem;flex:none}
+  </style>
+</head>
+<body data-app="bank-reconciliation-tool">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Bank Reconciliation Tool — Statement vs Books</h1>
+      <p>Paste your <strong>bank statement</strong> and your <strong>book (cash-book) entries</strong> as <code>date, description, amount</code> rows. The tool auto-matches by amount and date tolerance and lists everything unmatched on both sides. <span lang="hi">बैंक रिकंसिलिएशन टूल — स्टेटमेंट और किताब की एंट्रियों का मिलान।</span></p>
+      <p class="vq-hint">Free: 20 reconciliations per day. Runs 100% on your device — your statement data never leaves your browser.</p>
+    </div>
+
+    <div id="b-gate"></div>
+
+    <section class="card" aria-label="Reconciliation inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Paste your data</h2>
+      <div class="form-grid">
+        <div>
+          <label for="b-bank" style="font-weight:700">Bank statement rows</label>
+          <textarea id="b-bank" class="vq-ta" placeholder="01-09-2026,NEFT-Rent received,45000"></textarea>
+          <div class="check-row"><input id="b-hdr-bank" type="checkbox" checked><label for="b-hdr-bank" style="margin:0">First row is a header</label></div>
+        </div>
+        <div>
+          <label for="b-book" style="font-weight:700">Book (cash-book) rows</label>
+          <textarea id="b-book" class="vq-ta" placeholder="01-09-2026,Rent - Sharma Traders,45000"></textarea>
+          <div class="check-row"><input id="b-hdr-book" type="checkbox" checked><label for="b-hdr-book" style="margin:0">First row is a header</label></div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="b-amtol">Amount tolerance (₹)</label>
+          <input id="b-amtol" type="number" min="0" max="100000" step="0.01" value="1" inputmode="decimal">
+        </div>
+        <div class="vq-field">
+          <label for="b-daytol">Date tolerance (days)</label>
+          <input id="b-daytol" type="number" min="0" max="90" step="1" value="2" inputmode="numeric">
+        </div>
+      </div>
+      <p class="vq-hint">Same sign convention in BOTH files: receipts/credits <strong>positive</strong>, payments/debits <strong>negative</strong>. Max 500 rows per file.</p>
+      <button id="b-fill-sample" class="vq-btn" type="button" style="margin-right:.5rem">Load sample</button>
+      <button id="b-run" class="vq-btn" type="button">Reconcile</button>
+      <p id="b-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="b-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Reconciliation result</h2>
+      <div id="b-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Sign convention:</strong> both files must use receipts/credits positive and payments/debits negative — mixed conventions will not match.</li>
+        <li><strong>Matching rule:</strong> same sign + |amount difference| ≤ amount tolerance + |date difference| ≤ date tolerance. Greedy: each bank row takes the first unmatched book row that qualifies.</li>
+        <li><strong>Dates:</strong> DD-MM-YYYY, DD/MM/YYYY, YYYY-MM-DD accepted; invalid calendar dates are rejected.</li>
+        <li><strong>This is a matching aid, not an audit.</strong> Unmatched items need investigation — confirm with your CA before closing books.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Bank reconciliation — FAQs</h2>
+      <details><summary>How does this bank reconciliation tool match entries?</summary><p>Paste your bank statement and your book (cash-book) entries as date, description, amount rows. The tool matches rows with the same sign whose amounts agree within your rupee tolerance and whose dates agree within your day tolerance.</p></details>
+      <details><summary lang="hi">बैंक रिकंसिलिएशन कैसे करें?</summary><p lang="hi">बैंक स्टेटमेंट और अपनी किताब की एंट्रियों को date, description, amount के रूप में पेस्ट करें। टूल राशि और तारीख की सहनशीलता (tolerance) के अंदर मिलान करता है और बेमेल एंट्रियाँ अलग सूची में दिखाता है।</p></details>
+      <details><summary>What sign convention should the amounts use?</summary><p>Use the same convention in both files: receipts/credits positive, payments/debits negative. Mixed conventions will not match.</p></details>
+      <details><summary>What do unmatched entries usually mean?</summary><p>Unmatched bank rows are typically bank charges, interest, or direct credits missing from your books. Unmatched book rows are typically unpresented cheques or entries the bank has not processed yet.</p></details>
+      <details><summary>Is my statement data uploaded anywhere?</summary><p>No — everything runs in your browser on your device. Nothing is sent to any server.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Interest Calculator — Late Fee & ब्याज कैलकुलेटर (18% / 24%) | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free GST interest calculator for Indian businesses: 18% p.a. on delayed tax payment (Section 50), 24% on wrongly availed ITC, GSTR-3B late fee ₹50/day with statutory caps. जीएसटी ब्याज और लेट फीस कैलकुलेटर।">
+  <meta name="keywords" content="GST interest calculator, जीएसटी ब्याज कैलकुलेटर, GST late fee kaise calculate kare, GSTR-3B late fee calculator, GST interest 18%, section 50 CGST, GST penalty calculator India">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .8rem 0; }
+    .res-cell { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .7rem; }
+    .res-cell .k { font-size: .8rem; color: var(--ink-soft); }
+    .res-cell .v { font-size: 1.25rem; font-weight: 800; }
+    .res-cell.total { grid-column: 1 / -1; background: var(--paper-soft); }
+    .res-cell.total .v { font-size: 1.9rem; color: var(--brand); }
+    .note-box { font-size: .9rem; color: var(--ink-soft); line-height: 1.55; }
+  </style>
+</head>
+<body data-app="gst-interest-calculator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>GST Interest &amp; Late Fee Calculator</h1>
+    <p class="lede">जीएसटी ब्याज और लेट फीस कैलकुलेटर — delayed tax payment par <strong>18% p.a.</strong> interest (Section&nbsp;50(1)), galat ITC par <strong>24%</strong> (Section&nbsp;50(3)), aur GSTR-3B late fee <strong>₹50/day</strong> (nil return ₹20/day) with statutory caps. Sab kuch aapke browser me — koi data kahin nahi jaata.</p>
+
+    <form id="gstic-form" onsubmit="return false;">
+      <div class="vq-field">
+        <label for="liabType">Liability type / देनदारी का प्रकार</label>
+        <select id="liabType">
+          <option value="delayed">Delayed payment of tax — Sec 50(1) @ 18% p.a.</option>
+          <option value="itc-wrong">ITC wrongly availed &amp; utilised — Sec 50(3) @ 24% p.a.</option>
+          <option value="itc-reversal">ITC reversal — Rule 37 @ 18% p.a.</option>
+        </select>
+      </div>
+      <div class="vq-field">
+        <label for="amount">Unpaid net tax liability — cash portion (₹)</label>
+        <input id="amount" type="number" min="1" step="0.01" inputmode="decimal" placeholder="e.g. 100000">
+        <p class="vq-hint">Interest sirf net cash liability par lagta hai — ITC se offset hissa par zero interest (Finance Act 2021).</p>
+      </div>
+      <div class="vq-field">
+        <label for="dueDate">Due date of return / देय तिथि</label>
+        <input id="dueDate" type="date">
+      </div>
+      <div class="vq-field">
+        <label for="payDate">Actual payment date / भुगतान तिथि</label>
+        <input id="payDate" type="date">
+      </div>
+      <div class="vq-field">
+        <label for="returnType">Return type</label>
+        <select id="returnType">
+          <option value="normal">Normal return (with tax liability) — ₹50/day late fee</option>
+          <option value="nil">Nil return (no liability) — ₹20/day late fee</option>
+        </select>
+      </div>
+      <div class="vq-field">
+        <label for="turnover">Annual aggregate turnover (₹) — for late-fee cap</label>
+        <input id="turnover" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 4000000 (optional)">
+        <p class="vq-hint">Caps per return: ₹500 (nil) · ₹2,000 (≤ ₹1.5 cr) · ₹5,000 (₹1.5–5 cr) · ₹10,000 (&gt; ₹5 cr).</p>
+      </div>
+      <button class="vq-btn go" id="calcBtn" type="button">Calculate interest &amp; late fee</button>
+      <p class="vq-hint">Free: 20 calculations/day.</p>
+      <p class="err" id="gstic-error" role="alert"></p>
+    </form>
+
+    <div id="gstic-upsell"></div>
+
+    <div class="vq-result" id="gstic-result" style="display:none">
+      <h2 class="vq-section-sub">Result / परिणाम</h2>
+      <div class="res-grid">
+        <div class="res-cell"><div class="k">Days delayed</div><div class="v" id="r-days">–</div></div>
+        <div class="res-cell"><div class="k">Late fee payable</div><div class="v" id="r-fee">–</div></div>
+        <div class="res-cell"><div class="k">Interest payable</div><div class="v" id="r-interest">–</div></div>
+        <div class="res-cell total"><div class="k">Total payable (interest + late fee)</div><div class="v" id="r-total">–</div></div>
+      </div>
+      <div class="vq-formula">
+        <strong>Formula:</strong> Interest = Unpaid net cash tax × (18 ÷ 100 ÷ 365) × days delayed.<br>
+        Late fee = days delayed × ₹50 (₹20 for nil), capped per return by turnover slab.
+      </div>
+      <p class="note-box" id="r-note"></p>
+    </div>
+
+    <div class="vq-notice">
+      <strong>Day-wise note:</strong> interest har din ke hisaab se badhta hai — due date ke agle din se lekar payment date tak, roz ka interest = (unpaid amount × 18%) ÷ 365. Late fee bhi roz badhti hai jab tak cap na lag jaye. Ye calculator general guidance ke liye hai — professional tax advice nahi.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>GST late payment par interest kitna lagta hai?</summary>
+        <p>18% per annum, Section 50(1) CGST Act ke tahat. Interest sirf net cash liability par — yaani jo tax aapne electronic cash ledger se chukaya — ITC-offset hisse par zero interest lagta hai.</p>
+      </details>
+      <details>
+        <summary>Galat ITC claim karne par kitna interest hai?</summary>
+        <p>24% per annum, Section 50(3) ke tahat — lekin sirf tab jab ITC galat tarike se <em>avail aur utilise dono</em> hui ho. Agar ITC bina use kiye credit ledger me padi rahi, to reversal par koi interest nahi.</p>
+      </details>
+      <details>
+        <summary>GSTR-3B ka late fee per day kitna hai?</summary>
+        <p>₹50 per day (₹25 CGST + ₹25 SGST); nil return ke liye ₹20 per day (₹10 + ₹10). Har return par maximum cap: nil ₹500 · turnover ≤ ₹1.5 crore par ₹2,000 · ₹1.5–5 crore par ₹5,000 · ₹5 crore se zyada par ₹10,000.</p>
+      </details>
+      <details>
+        <summary>Interest kab se kab tak count hota hai?</summary>
+        <p>Due date ke agle din se lekar actual payment (cash ledger debit) ki date tak — poore dinon ka hisaab.</p>
+      </details>
+      <details>
+        <summary>Kya ye calculator ka result GST portal se match karega?</summary>
+        <p>Portal Rule 88B ke tahat cash-ledger timing ko dhyan me rakhkar interest nikalta hai; ye calculator standard formula par based estimate deta hai. Final liability hamesha portal/CA se verify karein.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

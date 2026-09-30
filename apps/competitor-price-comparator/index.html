@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitor Price Comparator – Premium/Par/Budget Map | VisionQuantech</title>
+  <meta name="description" content="Free competitor price comparator India: your price vs competitors per SKU, premium/par/budget positioning map and ±15% gap alerts. कॉम्पिटिटर प्राइस तुलना।">
+  <meta name="keywords" content="competitor price comparison, price positioning map, premium par budget pricing, कॉम्पिटिटर प्राइस तुलना, competitive pricing analysis India">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/competitor-price-comparator/">
+  <meta property="og:title" content="Competitor Price Comparator – Positioning Map | VisionQuantech">
+  <meta property="og:description" content="Premium, at par, or budget? Map every SKU against the market. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="competitor-price-comparator">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Competitor Price Comparator — Where Do You Stand?</h1>
+      <p>Enter <strong>your price and competitor prices per SKU</strong>. See the gap %, a <strong>premium / at-par / budget</strong> positioning map, and alerts when you drift beyond ±15%. <span lang="hi">बाज़ार के मुक़ाबले आपकी कीमत — प्रीमियम, बराबर या बजट।</span></p>
+      <p class="vq-hint">Free: 20 comparisons per day. Data stays on your device (max 25 SKUs).</p>
+    </div>
+
+    <div id="cp-gate"></div>
+
+    <section class="card" aria-label="Price entry">
+      <h2 class="vq-section-title" style="margin-top:0">Compare a SKU</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="cp-name">SKU / product name</label>
+          <input id="cp-name" maxlength="60" placeholder="e.g. Basmati Rice 5kg">
+        </div>
+        <div class="vq-field">
+          <label for="cp-your">Your price (₹)</label>
+          <input id="cp-your" type="number" min="0" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+      <div class="vq-field">
+        <label for="cp-comps">Competitor prices (₹, comma-separated, up to 10)</label>
+        <input id="cp-comps" inputmode="decimal" placeholder="e.g. 480, 495, 470">
+      </div>
+      <button id="cp-add" class="vq-btn" type="button">Add &amp; compare</button>
+      <p id="cp-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="cp-list" style="margin-top:1rem"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Market = simple average</strong> of the competitor prices you enter (up to 10 per SKU).</li>
+        <li><strong>Positioning bands:</strong> gap within ±5% = at par; above +5% = premium; below −5% = budget.</li>
+        <li><strong>Alert threshold:</strong> |gap| beyond 15% raises a review alert.</li>
+        <li><strong>Price only:</strong> quality, brand, service and pack-size differences are not modelled — compare like-for-like.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Competitor price comparator — FAQs</h2>
+      <details><summary>How do I compare my price with competitors?</summary><p>For each SKU, list competitor prices, take the average, and compute the gap % = (your price − market average) ÷ market average × 100. Within ±5% = at par; above = premium; below = budget.</p></details>
+      <details><summary lang="hi">कॉम्पिटिटर कीमतों से तुलना कैसे करें?</summary><p lang="hi">हर SKU के लिए कॉम्पिटिटर कीमतों का औसत निकालें। गैप % = (आपकी कीमत − बाज़ार औसत) ÷ बाज़ार औसत × 100। ±5% के अंदर = बराबर, ऊपर = प्रीमियम, नीचे = बजट।</p></details>
+      <details><summary>When should a price gap worry me?</summary><p>Beyond ±15% deserves attention: 15%+ above market needs a clear value story (brand, service, quality) or you lose share; 15%+ below may mean you are leaving money on the table.</p></details>
+      <details><summary>Does premium positioning always hurt sales?</summary><p>No — premium works when customers perceive extra value. The gap tells you where you stand; whether it is sustainable depends on differentiation, which this tool does not measure.</p></details>
+      <details><summary>Is my pricing data private?</summary><p>Yes — stored only on your device (max 25 SKUs, 10 competitor prices each). Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

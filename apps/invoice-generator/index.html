@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free GST Invoice Generator — जीएसटी इनवॉइस बनाएं (CGST/SGST/IGST) | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free GST invoice generator for Indian SMEs: add items with HSN/SAC, auto CGST+SGST/IGST calculation, discount, round-off, amount in words, auto invoice numbering, print/PDF. फ्री जीएसटी इनवॉइस जनरेटर।">
+  <meta name="keywords" content="GST invoice generator, फ्री जीएसटी इनवॉइस, invoice kaise banaye, tax invoice format India, free invoice maker India, CGST SGST IGST invoice">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.2em; margin: .4rem 0; }
+    .ok-msg { color: #1a7f37; font-weight: 600; margin: .4rem 0; min-height: 1.2em; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.05rem; margin: 0 0 .8rem; }
+    #itemsBody input, #itemsBody select { width: 100%; padding: .5rem; font-size: .9rem; border: 1.5px solid var(--line); border-radius: 8px; }
+    #itemsBody .i-qty, #itemsBody .i-rate { max-width: 90px; }
+    #itemsBody .i-disc { max-width: 70px; }
+    .i-del { padding: .4rem .7rem; min-height: 0; font-size: .85rem; }
+    .i-total { white-space: nowrap; font-weight: 700; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin: .8rem 0; }
+    #totalsBody td.r { text-align: right; white-space: nowrap; }
+    #totalsBody tr.grand td { font-weight: 800; font-size: 1.15rem; border-top: 2px solid var(--line); }
+    #totalsBody .words { font-size: .85rem; color: var(--ink-soft); }
+    .supply-row { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .supply-row label { border: 1.5px solid var(--line); border-radius: 10px; padding: .7rem .9rem; cursor: pointer; font-weight: 600; background: #fff; }
+    .supply-row label:has(input:checked) { border-color: var(--brand); background: var(--paper-soft); }
+    /* invoice document (preview + print) */
+    .inv-doc { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 1.4rem; margin: 1rem 0; }
+    .inv-head { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 2px solid var(--ink); padding-bottom: .8rem; margin-bottom: .8rem; }
+    .inv-head h2 { margin: 0 0 .3rem; } .inv-head h3 { margin: 0 0 .3rem; }
+    .inv-head p, .inv-party { font-size: .9rem; color: var(--ink-soft); }
+    .inv-party { margin-bottom: .8rem; }
+    .inv-totals { margin-left: auto; width: 280px; border-collapse: collapse; font-size: .92rem; }
+    .inv-totals td { border: 1px solid var(--line); padding: .45rem .6rem; }
+    .inv-totals td:last-child { text-align: right; }
+    .inv-totals tr.grand td { font-weight: 800; }
+    .inv-sign { text-align: right; margin-top: 2rem; font-size: .9rem; }
+    #profileBox { margin-bottom: 1rem; }
+    @media print {
+      body > header, body > footer, #ad-top, #ad-bottom,
+      #editorWrap, .vq-faq, .no-print { display: none !important; }
+      .vq-main { max-width: 100%; padding: 0; margin: 0; }
+      #invoicePreview { display: block !important; }
+      .inv-doc { border: 0; }
+    }
+  </style>
+</head>
+<body data-app="invoice-generator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>GST Invoice Generator</h1>
+    <p class="lede">फ्री जीएसटी इनवॉइस जनरेटर — seller/buyer details, HSN/SAC items, auto <strong>CGST+SGST / IGST</strong>, discount, round-off, amount in words (lakh/crore), auto invoice numbering. Save karke <strong>Print / PDF</strong> nikalein. <strong>10 invoices/month free.</strong></p>
+
+    <div id="editorWrap">
+      <div id="profileBox"></div>
+
+      <div class="two-col">
+        <div class="card">
+          <h2>Seller (आपकी फर्म)</h2>
+          <div class="vq-field"><label for="sName">Business name *</label><input id="sName" type="text" placeholder="e.g. Sharma Traders"></div>
+          <div class="vq-field"><label for="sGstin">GSTIN</label><input id="sGstin" type="text" maxlength="15" placeholder="e.g. 27ABCDE1234F1Z5" style="text-transform:uppercase"></div>
+          <div class="vq-field"><label for="sAddr">Address</label><textarea id="sAddr" rows="2" placeholder="Shop no, street, city, state, PIN"></textarea></div>
+          <div class="vq-field"><label for="sPhone">Phone</label><input id="sPhone" type="tel" placeholder="e.g. 98765 43210"></div>
+        </div>
+        <div class="card">
+          <h2>Buyer (ग्राहक)</h2>
+          <div class="vq-field"><label for="bName">Name</label><input id="bName" type="text" placeholder="e.g. Gupta Enterprises"></div>
+          <div class="vq-field"><label for="bGstin">GSTIN</label><input id="bGstin" type="text" maxlength="15" placeholder="Optional" style="text-transform:uppercase"></div>
+          <div class="vq-field"><label for="bAddr">Address</label><textarea id="bAddr" rows="2" placeholder="Billing address"></textarea></div>
+          <div class="vq-field"><label for="bPhone">Phone</label><input id="bPhone" type="tel" placeholder="Optional"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Invoice details</h2>
+        <div class="two-col">
+          <div class="vq-field"><label for="invDate">Invoice date</label><input id="invDate" type="date"></div>
+          <div class="vq-field"><label>Place of supply</label>
+            <div class="supply-row">
+              <label><input type="radio" name="supply" value="intra" checked> Same state (CGST+SGST)</label>
+              <label><input type="radio" name="supply" value="inter"> Other state (IGST)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Items</h2>
+        <div class="vq-table-wrap"><table class="vq-table">
+          <thead><tr><th>Description *</th><th>HSN/SAC</th><th>Qty *</th><th>Rate (₹) *</th><th>GST%</th><th>Disc%</th><th>Total</th><th></th></tr></thead>
+          <tbody id="itemsBody"></tbody>
+        </table></div>
+        <button class="vq-btn ghost" id="addItemBtn" type="button">+ Add item</button>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <h2>Discount &amp; round-off</h2>
+          <div class="vq-field"><label for="invDisc">Extra invoice discount (%)</label><input id="invDisc" type="number" min="0" max="100" step="any" value="0"></div>
+          <div class="vq-field"><label><input id="roundOff" type="checkbox" checked> Round grand total to nearest ₹</label></div>
+        </div>
+        <div class="card">
+          <h2>Totals</h2>
+          <table class="vq-table"><tbody id="totalsBody"></tbody></table>
+        </div>
+      </div>
+
+      <div class="btn-row no-print">
+        <button class="vq-btn ghost" id="previewBtn" type="button">Preview invoice</button>
+        <button class="vq-btn go" id="saveBtn" type="button">Save invoice</button>
+        <button class="vq-btn secondary" id="printBtn" type="button">Print / PDF</button>
+        <button class="vq-btn ghost" id="newBtn" type="button">New invoice</button>
+      </div>
+      <p class="err" id="inv-error" role="alert"></p>
+      <p class="ok-msg" id="inv-saved"></p>
+      <p class="vq-hint">Free: 10 invoices per calendar month. Saved invoices stay on this device.</p>
+      <div id="inv-upsell"></div>
+
+      <h2 class="vq-section-title">Saved invoices</h2>
+      <div id="savedList"><p class="vq-hint">Loading…</p></div>
+    </div>
+
+    <div id="invoicePreview" aria-live="polite"></div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>Free GST invoice kaise banaye?</summary>
+        <p>Seller aur buyer details bharein, items add karein (HSN/SAC, quantity, rate, GST%), same-state ya other-state chunein — tax automatic calculate hoga. Save karke Print/PDF lein. 10 invoices/month free.</p>
+      </details>
+      <details>
+        <summary>CGST/SGST aur IGST me kya farak hai?</summary>
+        <p>Same state me sale par tax aadha CGST + aadha SGST hota hai; doosre state me sale par poora IGST. Toggle badalte hi calculation update ho jata hai.</p>
+      </details>
+      <details>
+        <summary>GST 2.0 ke baad kaunse rates lagu hain?</summary>
+        <p>56th GST Council (September 2025) ke baad mukhya slabs <strong>5% aur 18%</strong> hain, luxury/sin goods par <strong>40%</strong> demerit rate — 22 September 2025 se effective. Purane 12%/28% legacy option me uplabdh hain.</p>
+      </details>
+      <details>
+        <summary>Invoice number automatic kaise banta hai?</summary>
+        <p>Har save par number auto-generate hota hai (INV-FY-0001 format) aur counter aapke device par save rehta hai, taaki numbering kabhi repeat na ho.</p>
+      </details>
+      <details>
+        <summary>Kya mera invoice data safe hai?</summary>
+        <p>Haan — invoices sirf aapke browser ke local storage me save hote hain, kahin upload nahi hote. Chahein to Vault passphrase set karke encrypt bhi kar sakte hain.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

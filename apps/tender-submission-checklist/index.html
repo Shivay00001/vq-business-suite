@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tender Submission Checklist – Two-Bid Technical & Financial Documents India | VisionQuantech</title>
+  <meta name="description" content="Free tender submission checklist India: two-bid system (technical + financial) document checklist with per-section and overall completion % and ready-to-submit flag. टेंडर दस्तावेज़ चेकलिस्ट।">
+  <meta name="keywords" content="tender submission checklist India, two bid system documents, technical bid financial bid checklist, tender documents required, bid submission checklist, टेंडर दस्तावेज़ चेकलिस्ट, टू बिड सिस्टम, तकनीकी बोली दस्तावेज़">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/tender-submission-checklist/">
+  <meta property="og:title" content="Tender Submission Checklist | VisionQuantech">
+  <meta property="og:description" content="Two-bid document checklist with completion % — never miss a paper again. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .sum-strip{ display:flex; flex-wrap:wrap; gap:.4rem 1rem; background:var(--paper-soft); border-radius:10px; padding:.7rem 1rem; margin-bottom:.8rem; font-size:.92rem; }
+    .bar{ height:.7rem; background:#eef1f5; border-radius:999px; overflow:hidden; margin-bottom:1rem; }
+    .bar-fill{ height:100%; background:var(--brand); border-radius:999px; }
+    .b-ok-t{ color:#1d7a3f; } .b-warn-t{ color:#b3541e; }
+    .doc-list{ display:grid; gap:.3rem; margin:.5rem 0 1rem; }
+    .doc-item{ font-size:.92rem; border:1px solid var(--line); border-radius:8px; padding:.45rem .6rem; display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
+    .doc-item label{ display:flex; gap:.5rem; align-items:flex-start; cursor:pointer; }
+    .doc-item.done{ background:#f2faf5; } .doc-item.done label{ text-decoration:line-through; color:#5a6b5f; }
+    .mini{ padding:.15rem .5rem; font-size:.8rem; }
+    .add-row{ display:flex; gap:.6rem; flex-wrap:wrap; align-items:flex-end; margin-top:1rem; }
+    .add-row .vq-field{ flex:2 1 12rem; margin-bottom:0; }
+    .btn-row{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.8rem; }
+  </style>
+</head>
+<body data-app="tender-submission-checklist">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Tender Submission Checklist — Two-Bid System, India</h1>
+      <p><strong>Technical bid (Envelope 1)</strong> + <strong>financial bid (Envelope 2)</strong> document checklist with per-section and overall <strong>completion %</strong> — never miss a paper again. <span lang="hi">टेंडर दस्तावेज़ चेकलिस्ट — दो-लिफाफा प्रणाली।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Stored only on this device — all math happens in your browser.</p>
+    </div>
+
+    <div id="s-gate"></div>
+
+    <section class="card" aria-label="Checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Submission checklist</h2>
+      <div id="s-progress"></div>
+      <div id="s-tech"></div>
+      <div id="s-fin"></div>
+      <div class="add-row">
+        <div class="vq-field">
+          <label for="s-section">Section</label>
+          <select id="s-section"><option value="technical">Technical bid</option><option value="financial">Financial bid</option></select>
+        </div>
+        <div class="vq-field">
+          <label for="s-docname">Add custom document (from your NIT)</label>
+          <input id="s-docname" type="text" maxlength="120" placeholder="e.g. Site visit certificate">
+        </div>
+        <button id="s-add" class="vq-btn" type="button">Add</button>
+      </div>
+      <p id="s-msg" class="vq-hint" aria-live="polite"></p>
+      <div class="btn-row">
+        <button id="s-save" class="vq-btn" type="button">Save snapshot (this device)</button>
+        <button id="s-reset" class="vq-btn vq-btn-ghost" type="button">Reset to defaults</button>
+      </div>
+      <p class="vq-hint">The NIT and its corrigenda define the mandatory set for each tender — this is a common-documents starting point. Reading your saved checklist is never counted against the free limit.</p>
+    </section>
+
+    <section class="card" aria-label="Pending">
+      <h2 class="vq-section-title" style="margin-top:0">Submission readiness</h2>
+      <div id="s-pending"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Two-bid system:</strong> technical bid opened first; only technically qualified bidders' financial bids are opened. One missing technical document can disqualify the bid.</li>
+        <li><strong>Default list</strong> covers common Indian government-tender documents (EMD/BSD, GST/PAN, 3-year financials &amp; ITRs, experience certificates, non-blacklisting affidavit, DSC, BOQ in figures and words). Add NIT-specific items as custom documents.</li>
+        <li><strong>Planning aid, not legal advice.</strong> The NIT is authoritative — <strong>confirm with your consultant/CA.</strong></li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Tender submission checklist — FAQs</h2>
+      <details><summary>What is the two-bid system in Indian tenders?</summary><p>Bids are submitted in two sealed envelopes: the technical bid (eligibility, experience, EMD, documents) is opened first; only technically qualified bidders’ financial bids (BOQ/price) are opened next. Failing one technical document can disqualify the whole bid.</p></details>
+      <details><summary lang="hi">टू-बिड सिस्टम क्या है?</summary><p lang="hi">बोली दो लिफाफों में जाती है — पहले तकनीकी बोली (योग्यता, अनुभव, EMD, दस्तावेज़) खुलती है; तकनीकी रूप से योग्य बोलीदाताओं की ही वित्तीय बोली (BOQ/मूल्य) खुलती है। एक दस्तावेज़ की कमी पूरी बोली रद्द करा सकती है।</p></details>
+      <details><summary>Which documents are mandatory in the technical bid?</summary><p>Commonly: EMD or Bid Securing Declaration, tender fee receipt, GST/PAN, incorporation proof, Udyam/NSIC (if applicable), 3-year audited financials and ITRs, experience certificates, non-blacklisting affidavit, and DSC. The NIT annexures are authoritative — this list is a starting point.</p></details>
+      <details><summary lang="hi">वित्तीय बोली में क्या रखें?</summary><p lang="hi">BOQ/मूल्य अनुसूची (अंकों और शब्दों दोनों में दरें), GST ट्रीटमेंट NIT अनुसार, बिना शर्त प्रस्ताव घोषणा, और वैधता अवधि घोषणा।</p></details>
+      <details><summary>Is this checklist legally complete?</summary><p>No — it is a common-documents starting point. The NIT and its corrigenda define the mandatory set for each tender. Confirm with your consultant/CA.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

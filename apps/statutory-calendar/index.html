@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statutory Compliance Calendar — GST, TDS, PF/ESI Due Dates | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free statutory compliance calendar for Indian SMEs: GSTR-1/3B, CMP-08, PMT-06, TDS, PF/ESI, advance tax due dates in a month view with filters and a 7-day upcoming widget. No signup. कंप्लायंस कैलेंडर।">
+  <meta name="keywords" content="statutory compliance calendar, GST due dates calendar, GSTR-1 GSTR-3B due date, CMP-08 due date, TDS due date, PF ESI due date, compliance calendar India, जीएसटी ड्यू डेट कैलेंडर">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.2rem; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    .card h2 { font-size: 1.02rem; margin: 0 0 .7rem; }
+    .law-row { display: flex; gap: .6rem; align-items: flex-start; padding: .45rem 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+    .law-row:last-child { border-bottom: 0; }
+    .law-row input { width: 22px; height: 22px; margin-top: 1px; accent-color: var(--brand); flex: none; }
+    .cal-nav { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .8rem; }
+    .cal-nav h2 { margin: 0; font-size: 1.15rem; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-dow { font-size: .72rem; font-weight: 700; color: var(--ink-soft); text-align: center; padding: .3rem 0; }
+    .cal-day { background: #fff; border: 1px solid var(--line); border-radius: 8px; min-height: 62px; padding: .3rem .35rem; font-size: .78rem; }
+    .cal-day .d { font-weight: 800; font-size: .85rem; }
+    .cal-day.other { opacity: .35; }
+    .cal-day.today { border: 2px solid var(--brand); }
+    .cal-day .ev { margin-top: 2px; padding: 1px 4px; border-radius: 4px; background: var(--paper-soft); border-left: 3px solid var(--brand); font-size: .68rem; line-height: 1.25; overflow: hidden; }
+    .cal-day .ev.gst { border-left-color: #1a56db; }
+    .cal-day .ev.comp { border-left-color: #7a2fd0; }
+    .cal-day .ev.tds { border-left-color: #a15c00; }
+    .cal-day .ev.labour { border-left-color: #1a7f37; }
+    .cal-day .ev.itax { border-left-color: #b42318; }
+    .up-item { display: flex; gap: .7rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; align-items: baseline; }
+    .up-item:last-child { border-bottom: 0; }
+    .up-date { font-weight: 800; white-space: nowrap; min-width: 86px; }
+    .up-days { margin-left: auto; font-size: .78rem; color: var(--warn); font-weight: 700; white-space: nowrap; }
+    .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .day-detail { margin-top: .8rem; }
+  </style>
+</head>
+<body data-app="statutory-calendar">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <h1>Statutory Compliance Calendar</h1>
+    <p class="lede">कंप्लायंस कैलेंडर — <strong>GSTR-1 / 3B / CMP-08 / PMT-06</strong>, <strong>TDS</strong>, <strong>PF / ESI</strong>, advance tax aur annual returns ki due dates ek month view me. Jo laws aap par lagu hain wo tick karein (choice aapke device par save hoti hai), <strong>7-day upcoming widget</strong> dekhein. <strong>Free, unlimited — koi meter nahi.</strong></p>
+
+    <div class="card" id="upcomingCard">
+      <h2>⏰ Next 7 days / अगले 7 दिन</h2>
+      <div id="upcomingList"><p class="vq-hint">Loading…</p></div>
+    </div>
+
+    <div class="card">
+      <h2>Which laws apply to you? / कौनसे कानून लागू हैं?</h2>
+      <div id="lawFilters">
+        <div class="law-row"><input type="checkbox" id="lawGstM" checked><label for="lawGstM"><strong>GST — monthly filer</strong> (GSTR-1 on 11th, GSTR-3B on 20th, GSTR-7/8 on 10th, IFF/GSTR-6 on 13th, GSTR-9/9C annual on 31 Dec)</label></div>
+        <div class="law-row"><input type="checkbox" id="lawQrmp"><label for="lawQrmp"><strong>GST — QRMP scheme</strong> (quarterly GSTR-1 on 13th, quarterly GSTR-3B on 22nd/24th, PMT-06 on 25th)</label></div>
+        <div class="law-row"><input type="checkbox" id="lawComp"><label for="lawComp"><strong>Composition scheme</strong> (CMP-08 quarterly on 18th, GSTR-4 annual on 30 Jun)</label></div>
+        <div class="law-row"><input type="checkbox" id="lawTds" checked><label for="lawTds"><strong>TDS/TCS</strong> (deposit by 7th; 24Q returns; Form 16 on 15 Jun)</label></div>
+        <div class="law-row"><input type="checkbox" id="lawLabour" checked><label for="lawLabour"><strong>PF &amp; ESI</strong> (deposit by 15th)</label></div>
+        <div class="law-row"><input type="checkbox" id="lawItax"><label for="lawItax"><strong>Income tax</strong> (advance tax instalments on 15 Jun / 15 Sep / 15 Dec / 15 Mar)</label></div>
+        <div class="law-row"><input type="checkbox" id="lawPt"><label for="lawPt"><strong>Professional Tax (custom reminder)</strong> — state-specific hai, isliye apna state aur due-day khud set karein:
+          <span style="display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap">
+            <input type="text" id="ptState" placeholder="State, e.g. Maharashtra" style="flex:1;min-width:140px;padding:.4rem;border:1.5px solid var(--line);border-radius:8px">
+            <input type="number" id="ptDay" min="1" max="28" placeholder="Day (1–28)" style="width:110px;padding:.4rem;border:1.5px solid var(--line);border-radius:8px">
+          </span></label></div>
+      </div>
+      <p class="vq-hint">Aapki choice automatically is device par save hoti hai. Professional Tax ke dates har state me alag hain — PT reminder me apna day set karne ke baad bhi state PT portal par date verify zaroor karein.</p>
+    </div>
+
+    <div class="card">
+      <div class="cal-nav">
+        <button class="vq-btn ghost" id="prevBtn" type="button">‹ Prev</button>
+        <h2 id="calTitle">–</h2>
+        <div class="btn-row">
+          <button class="vq-btn ghost" id="todayBtn" type="button">Today</button>
+          <button class="vq-btn ghost" id="nextBtn" type="button">Next ›</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="day-detail" id="dayDetail"></div>
+    </div>
+
+    <div class="vq-notice">
+      <strong>Honest note / ईमानदार नोट:</strong> ye dates <strong>standard recurring due dates</strong> hain (verified Sep 2026). CBIC/CBDT kabhi-kabhi notifications se dates extend kar deta hai — deadline ke paas hamesha <strong>gst.gov.in</strong> / official portal par re-verify karein. QRMP me GSTR-3B <strong>22nd (Category X states) / 24th (Category Y states)</strong> hota hai — apne state ki category check karein. Professional Tax ke dates har state me alag hain, isliye calendar me nahi dale gaye.
+    </div>
+
+    <div class="vq-formula" style="margin-top:.8rem">
+      <strong>Standard dates used (verified Sep 2026):</strong> GSTR-1: 11th · GSTR-3B: 20th · GSTR-7/8: 10th · IFF &amp; GSTR-6: 13th · CMP-08: 18th (Jan/Apr/Jul/Oct) · GSTR-4: 30 Jun (FY 2024-25 onwards) · QRMP GSTR-1: 13th (quarterly) · QRMP GSTR-3B: 22nd/24th · PMT-06: 25th · TDS deposit: 7th · 24Q: 31 Jul / 31 Oct / 31 Jan / 31 May · Form 16: 15 Jun · PF &amp; ESI: 15th · Advance tax: 15 Jun / 15 Sep / 15 Dec / 15 Mar · GSTR-9/9C: 31 Dec · PT: custom reminder (state-specific).
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>GSTR-1 aur GSTR-3B ki due date kya hai?</summary>
+        <p>Monthly filers: <strong>GSTR-1 — 11th</strong>, <strong>GSTR-3B — 20th</strong> of the following month. QRMP scheme me: quarterly GSTR-1 13th, quarterly GSTR-3B 22nd/24th (state category ke hisaab se).</p>
+      </details>
+      <details>
+        <summary>CMP-08 kab file hota hai? (When is CMP-08 due?)</summary>
+        <p>Har quarter ke baad wale mahine ki <strong>18 tarikh</strong> tak — yaani 18 Apr, 18 Jul, 18 Oct, 18 Jan. Composition ka annual return <strong>GSTR-4</strong> 30 June tak (FY 2024-25 se — Notification 12/2024; usse pehle 30 April tha).</p>
+      </details>
+      <details>
+        <summary>TDS deposit aur return ki dates kya hain?</summary>
+        <p>TDS/TCS deposit: har mahine ki <strong>7 tarikh</strong> tak. 24Q quarterly returns: <strong>31 Jul, 31 Oct, 31 Jan, 31 May</strong>. Form 16: <strong>15 June</strong> tak issue karna hota hai.</p>
+      </details>
+      <details>
+        <summary>PF aur ESI kab jama hota hai?</summary>
+        <p>Dono ka monthly deposit <strong>15th</strong> of the following month tak hota hai.</p>
+      </details>
+      <details>
+        <summary>Kya ye dates hamesha sahi rehti hain?</summary>
+        <p>Ye standard recurring dates hain, lekin government notifications se kabhi-kabhi extend ho jati hain. Deadline ke paas official portal par zaroor re-verify karein — isiliye calendar par ye honest note diya gaya hai.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

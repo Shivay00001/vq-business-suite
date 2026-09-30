@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seasonal Pricing Advisor – Peak/Off-Peak Price Multipliers | VisionQuantech</title>
+  <meta name="description" content="Free seasonal pricing advisor India: 12-month sales → seasonality index, peak/off-peak bands, suggested price multipliers and revenue uplift estimate. सीज़नल प्राइसिंग सलाह।">
+  <meta name="keywords" content="seasonal pricing, seasonality index calculator, peak off-peak pricing, सीज़नल प्राइसिंग, seasonal price strategy India">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/seasonal-pricing-advisor/">
+  <meta property="og:title" content="Seasonal Pricing Advisor – Peak/Off-Peak Prices | VisionQuantech">
+  <meta property="og:description" content="+5% in peak months, −5% off-peak: see your yearly rhythm and the upside. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:repeat(3, 1fr); }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:repeat(4, 1fr); } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="seasonal-pricing-advisor">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Seasonal Pricing Advisor — Price With the Season, Not Against It</h1>
+      <p>Enter <strong>12 months of sales</strong> and your base price. Get a <strong>seasonality index</strong> per month, peak/off-peak bands, and suggested <strong>price multipliers</strong> (+5% peak, −5% off-peak). <span lang="hi">मौसम के हिसाब से कीमत — पीक में +5%, ऑफ-पीक में −5%।</span></p>
+      <p class="vq-hint">Free: 20 analyses per day. Data stays on your device.</p>
+    </div>
+
+    <div id="sp-gate"></div>
+
+    <section class="card" aria-label="Seasonal inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Monthly sales (units or ₹)</h2>
+      <div class="vq-field">
+        <label for="sp-price">Base price (₹)</label>
+        <input id="sp-price" type="number" min="0" step="0.01" value="500" inputmode="decimal" style="max-width:16rem">
+      </div>
+      <div id="sp-months" class="form-grid"></div>
+      <p style="margin-top:1rem"><button id="sp-calc" class="vq-btn" type="button">Advise seasonal prices</button></p>
+      <p id="sp-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="sp-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Seasonal pricing plan</h2>
+      <p class="formula">Seasonality index = month ÷ average month × 100 · peak &gt; 110 → ×1.05 · off-peak &lt; 90 → ×0.95</p>
+      <div id="sp-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Bands:</strong> index &gt; 110 = peak (×1.05), &lt; 90 = off-peak (×0.95), else normal. Fixed, transparent multipliers.</li>
+        <li><strong>Volume assumed constant</strong> under the new prices — the uplift is directional, not a demand model.</li>
+        <li><strong>All 12 months required;</strong> sales can be units or revenue, but be consistent.</li>
+        <li><strong>Test before committing</strong> — elasticity differs by product and market.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Seasonal pricing advisor — FAQs</h2>
+      <details><summary>What is a seasonality index?</summary><p>Monthly sales ÷ average monthly sales × 100. An index of 130 means the month sells 30% above average; 70 means 30% below. It is the standard way to see your yearly rhythm.</p></details>
+      <details><summary lang="hi">सीज़नैलिटी इंडेक्स क्या है?</summary><p lang="hi">मासिक बिक्री ÷ औसत मासिक बिक्री × 100। 130 का इंडेक्स मतलब औसत से 30% ज़्यादा बिक्री, 70 मतलब 30% कम।</p></details>
+      <details><summary>Should I raise prices in peak season?</summary><p>Usually yes, modestly: +5% in peak months captures willingness to pay, and −5% in off-peak months can stimulate volume. Test small first — demand elasticity varies by product.</p></details>
+      <details><summary>How is the revenue uplift calculated?</summary><p>Same monthly volumes re-priced: peak months at base × 1.05, off-peak at base × 0.95. It assumes volume does not change with price — a simplification, so treat it as directional.</p></details>
+      <details><summary>Is my sales data private?</summary><p>Yes — saved only on your device. Nothing is uploaded.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

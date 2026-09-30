@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Cash Estimator — 3 & 6 Month Reserve Target | VisionQuantech</title>
+  <meta name="description" content="Free emergency cash estimator: enter monthly fixed costs, get 3-month and 6-month reserve targets, coverage and funding gap. इमरजेंसी कैश एस्टीमेटर।">
+  <meta name="keywords" content="emergency fund business calculator, how much cash reserve business, 3 month emergency fund, business contingency fund, इमरजेंसी फंड कैलकुलेटर, कैश रिज़र्व">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/emergency-cash-estimator/">
+  <meta property="og:title" content="Emergency Cash Estimator | VisionQuantech">
+  <meta property="og:description" content="3-month and 6-month emergency reserve targets from your fixed costs. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}.msg-warn{color:#b26a00;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1rem 0}
+    .kpi{background:var(--paper-soft);border-radius:10px;padding:.8rem;text-align:center}
+    .kpi-n{font-size:1.3rem;font-weight:800}
+    .kpi-l{font-size:.8rem;color:var(--ink-soft)}
+    .tag{display:inline-block;font-size:.75rem;font-weight:700;border-radius:20px;padding:.15rem .6rem}
+    .tag-ok{background:#e3f5e9;color:#1d7a3f}.tag-warn{background:#fdf0d5;color:#b26a00}.tag-bad{background:#fde7e5;color:#b3261e}
+  </style>
+</head>
+<body data-app="emergency-cash-estimator">
+  <main class="vq-main">
+    <!-- ADSENSE: -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Emergency Cash Estimator</h1>
+      <p>Enter your monthly <strong>fixed (essential) costs</strong>. The tool sets your <strong>3-month and 6-month emergency reserve targets</strong>, checks how much your current cash covers, and shows the funding gap. <span lang="hi">इमरजेंसी कैश एस्टीमेटर — कितना कैश रिज़र्व रखें?</span></p>
+      <p class="vq-hint">Free: 20 estimates per day. Nothing is stored — all math happens in your browser.</p>
+    </div>
+
+    <div id="e-gate"></div>
+
+    <section class="card" aria-label="Essential costs">
+      <h2 class="vq-section-title" style="margin-top:0">Monthly essential costs (₹)</h2>
+      <div class="form-grid" id="e-costs"></div>
+      <div class="vq-field" style="max-width:320px">
+        <label for="e-cash">Current cash available (₹)</label>
+        <input id="e-cash" type="number" min="0" step="0.01" inputmode="decimal" placeholder="cash in hand + bank">
+      </div>
+      <button id="e-calc" class="vq-btn" type="button">Estimate reserve</button>
+      <p id="e-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="e-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your reserve target</h2>
+      <div id="e-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Only FIXED essentials count:</strong> rent, essential salaries, EMIs, utilities, insurance — costs that continue with zero sales. Discretionary spend (ads, travel, bonuses) is deliberately excluded.</li>
+        <li><strong>Targets:</strong> 3-month = 3 × monthly essentials (minimum); 6-month = 6 × monthly essentials (full buffer).</li>
+        <li><strong>Coverage</strong> = current cash ÷ monthly essentials.</li>
+        <li><strong>Keep the reserve liquid</strong> (savings/current account), not locked in.</li>
+        <li><strong>Planning aid, not financial advice</strong> — confirm with your CA.</li>
+      </ul>
+    </section>
+
+    <!-- ADSENSE: -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Emergency reserve — FAQs</h2>
+      <details><summary>How much emergency cash should a small business keep?</summary><p>The standard rule: 3–6 months of essential fixed costs, kept liquid. Enter your fixed costs here to get your exact 3-month and 6-month targets.</p></details>
+      <details><summary lang="hi">इमरजेंसी के लिए कितना कैश रखना चाहिए?</summary><p lang="hi">आम नियम: 3 से 6 महीने के ज़रूरी तय खर्च। यहाँ अपने मासिक खर्च दर्ज करें — टूल 3 और 6 महीने का लक्ष्य बता देगा।</p></details>
+      <details><summary>What counts as an essential cost?</summary><p>Rent, essential salaries, loan EMIs, utilities, insurance — costs that continue even with zero sales. Discretionary spend (ads, travel, bonuses) is excluded.</p></details>
+      <details><summary>Where should the emergency reserve sit?</summary><p>Liquid — a savings or current account, or an overnight/liquid fund. Not locked in FDs you cannot break or in inventory.</p></details>
+      <details><summary>My coverage is under 1 month — what first?</summary><p>Stop discretionary spend, chase receivables, and divert the next surplus rupee to the reserve before growth spending.</p></details>
+      <details><summary>Is this financial advice?</summary><p>No — a planning estimate. Talk to your CA for advice suited to your business.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

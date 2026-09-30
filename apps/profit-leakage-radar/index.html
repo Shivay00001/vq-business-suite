@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit Leakage Radar – Find Hidden Profit Leaks India | VisionQuantech</title>
+  <meta name="description" content="Free profit leakage radar: score discounts, wastage, returns, shrinkage and idle staff to estimate your annual profit leak in rupees. प्रॉफ़िट लीकेज रडार।">
+  <meta name="keywords" content="profit leakage, hidden profit leaks, business profit leak calculator, प्रॉफ़िट लीकेज, shrinkage wastage returns cost India">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/profit-leakage-radar/">
+  <meta property="og:title" content="Profit Leakage Radar – Hidden Leaks in ₹ | VisionQuantech">
+  <meta property="og:description" content="Discounts, wastage, returns, theft, idle staff — how many lakhs leak yearly? Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .assump{ background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+    .assump li{ margin-bottom:.3rem; }
+    .formula{ font-size:1.05rem; background:#f2f6ff; border-radius:10px; padding:.9rem 1rem; }
+  </style>
+</head>
+<body data-app="profit-leakage-radar">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: --></div>
+
+    <div class="vq-hero">
+      <h1>Profit Leakage Radar — Where Is Your Profit Silently Leaking?</h1>
+      <p>Estimate a monthly rupee loss for <strong>discounts, wastage, returns, shrinkage and idle staff</strong>. Get an <strong>annual leak in ₹</strong>, a risk rating, and which channel to fix first. <span lang="hi">मुनाफ़ा कहाँ लीक हो रहा है — रुपयों में जानें।</span></p>
+      <p class="vq-hint">Free: 20 assessments per day. Nothing leaves your browser.</p>
+    </div>
+
+    <div id="pl-gate"></div>
+
+    <section class="card" aria-label="Leakage inputs">
+      <h2 class="vq-section-title" style="margin-top:0">Your business</h2>
+      <div class="vq-field">
+        <label for="pl-rev">Annual revenue (₹)</label>
+        <input id="pl-rev" type="number" min="0" step="0.01" value="6000000" inputmode="decimal">
+        <p class="vq-hint">Used only to rate the leak as % of revenue.</p>
+      </div>
+      <div id="pl-leaks"></div>
+      <button id="pl-calc" class="vq-btn" type="button">Scan for leaks</button>
+      <p id="pl-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" id="pl-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Leakage report</h2>
+      <p class="formula">Annual leak = Σ monthly loss × 12 · Leak % = annual leak ÷ annual revenue</p>
+      <div id="pl-result"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions stated on-screen</h2>
+      <ul class="assump">
+        <li><strong>Estimates, not measurements:</strong> honesty beats precision — direction matters more than exact rupees.</li>
+        <li><strong>Rating bands:</strong> &lt;2% Guarded · 2–5% Watch · 5–10% Leaking · &gt;10% Critical (of annual revenue).</li>
+        <li><strong>Severity score 0–3</strong> is a qualitative cross-check; the rupee ranking drives the fix-first order.</li>
+        <li><strong>Not a fraud investigation tool</strong> — shrinkage estimates cannot prove theft; use proper stock audits for that.</li>
+      </ul>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Profit leakage radar — FAQs</h2>
+      <details><summary>What is profit leakage?</summary><p>Profit that silently disappears through excess discounts, wastage, returns, shrinkage/theft and idle staff or capacity — costs that never appear as one line item but add up to lakhs per year.</p></details>
+      <details><summary lang="hi">प्रॉफ़िट लीकेज क्या है?</summary><p lang="hi">ज़्यादा छूट, बर्बादी, रिटर्न, चोरी/ग़ायब स्टॉक और खाली स्टाफ़ के ज़रिए चुपचाप ग़ायब होता मुनाफ़ा — जो एक साथ लाखों का होता है।</p></details>
+      <details><summary>How do I estimate leakage I cannot measure?</summary><p>Use honest monthly rupee estimates per channel plus a 0–3 severity score. The tool annualises them and cross-checks with a severity-pressure score — direction matters more than precision.</p></details>
+      <details><summary>What leakage % is acceptable?</summary><p>Roughly: under 2% of revenue = guarded, 2–5% = watch, 5–10% = leaking, over 10% = critical. Retail and food businesses often discover 5–8% when they first measure.</p></details>
+      <details><summary>Which leak should I fix first?</summary><p>The biggest rupee leak, not the most embarrassing one. The report ranks channels by annual rupees so you attack the largest first.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

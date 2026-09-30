@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Register – Free Employee Attendance Tracker for Indian SMEs | VisionQuantech</title>
+  <meta name="description" content="Free attendance register for Indian small businesses: mark daily attendance (present / absent / half-day / paid leave), view the month grid and monthly summary per employee. Data stays encrypted on your device. अटेंडेंस रजिस्टर – कर्मचारी उपस्थिति ट्रैक करें।">
+  <meta name="keywords" content="attendance register India, employee attendance tracker, staff attendance register app, daily attendance marking, monthly attendance summary, अटेंडेंस रजिस्टर, कर्मचारी उपस्थिति, हाजिरी रजिस्टर">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/attendance-register/">
+  <meta property="og:title" content="Attendance Register – Free Employee Attendance Tracker | VisionQuantech">
+  <meta property="og:description" content="Mark daily attendance, view month grids and monthly summaries. Encrypted, on-device, free.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .mark-btns { display:flex; gap:.35rem; flex-wrap:wrap; }
+    .mark-btns button { min-width:44px; min-height:44px; border:1px solid var(--line); border-radius:8px; background:#fff; font-weight:700; cursor:pointer; }
+    .mark-btns button.on-p { background:#d9f2e3; border-color:#1d7a3f; color:#1d7a3f; }
+    .mark-btns button.on-a { background:#fde3e3; border-color:#b3261e; color:#b3261e; }
+    .mark-btns button.on-hd { background:#fff3d6; border-color:#8a6100; color:#8a6100; }
+    .mark-btns button.on-pl { background:#e3ecfd; border-color:#1d4fa3; color:#1d4fa3; }
+    .att-row { display:flex; align-items:center; justify-content:space-between; gap:.8rem; padding:.6rem 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+    .cell-p{color:#1d7a3f;font-weight:700}.cell-a{color:#b3261e;font-weight:700}.cell-hd{color:#8a6100;font-weight:700}.cell-pl{color:#1d4fa3;font-weight:700}.cell-x{color:#bbb}
+    .month-grid td,.month-grid th{padding:.25rem .35rem;text-align:center;font-size:.8rem;white-space:nowrap}
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .pp-on{color:#1d7a3f;font-weight:700}
+  </style>
+</head>
+<body data-app="attendance-register">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Attendance Register — Employee Attendance Tracker</h1>
+      <p>Free attendance register for Indian SMEs: add employees, mark daily attendance (present / absent / half-day / paid leave), and get a month grid plus monthly summary per employee. <span lang="hi">अटेंडेंस रजिस्टर — रोज़ की हाज़िरी लगाएँ, महीने का सारांश पाएँ।</span></p>
+      <p class="vq-hint">Free: 20 attendance saves per day. Your data is stored <strong>only on this device, encrypted</strong> — set a passphrase below before saving.</p>
+    </div>
+
+    <div id="ar-gate"></div>
+
+    <section class="card" aria-label="Data privacy">
+      <h2 class="vq-section-title" style="margin-top:0">Privacy — encrypt before saving</h2>
+      <p class="vq-hint">Employee names are personal data. This app <strong>never writes them unencrypted</strong> and never sends them anywhere — everything stays on this device. Set a passphrase to unlock saving.</p>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="pp-input">Passphrase</label>
+          <input id="pp-input" type="password" autocomplete="new-password" placeholder="Choose a strong passphrase">
+        </div>
+      </div>
+      <button id="pp-set" class="vq-btn" type="button">Set passphrase &amp; unlock</button>
+      <p id="pp-status" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Employees">
+      <h2 class="vq-section-title" style="margin-top:0">Employees (max 25)</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="ar-name">Employee name</label>
+          <input id="ar-name" type="text" maxlength="120" placeholder="e.g. Ravi Kumar" autocomplete="off">
+        </div>
+        <div class="vq-field">
+          <label for="ar-code">Employee code (optional)</label>
+          <input id="ar-code" type="text" maxlength="30" placeholder="e.g. EMP-001" autocomplete="off">
+        </div>
+      </div>
+      <button id="ar-add" class="vq-btn" type="button">Add employee</button>
+      <p id="ar-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="ar-emp-list" style="margin-top:1rem"></div>
+    </section>
+
+    <section class="card" aria-label="Mark attendance">
+      <h2 class="vq-section-title" style="margin-top:0">Mark attendance</h2>
+      <div class="form-grid">
+        <div class="vq-field">
+          <label for="ar-date">Date</label>
+          <input id="ar-date" type="date">
+        </div>
+      </div>
+      <button id="ar-mark-all" class="vq-btn" type="button">Mark all present</button>
+      <div id="ar-grid" style="margin-top:1rem"></div>
+      <div style="margin-top:1rem"><button id="ar-save-day" class="vq-btn" type="button">Save day's attendance</button></div>
+    </section>
+
+    <section class="card" aria-label="Month view">
+      <h2 class="vq-section-title" style="margin-top:0">Month view &amp; summary</h2>
+      <div class="vq-field">
+        <label for="ar-month">Month</label>
+        <input id="ar-month" type="month">
+      </div>
+      <div class="vq-table-wrap"><table class="vq-table month-grid" id="ar-month-grid" aria-label="Monthly attendance grid"></table></div>
+      <h3 class="vq-section-sub">Monthly summary</h3>
+      <div class="vq-table-wrap"><table class="vq-table" id="ar-summary" aria-label="Monthly attendance summary"></table></div>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Attendance register — FAQs</h2>
+      <details><summary>How do I mark attendance for my staff?</summary><p>Add each employee once, pick a date, tap P (present), A (absent), HD (half-day) or PL (paid leave) for each person, then tap “Save day's attendance”. You can mark all present with one tap and then change exceptions.</p></details>
+      <details><summary lang="hi">अटेंडेंस रजिस्टर में हाज़िरी कैसे लगाएँ?</summary><p lang="hi">कर्मचारी जोड़ें, तारीख़ चुनें, हर व्यक्ति के लिए P (उपस्थित), A (अनुपस्थित), HD (आधा दिन) या PL (सवेतन छुट्टी) दबाएँ और “Save day's attendance” दबाएँ।</p></details>
+      <details><summary>How is the monthly summary calculated?</summary><p>Present-equivalent days = full present days + 0.5 × half-days. Paid leave and absences are counted separately, and attendance % = present-equivalent ÷ marked days × 100.</p></details>
+      <details><summary>Is my employee data private?</summary><p>Yes. Nothing leaves your device. Saving is locked until you set a passphrase — data is then stored encrypted (AES-256-GCM) in this browser only. Without a passphrase, nothing is saved.</p></details>
+      <details><summary>How many employees and saves are allowed?</summary><p>Up to 25 employees and 20 attendance saves per day on the free plan.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

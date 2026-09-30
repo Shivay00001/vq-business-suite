@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker Compose Generator — Free docker-compose.yml Builder | VisionQuantech Business Suite</title>
+  <meta name="description" content="Free docker-compose.yml generator: add services with images, ports, volumes, environment, depends_on & restart policies. Copy & download the YAML, 100% in-browser.">
+  <meta name="keywords" content="docker compose generator, docker-compose.yml generator, docker compose file kaise banaye, docker compose example, free compose builder">
+  <link rel="canonical" href="https://visionquantech.com/apps/docker-compose-generator/">
+  <meta property="og:title" content="Docker Compose Generator — Free Online">
+  <meta property="og:description" content="Build docker-compose.yml visually: services, ports, volumes, env, depends_on. Free, no signup.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .lede { color: var(--ink-soft); margin: .4rem 0 1.4rem; }
+    .err { color: var(--warn); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    .msg { color: var(--brand); font-weight: 600; min-height: 1.4em; margin: .4rem 0; }
+    pre.code { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 10px; overflow-x: auto; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .btnrow { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0; }
+    .vq-btn.sm { padding: .45rem .8rem; font-size: .85rem; min-height: 44px; }
+    .saved-row { display: flex; align-items: center; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    .saved-row span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    @media (max-width: 640px) { .row2 { grid-template-columns: 1fr; } }
+    fieldset.svc { border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin: 0 0 1rem; }
+    fieldset.svc legend { font-weight: 700; padding: 0 .4rem; }
+  </style>
+</head>
+<body data-app="docker-compose-generator">
+  <main class="vq-main vq-narrow">
+    <div id="ad-top"></div>
+
+    <h1>Docker Compose Generator</h1>
+    <p class="lede">Services add karein — image, ports, volumes, env vars, <code>depends_on</code>, restart policy — aur ready <strong>docker-compose.yml</strong> payein. <code>docker compose up -d</code> se turant chalayein.</p>
+
+    <form id="dcg-form" onsubmit="return false;">
+      <fieldset class="svc">
+        <legend>Service</legend>
+        <div class="row2">
+          <div class="vq-field">
+            <label for="sName">Service name</label>
+            <input id="sName" type="text" placeholder="web" autocapitalize="none">
+          </div>
+          <div class="vq-field">
+            <label for="sImage">Image</label>
+            <input id="sImage" type="text" placeholder="nginx:1.27-alpine" autocapitalize="none">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="vq-field">
+            <label for="sPorts">Ports (comma separated, HOST:CONTAINER)</label>
+            <input id="sPorts" type="text" placeholder="8080:80">
+          </div>
+          <div class="vq-field">
+            <label for="sVolumes">Volumes (comma separated)</label>
+            <input id="sVolumes" type="text" placeholder="./data:/data, uploads:/app/uploads">
+          </div>
+        </div>
+        <div class="vq-field">
+          <label for="sEnv">Environment (KEY=VALUE, one per line)</label>
+          <textarea id="sEnv" rows="2" placeholder="NODE_ENV=production&#10;DB_HOST=db"></textarea>
+        </div>
+        <div class="row2">
+          <div class="vq-field">
+            <label for="sDepends">depends_on (comma separated)</label>
+            <input id="sDepends" type="text" placeholder="db, redis">
+          </div>
+          <div class="vq-field">
+            <label for="sRestart">Restart policy</label>
+            <select id="sRestart">
+              <option value="unless-stopped">unless-stopped</option>
+              <option value="always">always</option>
+              <option value="on-failure">on-failure</option>
+              <option value="no">no</option>
+            </select>
+          </div>
+        </div>
+        <div class="vq-field">
+          <label for="sCommand">Command (override, optional)</label>
+          <input id="sCommand" type="text" placeholder="npm run start:prod">
+        </div>
+        <div class="btnrow">
+          <button class="vq-btn go" id="addBtn" type="button">Add service</button>
+          <button class="vq-btn ghost" id="clearBtn" type="button">Clear form</button>
+        </div>
+        <p class="err" id="dcg-error" role="alert"></p>
+      </fieldset>
+    </form>
+
+    <h2 class="vq-section-sub">Services (<span id="dcg-count">0 services</span>)</h2>
+    <div id="dcg-services"></div>
+
+    <h2 class="vq-section-sub">docker-compose.yml</h2>
+    <pre class="code" id="dcg-output"></pre>
+    <div class="btnrow">
+      <button class="vq-btn secondary sm" id="copyBtn" type="button">Copy</button>
+      <button class="vq-btn secondary sm" id="dlBtn" type="button">Download</button>
+    </div>
+
+    <div id="dcg-upsell"></div>
+    <div class="row2">
+      <div class="vq-field">
+        <label for="draftName">Draft name (to save on this device)</label>
+        <input id="draftName" type="text" placeholder="e.g. mern-stack">
+      </div>
+      <div class="vq-field" style="align-self:end">
+        <button class="vq-btn sm" id="saveBtn" type="button">Save draft to vault</button>
+        <p class="vq-hint">Free: 25 vault saves/day.</p>
+      </div>
+    </div>
+    <p class="msg" id="dcg-msg" role="status"></p>
+    <h2 class="vq-section-sub">Saved drafts</h2>
+    <div id="dcg-saved"></div>
+
+    <div class="vq-notice">
+      <strong>Tip:</strong> passwords YAML me hardcode na karein — <code>.env</code> file (git-ignored) ke saath <code>env_file:</code> use karein ya <code>${DB_PASSWORD}</code> jaise variable references.
+    </div>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">FAQs — अक्सर पूछे जाने वाले सवाल</h2>
+      <details>
+        <summary>docker-compose.yml kaise banaye?</summary>
+        <p>"services:" ke neeche har container likhein — image, ports, volumes, environment aur depends_on ke saath. Ye generator aapke liye YAML banata hai; phir "docker compose up -d" chalaiye.</p>
+      </details>
+      <details>
+        <summary>docker compose aur docker-compose me kya antar hai?</summary>
+        <p>"docker compose" (space) naya Compose v2 plugin hai; "docker-compose" (hyphen) purana v1 tool tha. Nayi files me "version:" key obsolete hai — ye generator use nahi likhta.</p>
+      </details>
+      <details>
+        <summary>depends_on kya karta hai?</summary>
+        <p>Ye startup order control karta hai — jaise web service depends_on db, to database container pehle start hoga. "Ready hone tak wait" ke liye healthcheck ke saath combine karein.</p>
+      </details>
+      <details>
+        <summary>Compose file me passwords kaise secure rakhein?</summary>
+        <p>Passwords commit ki hui YAML me na likhein. Git-ignored .env file ke saath env_file use karein ya ${DB_PASSWORD} jaise references.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

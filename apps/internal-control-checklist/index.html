@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Control Checklist — Compliance % by Process | VisionQuantech</title>
+  <meta name="description" content="Free internal control checklist: tick controls across purchase, sales, cash & bank, inventory and HR/payroll for an overall compliance % , per-process scores and a gap list. Self-assessment — confirm with your auditor. आंतरिक नियंत्रण चेकलिस्ट।">
+  <meta name="keywords" content="internal control checklist, internal controls small business, control compliance score, purchase controls, cash controls, आंतरिक नियंत्रण चेकलिस्ट, segregation of duties checklist">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/internal-control-checklist/">
+  <meta property="og:title" content="Internal Control Checklist — Compliance % | VisionQuantech">
+  <meta property="og:description" content="Tick your controls, get compliance % by process and a gap list. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:.85rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .chip { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.85rem; font-weight:700; }
+    .b-crit { background:#fde8e8; color:#b3261e; } .b-high { background:#fff1de; color:#9a5b00; }
+    .b-med { background:#fff8d6; color:#7a6200; } .b-low { background:#e7f6ec; color:#1d7a3f; }
+    table.proc { width:100%; border-collapse:collapse; }
+    table.proc td { padding:.4rem .3rem; border-bottom:1px solid #eef1f6; font-size:.92rem; }
+    table.proc td.pct { text-align:right; font-weight:700; white-space:nowrap; }
+    .bar { height:.55rem; background:#eef1f6; border-radius:999px; overflow:hidden; min-width:80px; }
+    .fill { height:100%; background:var(--brand); }
+    ul.gaps { padding-left:1.2rem; } ul.gaps li { margin-bottom:.55rem; }
+    .caveat { background:var(--paper-soft); border-radius:10px; padding:.9rem 1rem; font-size:.9rem; }
+  </style>
+</head>
+<body data-app="internal-control-checklist">
+  <main class="vq-main">
+    <div id="ad-top"><!-- ADSENSE: top leaderboard placeholder --></div>
+
+    <div class="vq-hero">
+      <h1>Internal Control Checklist</h1>
+      <p>Tick the controls you <strong>actually follow</strong> — across purchase, sales, cash &amp; bank, inventory, and HR &amp; payroll — and get an overall compliance %, per-process scores, and a prioritised gap list. <span lang="hi">आंतरिक नियंत्रण चेकलिस्ट — प्रक्रिया-वार अनुपालन प्रतिशत और कमी की सूची।</span></p>
+      <p class="vq-hint">Self-assessment aid. Free: 20 evaluations per day. On-device only.</p>
+    </div>
+
+    <div id="icc-gate"></div>
+
+    <section class="card" aria-label="Controls checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Tick the controls you have</h2>
+      <div id="icc-list"></div>
+      <button id="icc-calc" class="vq-btn" type="button">Evaluate compliance</button>
+      <button id="icc-save" class="vq-btn ghost" type="button" style="margin-left:.5rem">Save assessment</button>
+      <p id="icc-msg" class="vq-hint" aria-live="polite"></p>
+      <div id="icc-upsell"></div>
+    </section>
+
+    <section class="card" id="icc-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your control compliance</h2>
+      <div id="icc-result"></div>
+    </section>
+
+    <section class="card" aria-label="Caveats">
+      <h2 class="vq-section-title" style="margin-top:0">Read this before you act</h2>
+      <div class="caveat">
+        <p><strong>Self-assessment estimate, not an internal audit.</strong> A real audit also tests whether controls actually work, not just whether they exist on paper. Fix cash &amp; bank and purchase gaps first — then <strong>confirm with your auditor</strong>.</p>
+      </div>
+    </section>
+
+    <div id="ad-bottom"><!-- ADSENSE: bottom leaderboard placeholder --></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Internal control checklist — FAQs</h2>
+      <details><summary>What is an internal control checklist?</summary><p>A list of preventive controls across purchase, sales, cash &amp; bank, inventory, and HR &amp; payroll. You tick the ones you actually follow; the tool reports compliance % per process and a gap list.</p></details>
+      <details><summary lang="hi">आंतरिक नियंत्रण चेकलिस्ट क्या है?</summary><p lang="hi">खरीद, बिक्री, नकद-बैंक, स्टॉक और HR-वेतन में नियंत्रणों की सूची। जो नियंत्रण आप सच में अपनाते हैं उन्हें चिह्नित करें — प्रक्रिया-वार अनुपालन % और कमी की सूची पाएं।</p></details>
+      <details><summary>What is a good internal control compliance score?</summary><p>80%+ is strong, 60–79% adequate, 40–59% weak, below 40% means critical gaps. Fix cash &amp; bank and purchase gaps first — that is where losses hurt most.</p></details>
+      <details><summary>Is this an internal audit?</summary><p>No — it is a self-assessment to prioritise control fixes. A real internal audit also tests whether controls actually work, not just whether they exist on paper.</p></details>
+      <details><summary>How often should I redo this checklist?</summary><p>Quarterly, or whenever staff roles change. Controls decay silently — the person who was independent last year may now do both jobs.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

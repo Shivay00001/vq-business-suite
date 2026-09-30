@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://visionquantech.com/products/vq-business-suite/sitemap.xml

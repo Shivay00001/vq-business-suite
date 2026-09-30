@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Health Monitor — Small Business IT Health Score | VisionQuantech</title>
+  <meta name="description" content="Free IT health check for small business: 10-point checklist (backups, updates, antivirus, disk, passwords, 2FA) gives a 0–100 score and prioritized action list. On-device. सिस्टम हेल्थ चेक।">
+  <meta name="keywords" content="it health check, system health monitor, small business it audit, backup checklist, सिस्टम हेल्थ चेक, it security checklist small business">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/system-health-monitor/">
+  <meta property="og:title" content="System Health Monitor | VisionQuantech">
+  <meta property="og:description" content="10-point IT health checklist → 0–100 score + prioritized action list. Free, on-device.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .big { font-size:1.7rem; font-weight:800; color:var(--brand); }
+    .grade { display:inline-block; background:#eef4ff; color:#1f4fa3; font-weight:800; padding:.2rem .8rem; border-radius:999px; }
+    .check-row { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:1rem; }
+    .check-row input { width:1.25rem; height:1.25rem; accent-color:var(--brand); margin-top:.15rem; flex:none; }
+    .msg-ok{color:#1d7a3f;font-weight:700}
+    .badge { display:inline-block; padding:.15rem .6rem; border-radius:999px; font-size:.78rem; font-weight:700; text-transform:capitalize; }
+    .b-critical{ background:#fdeceb; color:#b3261e; }
+    .b-high{ background:#fff4e0; color:#9a6200; }
+    .b-medium{ background:#eef4ff; color:#1f4fa3; }
+    .actions li{ margin-bottom:.55rem; }
+  </style>
+</head>
+<body data-app="system-health-monitor">
+  <main class="vq-main">
+    <!-- ADSENSE: top slot -->
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>System Health Monitor — IT Health Score</h1>
+      <p>Ten weighted checks — <strong>backups, updates, antivirus, disk space, passwords, 2FA</strong> — produce a 0–100 IT health score and a prioritized action list for your business PCs. <span lang="hi">सिस्टम हेल्थ चेक — 10 जांच, एक स्कोर।</span></p>
+      <p class="vq-hint">Free: 20 health checks per day. Self-assessment, not a professional security audit. Nothing is stored.</p>
+    </div>
+
+    <div id="h-gate"></div>
+
+    <section class="card" aria-label="IT health checklist">
+      <h2 class="vq-section-title" style="margin-top:0">Tick what is true today</h2>
+      <div id="h-checks"></div>
+      <button id="h-calc" class="vq-btn" type="button">Compute health score</button>
+    </section>
+
+    <section class="card" id="h-result-card" aria-label="Result" hidden>
+      <h2 class="vq-section-title" style="margin-top:0">Your IT health</h2>
+      <div id="h-result"></div>
+    </section>
+
+    <!-- ADSENSE: bottom slot -->
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">IT health monitor — FAQs</h2>
+      <details><summary>What does the IT health score measure?</summary><p>Ten weighted checks — backups (exist, off-site, restore-tested), OS updates, antivirus, disk space, passwords, 2FA, Wi-Fi security and exit revocation — scored 0–100 with an A–F grade.</p></details>
+      <details><summary lang="hi">सिस्टम हेल्थ स्कोर क्या है?</summary><p lang="hi">10 जांचों पर आधारित 0–100 स्कोर — बैकअप, अपडेट, एंटीवायरस, डिस्क स्पेस, पासवर्ड, 2FA। फेल जांचों के लिए प्राथमिकता वाली एक्शन लिस्ट मिलती है।</p></details>
+      <details><summary>What should I fix first?</summary><p>The action list is sorted by severity: critical items (like missing backups) first, then high, then medium.</p></details>
+      <details><summary>Is this a security audit?</summary><p>No — it is a self-assessment checklist for small businesses, not a professional security audit.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

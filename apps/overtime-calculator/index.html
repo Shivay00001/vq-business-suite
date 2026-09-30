@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overtime Calculator – OT Pay Calculator India (1x / 1.5x / 2x) | VisionQuantech</title>
+  <meta name="description" content="Free overtime calculator for Indian employers: OT hours × hourly rate × multiplier (1x/1.5x/2x). Statutory 2× rate under Factories Act §59 & Shops Acts; monthly OT pay per employee + totals. ओवरटाइम कैलकुलेटर – OT वेतन निकालें।">
+  <meta name="keywords" content="overtime calculator India, OT pay calculator, overtime wages calculation, overtime rate 2x factories act, OT calculation formula, ओवरटाइम कैलकुलेटर, ओवरटाइम वेतन">
+  <link rel="canonical" href="https://visionquantech.com/products/vq-business-suite/apps/overtime-calculator/">
+  <meta property="og:title" content="Overtime Calculator – OT Pay (1x/1.5x/2x) | VisionQuantech">
+  <meta property="og:description" content="Compute monthly overtime pay per employee with statutory-rate guidance. Encrypted, on-device, free.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../../core/shell.css">
+  <style>
+    .card { background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem; margin:1.2rem 0; box-shadow:var(--shadow); }
+    .form-grid { display:grid; gap:0 1rem; grid-template-columns:1fr; }
+    @media (min-width:640px){ .form-grid{ grid-template-columns:1fr 1fr; } }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:.8rem; padding:.6rem 0; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+    .big { font-size:1.5rem; font-weight:800; color:var(--brand); }
+    .msg-ok{color:#1d7a3f;font-weight:700}.msg-err{color:#b3261e;font-weight:700}
+    .pp-on{color:#1d7a3f;font-weight:700}
+    .btn-sm{ padding:.4rem .8rem; }
+    .sources{ font-size:.85rem; color:var(--ink-soft); }
+    .sources li{ margin-bottom:.3rem; }
+  </style>
+</head>
+<body data-app="overtime-calculator">
+  <main class="vq-main">
+    <div id="ad-top"></div>
+
+    <div class="vq-hero">
+      <h1>Overtime Calculator — OT Pay (1x / 1.5x / 2x)</h1>
+      <p>Free overtime pay calculator for Indian employers: OT hours × hourly rate × multiplier, with monthly totals per employee. <strong>Statutory rate is 2×</strong> the ordinary rate under Factories Act §59 and most Shops &amp; Establishments Acts — 1.5×/1× are for company policy cases. <span lang="hi">ओवरटाइम कैलकुलेटर — OT वेतन की गणना।</span></p>
+      <p class="vq-hint">Free: 20 calculations per day. Entries are stored <strong>only on this device, encrypted</strong> — set a passphrase below before saving.</p>
+    </div>
+
+    <div id="ot-gate"></div>
+
+    <section class="card" aria-label="Data privacy">
+      <h2 class="vq-section-title" style="margin-top:0">Privacy — encrypt before saving</h2>
+      <p class="vq-hint">OT entries contain names and pay figures. This app <strong>never writes them unencrypted</strong> and never sends them anywhere. Set a passphrase to unlock saving.</p>
+      <div class="vq-field">
+        <label for="pp-input">Passphrase</label>
+        <input id="pp-input" type="password" autocomplete="new-password" placeholder="Choose a strong passphrase">
+      </div>
+      <button id="pp-set" class="vq-btn" type="button">Set passphrase &amp; unlock</button>
+      <p id="pp-status" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Overtime entry">
+      <h2 class="vq-section-title" style="margin-top:0">Add overtime entry</h2>
+      <div class="form-grid">
+        <div class="vq-field"><label for="ot-ename">Employee name</label><input id="ot-ename" type="text" maxlength="120" placeholder="e.g. Anil Verma" autocomplete="off"></div>
+        <div class="vq-field"><label for="ot-month">Month</label><input id="ot-month" type="month"></div>
+        <div class="vq-field"><label for="ot-salary">Monthly salary (₹) <span class="vq-hint">— or enter hourly rate directly</span></label><input id="ot-salary" type="number" min="0" max="100000000" step="0.01" placeholder="e.g. 26000" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ot-hourly">Hourly rate (₹) <span class="vq-hint">— auto = salary ÷ 208</span></label><input id="ot-hourly" type="number" min="0" max="1000000" step="0.01" placeholder="auto" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ot-hours">Overtime hours</label><input id="ot-hours" type="number" min="0" max="744" step="0.25" placeholder="e.g. 10" inputmode="decimal"></div>
+        <div class="vq-field"><label for="ot-mult">Multiplier</label>
+          <select id="ot-mult">
+            <option value="2" selected>2× — statutory (Factories Act §59, Shops Acts)</option>
+            <option value="1.5">1.5× — company policy / contract</option>
+            <option value="1">1× — plain hourly rate</option>
+          </select></div>
+        <div class="vq-field"><label for="ot-category">Establishment type (guidance)</label>
+          <select id="ot-category">
+            <option value="factory">Factory (Factories Act 1948)</option>
+            <option value="shops">Shops / office / establishment (state Shops Act)</option>
+            <option value="other">Other / contractual arrangement</option>
+          </select></div>
+      </div>
+      <p class="vq-hint" id="ot-guide"></p>
+      <button id="ot-add" class="vq-btn" type="button">Calculate &amp; save entry</button>
+      <p id="ot-msg" class="vq-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-label="Monthly overtime summary">
+      <h2 class="vq-section-title" style="margin-top:0">Monthly OT summary</h2>
+      <div class="vq-field"><label for="ot-view-month">View month</label><input id="ot-view-month" type="month"></div>
+      <div class="vq-table-wrap"><table class="vq-table" id="ot-summary"></table></div>
+      <p><span class="vq-hint">Grand total: </span><span class="big" id="ot-grand">₹0</span></p>
+      <h3 class="vq-section-sub">Saved entries</h3>
+      <div id="ot-list"></div>
+    </section>
+
+    <section class="card" aria-label="Assumptions and sources">
+      <h2 class="vq-section-title" style="margin-top:0">Assumptions &amp; statutory sources (verified Sep 2026)</h2>
+      <ul class="sources">
+        <li><strong>Formula:</strong> OT pay = OT hours × hourly rate × multiplier. Hourly rate from monthly salary = salary ÷ (26 days × 8 hours) = ÷ 208 (stated assumption; edit the hourly rate directly if your payroll uses another divisor).</li>
+        <li><strong>2× statutory:</strong> Factories Act 1948 §59 — overtime beyond 9 hrs/day or 48 hrs/week at <em>twice</em> the ordinary rate (basic + allowances). OSH Code 2020 §27 also prescribes 2×.</li>
+        <li><strong>Shops &amp; Establishments Acts:</strong> Maharashtra (2017 Act §15), Karnataka (§7), Delhi rules — all mandate 2× the ordinary/normal rate for overtime. Limits vary (e.g. Delhi: 150 hrs/year; Maharashtra: 144 hrs/quarter after 2026 amendments).</li>
+        <li>1.5×/1× are <em>not</em> statutory minima — use them only where a contract, standing order or company policy sets a different rate for non-statutory overtime.</li>
+        <li>Sources: <a href="https://www.livelaw.in/supreme-court/compensatory-allowances-must-be-considered-while-computing-overtime-wages-under-section-59-factories-act-supreme-court-519764" rel="noopener">LiveLaw — SC on §59 overtime wages</a>; <a href="https://www.mondaq.com/article/1445388" rel="noopener">Mondaq — overtime under S&amp;E Acts</a>; <a href="https://economictimes.indiatimes.com/wealth/legal/will/asked-to-work-beyond-office-hours-know-your-rights-under-new-labour-code/articleshow/130493427.cms?from=mdr" rel="noopener">ET — overtime under new labour codes</a></li>
+      </ul>
+      <p class="vq-hint">Rates and hour caps change with state amendments — confirm with your labour consultant / CA.</p>
+    </section>
+
+    <div id="ad-bottom"></div>
+
+    <section class="vq-faq" aria-label="Frequently asked questions">
+      <h2 class="vq-section-title">Overtime calculator — FAQs</h2>
+      <details><summary>What is the legal overtime rate in India?</summary><p>Under the Factories Act 1948 (§59) and the Shops &amp; Establishments Acts of most states (Maharashtra, Karnataka, Delhi), overtime beyond the statutory daily/weekly limits must be paid at <strong>twice</strong> the ordinary rate of wages. The OSH Code 2020 (§27) keeps the same 2× rule.</p></details>
+      <details><summary lang="hi">भारत में ओवरटाइम की दर क्या है?</summary><p lang="hi">फ़ैक्टरीज़ एक्ट 1948 (धारा 59) और अधिकांश राज्यों के Shops Acts के तहत तय सीमा से ज़्यादा काम पर सामान्य मज़दूरी की <strong>दोगुनी</strong> दर से ओवरटाइम मिलता है।</p></details>
+      <details><summary>How is the hourly rate derived from monthly salary?</summary><p>Monthly salary ÷ 208 (26 working days × 8 hours). This is a common payroll convention, not a statutory formula — enter your own hourly rate if your company uses a different divisor.</p></details>
+      <details><summary>When would I use 1.5× or 1×?</summary><p>Only where a contract, certified standing order or company policy sets a different rate for overtime that is not triggered by the statutory limits — the statutory minimum stays 2×.</p></details>
+      <details><summary>Is my data private?</summary><p>Yes — nothing leaves your device. Saving is locked until you set a passphrase; entries are then stored encrypted (AES-256-GCM) in this browser only.</p></details>
+    </section>
+  </main>
+
+  <script src="../../core/shell.js"></script>
+  <script src="../../core/uid.js"></script>
+  <script src="../../core/vault.js"></script>
+  <script src="../../core/freemium.js"></script>
+  <script src="../../core/ads.js"></script>
+  <script src="../../core/seo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
